@@ -1,0 +1,174 @@
+/* eslint-disable max-line-length */
+/* eslint-disable import/imports-first */
+import React from 'react';
+import { Animated, BackHandler, Easing, NativeModules } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import { ROUTE_KEY } from '../constants/Constants';
+import AlbumComponent from '../screen/album/AlbumComponent';
+import DetailAlbumComponent from '../screen/detailAlbum/DetailAlbumComponent';
+import MainComponent from '../screen/main/MainComponent';
+import SideMenu from '../screen/main/SideMenu';
+import SplashComponent from '../screen/splash/SplashComponent';
+import global from '../utils/globalUtils';
+
+const routeAppConfiguration = {
+  [ROUTE_KEY.SPLASH]: {
+    screen: SplashComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.MAIN]: {
+    screen: MainComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.ALBUM]: {
+    screen: AlbumComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.DETAIL_ABLUM]: {
+    screen: DetailAlbumComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.MENU]: {
+    screen: SideMenu,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  }
+};
+
+const CollapseExpand = (index, position) => {
+  const inputRange = [index - 1, index, index + 1];
+  const opacity = position.interpolate({
+    inputRange,
+    outputRange: [0, 1, 1]
+  });
+
+  const scaleY = position.interpolate({
+    inputRange,
+    outputRange: [0, 1, 1]
+  });
+
+  return {
+    opacity,
+    transform: [{ scaleY }]
+  };
+};
+
+const SlideFromRight = (index, position, width) => {
+  const translateX = position.interpolate({
+    inputRange: [index - 1, index, index + 1],
+    outputRange: [width, 0, 0]
+  });
+  const slideFromRight = { transform: [{ translateX }] };
+  return slideFromRight;
+};
+const slowFade = (index, position) => {
+  const opacity = position.interpolate({
+    inputRange: [index - 1, index, index + 1],
+    outputRange: [0, 1, 1]
+  });
+  return { opacity };
+};
+
+const TransitionConfiguration = () => ({
+  transitionSpec: {
+    duration: 500,
+    easing: Easing.out(Easing.poly(4)),
+    timing: Animated.timing,
+    useNativeDriver: true
+  },
+  screenInterpolator: sceneProps => {
+    const { layout, position, scene } = sceneProps;
+    const width = layout.initWidth;
+    const { index, route } = scene;
+    const params = route.params || {}; // <- That's new
+    const transition = params.transition || 'default'; // <- That's new
+    return {
+      collapseExpand: CollapseExpand(index, position),
+      none: null,
+      slowFade: slowFade(index, position),
+      slideFromRight: SlideFromRight(index, position, width),
+      default: slowFade(index, position)
+    }[transition];
+  }
+});
+const stackAppConfiguration = {
+  initialRouteName: ROUTE_KEY.MAIN,
+  transitionConfig: TransitionConfiguration
+};
+
+const Navigator = createStackNavigator(routeAppConfiguration, stackAppConfiguration);
+const prevGetStateForAction = Navigator.router.getStateForAction;
+
+Navigator.router.getStateForAction = (action, state) => {
+  if (
+    action.type === 'Navigation/BACK' &&
+    state &&
+    (state.routes[state.index].routeName === ROUTE_KEY.MAIN || state.routes[state.index].routeName === ROUTE_KEY.SPLASH)
+  ) {
+    return state;
+  }
+
+  return prevGetStateForAction(action, state);
+};
+
+function backHandler() {
+  if (global.isBackAndroidButtonPressed) {
+    const MyBridge = NativeModules.MyBridge;
+    if (MyBridge) {
+      MyBridge.navigateToLauncher();
+    }
+  }
+  global.isBackAndroidButtonPressed = true;
+  setTimeout(() => {
+    global.isBackAndroidButtonPressed = false;
+  }, 500);
+  return true;
+}
+
+function getCurrentRouteName(navigationState) {
+  if (!navigationState) {
+    return null;
+  }
+  const route = navigationState.routes[navigationState.index];
+  // dive into nested navigators
+  if (route.routes) {
+    return getCurrentRouteName(route);
+  }
+  return route.routeName;
+}
+
+const AppNavigator = () => {
+  BackHandler.addEventListener('hardwareBackPress', backHandler);
+  return (
+    <Navigator
+      ref={nav => {
+        rootNavigator = nav;
+      }}
+      onNavigationStateChange={(prevState, currentState) => {
+        const currentScreen = getCurrentRouteName(currentState);
+        if (currentScreen === ROUTE_KEY.MAIN || currentScreen === ROUTE_KEY.SPLASH) {
+          BackHandler.addEventListener('hardwareBackPress', backHandler);
+        } else {
+          BackHandler.removeEventListener('hardwareBackPress', backHandler);
+        }
+      }}
+    />
+  );
+};
+
+export let rootNavigator = null;
+export default AppNavigator;

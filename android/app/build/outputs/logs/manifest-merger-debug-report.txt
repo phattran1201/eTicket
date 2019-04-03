@@ -5,13 +5,22 @@ INJECTED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidMan
 INJECTED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml:1:1-26:12
 INJECTED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml:1:1-26:12
 MERGED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml:1:1-26:12
+MERGED from [:react-native-gesture-handler] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:react-native-vector-icons] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:react-native-fast-image] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-fast-image/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:lottie-react-native] /Users/phattran/Sourcetree/eTicket/node_modules/lottie-react-native/src/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [com.facebook.react:react-native:0.59.3] /Users/phattran/.gradle/caches/transforms-1/files-1.1/react-native-0.59.3.aar/846a3d2608b05c725f04f8998cef3928/AndroidManifest.xml:2:1-13:12
+MERGED from [com.airbnb.android:lottie:2.5.6] /Users/phattran/.gradle/caches/transforms-1/files-1.1/lottie-2.5.6.aar/1dca61279916f5994a2f97e7fb59ccd9/AndroidManifest.xml:2:1-13:12
 MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/61ea979411834b7f449b96b05a48b45a/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-v4:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-v4-28.0.0.aar/6153354f1ddde77a9ea18a34f256f812/AndroidManifest.xml:17:1-22:12
+MERGED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:2:1-16:12
+MERGED from [com.github.bumptech.glide:glide:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/glide-4.7.1.aar/5d4fa5183e9b379e54af00b79539721c/AndroidManifest.xml:2:1-13:12
 MERGED from [com.android.support:support-fragment:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/744e2d4d32486287bf4394c0b84d5b2d/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/922db12ac4ef554b4d04f46094114733/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-core-ui:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/8c767229396cafa838136ac4b9babcaa/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-core-utils:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/226da0dc1ba914a679e287976951fce6/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/4a0cd78a7f96ec8b94656373fc33e70f/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-media-compat:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-media-compat-28.0.0.aar/682ba9724f05a2746de309975c23c1de/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:loader:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/610616864cf6534a451aacf7acd40964/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:viewpager:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/51057c2b92631f216fd5e79679a91b07/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:coordinatorlayout:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/c914509eb775e609a29224809ebecada/AndroidManifest.xml:17:1-22:12
@@ -28,10 +37,11 @@ MERGED from [com.android.support:documentfile:28.0.0] /Users/phattran/.gradle/ca
 MERGED from [com.android.support:localbroadcastmanager:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/3afce5e8bf093d8ff96dacb14f6a7176/AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:print:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/4660f8e0f82750d19bbd68e0d387260a/AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/42c6ccf0dfec3745f1eabc76a0502393/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:interpolator:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/7b59f3f19285d45b849e4b1955e7bec9/AndroidManifest.xml:17:1-22:12
+MERGED from [com.github.bumptech.glide:gifdecoder:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.7.1.aar/b08577d23cd4bed8a0d1c89eaa854391/AndroidManifest.xml:2:1-11:12
 MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/eeaf454630cb3be6e28dec3f7c214f94/AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/60b8a718ac1019fdd4d6ff8a85b6f56d/AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.core:runtime:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/9d477662ad15fec68c2e62236042bd3e/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:interpolator:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/7b59f3f19285d45b849e4b1955e7bec9/AndroidManifest.xml:17:1-22:12
 MERGED from [com.facebook.fresco:fresco:1.10.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/fresco-1.10.0.aar/45bde786a32f41e5fdabc5099a452bc9/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.10.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/imagepipeline-okhttp3-1.10.0.aar/147899c02cf0aeee94840fb3f34573eb/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.fresco:drawee:1.10.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/drawee-1.10.0.aar/e79b6830bebfe55b5e842bf95f83f855/AndroidManifest.xml:2:1-9:12
@@ -61,6 +71,8 @@ INJECTED from /Users/phattran/Sourcetree/eTicket/android/app/src/debug/AndroidMa
 		ADDED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml:1:11-69
 uses-permission#android.permission.INTERNET
 ADDED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml:4:5-67
+MERGED from [:lottie-react-native] /Users/phattran/Sourcetree/eTicket/node_modules/lottie-react-native/src/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-67
+MERGED from [:lottie-react-native] /Users/phattran/Sourcetree/eTicket/node_modules/lottie-react-native/src/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-67
 	android:name
 		ADDED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml:4:22-64
 application
@@ -69,10 +81,18 @@ MERGED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManif
 MERGED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml:6:5-24:19
 MERGED from [com.facebook.react:react-native:0.59.3] /Users/phattran/.gradle/caches/transforms-1/files-1.1/react-native-0.59.3.aar/846a3d2608b05c725f04f8998cef3928/AndroidManifest.xml:11:5-20
 MERGED from [com.facebook.react:react-native:0.59.3] /Users/phattran/.gradle/caches/transforms-1/files-1.1/react-native-0.59.3.aar/846a3d2608b05c725f04f8998cef3928/AndroidManifest.xml:11:5-20
+MERGED from [com.airbnb.android:lottie:2.5.6] /Users/phattran/.gradle/caches/transforms-1/files-1.1/lottie-2.5.6.aar/1dca61279916f5994a2f97e7fb59ccd9/AndroidManifest.xml:11:5-20
+MERGED from [com.airbnb.android:lottie:2.5.6] /Users/phattran/.gradle/caches/transforms-1/files-1.1/lottie-2.5.6.aar/1dca61279916f5994a2f97e7fb59ccd9/AndroidManifest.xml:11:5-20
+MERGED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:10:5-14:19
+MERGED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:10:5-14:19
+MERGED from [com.github.bumptech.glide:glide:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/glide-4.7.1.aar/5d4fa5183e9b379e54af00b79539721c/AndroidManifest.xml:11:5-20
+MERGED from [com.github.bumptech.glide:glide:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/glide-4.7.1.aar/5d4fa5183e9b379e54af00b79539721c/AndroidManifest.xml:11:5-20
 MERGED from [com.android.support:support-compat:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/8d4799054b28098290f76cb0b67c72d5/AndroidManifest.xml:22:5-94
 MERGED from [com.android.support:support-compat:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/8d4799054b28098290f76cb0b67c72d5/AndroidManifest.xml:22:5-94
 MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/a1192ce741723af5725026a891bc8749/AndroidManifest.xml:22:5-23:19
 MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/a1192ce741723af5725026a891bc8749/AndroidManifest.xml:22:5-23:19
+MERGED from [com.github.bumptech.glide:gifdecoder:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.7.1.aar/b08577d23cd4bed8a0d1c89eaa854391/AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.7.1.aar/b08577d23cd4bed8a0d1c89eaa854391/AndroidManifest.xml:9:5-20
 MERGED from [com.facebook.soloader:soloader:0.6.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/soloader-0.6.0.aar/8fd8630844805f25bd6eae21c17efbd7/AndroidManifest.xml:11:5-20
 MERGED from [com.facebook.soloader:soloader:0.6.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/soloader-0.6.0.aar/8fd8630844805f25bd6eae21c17efbd7/AndroidManifest.xml:11:5-20
 	android:appComponentFactory
@@ -129,10 +149,26 @@ uses-sdk
 INJECTED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml
 INJECTED from /Users/phattran/Sourcetree/eTicket/android/app/src/main/AndroidManifest.xml
+MERGED from [:react-native-gesture-handler] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-gesture-handler] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-vector-icons] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-vector-icons] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-fast-image] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-fast-image/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-fast-image] /Users/phattran/Sourcetree/eTicket/node_modules/react-native-fast-image/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:lottie-react-native] /Users/phattran/Sourcetree/eTicket/node_modules/lottie-react-native/src/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:lottie-react-native] /Users/phattran/Sourcetree/eTicket/node_modules/lottie-react-native/src/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.react:react-native:0.59.3] /Users/phattran/.gradle/caches/transforms-1/files-1.1/react-native-0.59.3.aar/846a3d2608b05c725f04f8998cef3928/AndroidManifest.xml:7:5-9:41
 MERGED from [com.facebook.react:react-native:0.59.3] /Users/phattran/.gradle/caches/transforms-1/files-1.1/react-native-0.59.3.aar/846a3d2608b05c725f04f8998cef3928/AndroidManifest.xml:7:5-9:41
+MERGED from [com.airbnb.android:lottie:2.5.6] /Users/phattran/.gradle/caches/transforms-1/files-1.1/lottie-2.5.6.aar/1dca61279916f5994a2f97e7fb59ccd9/AndroidManifest.xml:7:5-9:41
+MERGED from [com.airbnb.android:lottie:2.5.6] /Users/phattran/.gradle/caches/transforms-1/files-1.1/lottie-2.5.6.aar/1dca61279916f5994a2f97e7fb59ccd9/AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/61ea979411834b7f449b96b05a48b45a/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/61ea979411834b7f449b96b05a48b45a/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-v4-28.0.0.aar/6153354f1ddde77a9ea18a34f256f812/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-v4-28.0.0.aar/6153354f1ddde77a9ea18a34f256f812/AndroidManifest.xml:20:5-44
+MERGED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/glide-4.7.1.aar/5d4fa5183e9b379e54af00b79539721c/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.bumptech.glide:glide:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/glide-4.7.1.aar/5d4fa5183e9b379e54af00b79539721c/AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:support-fragment:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/744e2d4d32486287bf4394c0b84d5b2d/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-fragment:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/744e2d4d32486287bf4394c0b84d5b2d/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/922db12ac4ef554b4d04f46094114733/AndroidManifest.xml:20:5-44
@@ -143,6 +179,8 @@ MERGED from [com.android.support:support-core-utils:28.0.0] /Users/phattran/.gra
 MERGED from [com.android.support:support-core-utils:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/226da0dc1ba914a679e287976951fce6/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/4a0cd78a7f96ec8b94656373fc33e70f/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/4a0cd78a7f96ec8b94656373fc33e70f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-media-compat-28.0.0.aar/682ba9724f05a2746de309975c23c1de/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/support-media-compat-28.0.0.aar/682ba9724f05a2746de309975c23c1de/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:loader:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/610616864cf6534a451aacf7acd40964/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:loader:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/610616864cf6534a451aacf7acd40964/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:viewpager:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/51057c2b92631f216fd5e79679a91b07/AndroidManifest.xml:20:5-44
@@ -175,14 +213,16 @@ MERGED from [com.android.support:print:28.0.0] /Users/phattran/.gradle/caches/tr
 MERGED from [com.android.support:print:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/4660f8e0f82750d19bbd68e0d387260a/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/42c6ccf0dfec3745f1eabc76a0502393/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/42c6ccf0dfec3745f1eabc76a0502393/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/7b59f3f19285d45b849e4b1955e7bec9/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/7b59f3f19285d45b849e4b1955e7bec9/AndroidManifest.xml:20:5-44
+MERGED from [com.github.bumptech.glide:gifdecoder:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.7.1.aar/b08577d23cd4bed8a0d1c89eaa854391/AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/gifdecoder-4.7.1.aar/b08577d23cd4bed8a0d1c89eaa854391/AndroidManifest.xml:5:5-7:41
 MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/eeaf454630cb3be6e28dec3f7c214f94/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/eeaf454630cb3be6e28dec3f7c214f94/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/60b8a718ac1019fdd4d6ff8a85b6f56d/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/60b8a718ac1019fdd4d6ff8a85b6f56d/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.core:runtime:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/9d477662ad15fec68c2e62236042bd3e/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.core:runtime:1.1.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/9d477662ad15fec68c2e62236042bd3e/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:interpolator:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/7b59f3f19285d45b849e4b1955e7bec9/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:interpolator:28.0.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/7b59f3f19285d45b849e4b1955e7bec9/AndroidManifest.xml:20:5-44
 MERGED from [com.facebook.fresco:fresco:1.10.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/fresco-1.10.0.aar/45bde786a32f41e5fdabc5099a452bc9/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:fresco:1.10.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/fresco-1.10.0.aar/45bde786a32f41e5fdabc5099a452bc9/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.10.0] /Users/phattran/.gradle/caches/transforms-1/files-1.1/imagepipeline-okhttp3-1.10.0.aar/147899c02cf0aeee94840fb3f34573eb/AndroidManifest.xml:5:5-7:41
@@ -209,3 +249,9 @@ uses-permission#android.permission.SYSTEM_ALERT_WINDOW
 ADDED from /Users/phattran/Sourcetree/eTicket/android/app/src/debug/AndroidManifest.xml:5:5-77
 	android:name
 		ADDED from /Users/phattran/Sourcetree/eTicket/android/app/src/debug/AndroidManifest.xml:5:22-75
+meta-data#com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+ADDED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:11:9-13:43
+	android:value
+		ADDED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:13:13-40
+	android:name
+		ADDED from [com.github.bumptech.glide:okhttp3-integration:4.7.1] /Users/phattran/.gradle/caches/transforms-1/files-1.1/okhttp3-integration-4.7.1.aar/29dcbf0617f47e5402a9d1282a1fb7d7/AndroidManifest.xml:12:13-84
