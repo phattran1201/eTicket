@@ -1,0 +1,35 @@
+{
+  "name": "eTicket",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start-redux": "open -g 'rndebugger://set-debugger-loc?host=localhost&?port=8081'",
+    "test": "jest",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "a": "react-native run-android",
+    "l": "react-native link",
+    "i": "react-native run-ios",
+    "ix": "react-native run-ios --simulator=\"iPhone X\"",
+    "i6s": "react-native run-ios --simulator=\"iPhone 6s\"",
+    "t": "react-devtools",
+    "c": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "r": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleRelease && cd ../"
+  },
+  "dependencies": {
+    "react": "16.8.3",
+    "react-native": "0.59.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/runtime": "^7.4.3",
+    "babel-jest": "^24.7.0",
+    "jest": "^24.7.0",
+    "metro-react-native-babel-preset": "^0.53.1",
+    "react-test-renderer": "16.8.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
