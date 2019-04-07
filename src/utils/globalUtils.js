@@ -3,9 +3,9 @@ const global = {
   listCategory: [],
   categoryId: null,
   albumId: 0,
-  filterUpComming: null,
-  filterEventCategory: null,
-  filterPrice: null
+  filterUpComming: '',
+  filterEventCategory: '',
+  filterPrice: ''
 };
 
 export default global;

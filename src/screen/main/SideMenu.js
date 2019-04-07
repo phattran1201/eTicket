@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Alert, BackHandler, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, Alert, BackHandler, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -20,27 +19,6 @@ class SideMenu extends Component {
     };
   }
 
-  handleBackPress = () => {
-    Alert.alert(
-      strings.close_app_title,
-      strings.close_app_content,
-      [
-        {
-          text: strings.back,
-          onPress: () => {},
-          style: 'cancel'
-        },
-        {
-          text: strings.close,
-          onPress: () => BackHandler.exitApp()
-        }
-      ],
-      {
-        cancelable: false
-      }
-    );
-    return true;
-  };
   navigateToScreen = (navigation, route, params) => {
     const navigateAction = NavigationActions.navigate({
       routeName: route,

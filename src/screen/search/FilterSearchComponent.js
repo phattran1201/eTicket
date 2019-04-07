@@ -50,6 +50,8 @@ class FilterSearchComponent extends MyComponent {
   render() {
     const { params } = this.props.navigation.state;
     const { filterUpComming, filterEventCategory, filterPrice } = this.state;
+    console.log('dauphaiphat: FilterSearchComponent -> render -> this.props.navigation', this.props.navigation);
+
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <LinearGradient
@@ -79,7 +81,7 @@ class FilterSearchComponent extends MyComponent {
           colors={[`${APP_COLOR}90`, `${APP_COLOR_2}60`]}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <HeaderWithBackButtonComponent noShadow onPress={() => this.props.navigation.goBack()} />
+          <HeaderWithBackButtonComponent noShadow onPress={() => this.props.navigation.push(ROUTE_KEY.SEARCH)} />
           {params.filter === 'filterUpComming' && (
             <View
               style={{
@@ -104,7 +106,7 @@ class FilterSearchComponent extends MyComponent {
                   textStyle={[
                     style.text,
                     {
-                      color: filterUpComming === null ? APP_COLOR : APP_COLOR_TEXT,
+                      color: filterUpComming === '' ? APP_COLOR : APP_COLOR_TEXT,
                       fontSize: FS(22)
                     }
                   ]}
@@ -120,13 +122,13 @@ class FilterSearchComponent extends MyComponent {
                   iconType="material"
                   checkedIcon="check"
                   uncheckedIcon=""
-                  checked={filterUpComming === null}
+                  checked={filterUpComming === ''}
                   checkedColor={APP_COLOR}
                   uncheckedColor="tranparent"
                   size={18}
                   onPress={() => {
-                    global.filterUpComming = null;
-                    this.setState({ filterUpComming: null });
+                    global.filterUpComming = '';
+                    this.setState({ filterUpComming: '' });
                   }}
                 />
                 <CheckBox
@@ -243,7 +245,7 @@ class FilterSearchComponent extends MyComponent {
                   textStyle={[
                     style.text,
                     {
-                      color: filterEventCategory === null ? APP_COLOR : APP_COLOR_TEXT,
+                      color: filterEventCategory === '' ? APP_COLOR : APP_COLOR_TEXT,
                       fontSize: FS(22)
                     }
                   ]}
@@ -259,13 +261,13 @@ class FilterSearchComponent extends MyComponent {
                   iconType="material"
                   checkedIcon="check"
                   uncheckedIcon=""
-                  checked={filterEventCategory === null}
+                  checked={filterEventCategory === ''}
                   checkedColor={APP_COLOR}
                   uncheckedColor="tranparent"
                   size={18}
                   onPress={() => {
-                    global.filterEventCategory = null;
-                    this.setState({ filterEventCategory: null });
+                    global.filterEventCategory = '';
+                    this.setState({ filterEventCategory: '' });
                   }}
                 />
                 {this.props.listCategory.map(e => (
@@ -326,7 +328,7 @@ class FilterSearchComponent extends MyComponent {
                   textStyle={[
                     style.text,
                     {
-                      color: filterPrice === null ? APP_COLOR : APP_COLOR_TEXT,
+                      color: filterPrice === '' ? APP_COLOR : APP_COLOR_TEXT,
                       fontSize: FS(22)
                     }
                   ]}
@@ -342,13 +344,13 @@ class FilterSearchComponent extends MyComponent {
                   iconType="material"
                   checkedIcon="check"
                   uncheckedIcon=""
-                  checked={filterPrice === null}
+                  checked={filterPrice === ''}
                   checkedColor={APP_COLOR}
                   uncheckedColor="tranparent"
                   size={18}
                   onPress={() => {
-                    global.filterPrice = null;
-                    this.setState({ filterPrice: null });
+                    global.filterPrice = '';
+                    this.setState({ filterPrice: '' });
                   }}
                 />
                 <CheckBox

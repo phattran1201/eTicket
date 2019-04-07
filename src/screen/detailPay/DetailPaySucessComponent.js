@@ -20,16 +20,7 @@ class DetailPaySucessComponent extends MyComponent {
   }
 
   render() {
-    const jsCode = `
-            document.querySelector('#content').style.background = '#fff';
-        document.querySelector('section.banner').style.display='none';
-        document.querySelector('div.btn-contact-organizer').style.display='none';
-        document.querySelector('section.ticket').style.display='none';
-        document.querySelector('#navbarheader').style.display='none';
-        document.querySelector('footer.footer').style.display='none';
-    `;
-    const url =
-      'https://ticketbox.vn/event/satoshi-gogo-live-in-vietnam-2019-hanoi-74840?utm_medium=TKB&utm_source=TKBHomePage&utm_campaign=homepage_hot_14';
+    const { item } = this.props.navigation.state.params;
 
     return (
       <View style={{ backgroundColor: APP_COLOR, flex: 1, height: DEVICE_HEIGHT }}>
@@ -73,7 +64,7 @@ class DetailPaySucessComponent extends MyComponent {
                 }
               ]}
             >
-              HIGH PERFORMANCE WEB APP: FROM IDEA TO PRODUCTION
+              {item.title}
             </Text>
             {/* <Text style={[style.text, { fontSize: FS(12), color: APP_COLOR_TEXT, marginTop: 10 }]}>
               by Cybozu Viet Nam
@@ -109,7 +100,7 @@ class DetailPaySucessComponent extends MyComponent {
                   color={APP_COLOR_TEXT}
                 />
                 <View style={{ marginLeft: 10 }}>
-                  <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>Monday, February 4</Text>
+                  <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>{item.end_date}</Text>
                   <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>
                     17:30 - 21:00
                   </Text>

@@ -27,7 +27,8 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
       translucent,
       styleIcon,
       showGardient,
-      styleBody
+      styleBody,
+      iconColor
     } = this.props;
     return (
       <View
@@ -79,7 +80,7 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
           <View
             style={{ backgroundColor: showGardient ? 'transprent' : 'white', padding: FS(5), borderRadius: FS(20) }}
           >
-            <Icons name="arrow-left" size={FS(20)} color={showGardient ? '#fff' : APP_COLOR} />
+            <Icons name="arrow-left" size={FS(20)} color={iconColor || APP_COLOR} />
           </View>
         </TouchableOpacity>
 

@@ -3,7 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import { connect } from 'react-redux';
-import { FS, SCALE_RATIO_WIDTH_BASIS } from '../../constants/Constants';
+import { FS, SCALE_RATIO_WIDTH_BASIS, ROUTE_KEY } from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, { APP_COLOR, APP_COLOR_BLUE_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY_2, FONT } from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
@@ -21,6 +21,7 @@ class DetailEventPayComponent extends MyComponent {
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <HeaderWithBackButtonComponent
+          iconColor="#fff"
           bodyTitle="Ticket Detail"
           showGardient
           onPress={() => this.props.navigation.goBack()}
@@ -173,6 +174,38 @@ class DetailEventPayComponent extends MyComponent {
             </View>
           </View>
         </ScrollView>
+        <TouchableOpacity
+          style={{
+            width: '90%',
+            position: 'absolute',
+            bottom: 15 * SCALE_RATIO_WIDTH_BASIS,
+            alignSelf: 'center',
+            backgroundColor: APP_COLOR,
+            marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
+            marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
+            borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+            paddingVertical: 15 * SCALE_RATIO_WIDTH_BASIS,
+            alignItems: 'center'
+          }}
+          onPress={() => {
+            this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
+              item
+            });
+          }}
+        >
+          <Text
+            style={[
+              style.textCaption,
+              {
+                fontFamily: FONT.Bold,
+                fontSize: FS(14),
+                color: '#fff'
+              }
+            ]}
+          >
+            PAY NOW
+          </Text>
+        </TouchableOpacity>
         <Modal
           onBackdropPress={() => this.setState({ dialogVisible: false })}
           onSwipe={() => this.setState({ dialogVisible: false })}
@@ -282,40 +315,6 @@ class DetailEventPayComponent extends MyComponent {
             </View>
           </View>
         </Modal>
-        <TouchableOpacity
-          style={{
-            width: '90%',
-            position: 'absolute',
-            bottom: 15 * SCALE_RATIO_WIDTH_BASIS,
-            alignSelf: 'center',
-            backgroundColor: APP_COLOR,
-            marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
-            marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
-            borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-            paddingVertical: 15 * SCALE_RATIO_WIDTH_BASIS,
-            alignItems: 'center'
-          }}
-          onPress={() => {
-            // console.log('poi this.props.listNewsArticles:', this.props.listNewsArticles);
-            // this.props.navigation.navigate(ROUTE_KEY.NEWS, {
-            //   title: articleTitle,
-            //   data: this.props.listNewsArticles
-            // });
-          }}
-        >
-          <Text
-            style={[
-              style.textCaption,
-              {
-                fontFamily: FONT.Bold,
-                fontSize: FS(14),
-                color: '#fff'
-              }
-            ]}
-          >
-            PAY NOW
-          </Text>
-        </TouchableOpacity>
       </View>
     );
   }

@@ -180,7 +180,6 @@ class DetailEventComponent extends MyComponent {
         <HeaderWithBackButtonComponent
           noShadow
           styleContent={{ position: 'absolute', zIndex: 999 }}
-          iconColor="#fff"
           onPress={() => this.props.navigation.goBack()}
           styleIcon={{}}
         />

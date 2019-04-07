@@ -26,6 +26,17 @@ class SplashComponent extends Component {
     this.props.navigation.replace(ROUTE_KEY.MAIN);
   }
 
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
+  }
+
+  handleAppStateChange = nextAppState => {
+    this.setState({ appState: nextAppState });
+  };
+
+  handleLowMemoryWarning = () => {
+    console.log('memory low warning (due to big images)');
+  };
   render() {
     return (
       <View style={styles.content}>
