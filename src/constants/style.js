@@ -1,3 +1,4 @@
+/* eslint-disable import/imports-first */
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import {
   DEVICE_HEIGHT,
@@ -7,27 +8,34 @@ import {
   SCALE_RATIO_WIDTH_BASIS,
   DEVICE_WIDTH
 } from './Constants';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import DeviceInfo from 'react-native-device-info';
 
-const height = DEVICE_HEIGHT;
 const width = Dimensions.get('window').width;
 
-export const headerHeight = 60;
+export const fixHeaderTranslucent =
+  Platform.OS === 'android' && DeviceInfo.getSystemVersion() < '4.5' ? 0 : getStatusBarHeight();
+export const headerHeight = 60 + fixHeaderTranslucent;
 
-export const APP_COLOR = '#D8B979';
-export const APP_COLOR_TEXT = '#282828';
+export const APP_COLOR = '#FF4D00';
+export const APP_COLOR_2 = '#FFA555';
+export const APP_COLOR_TEXT = '#333333';
+export const APP_COLOR_TEXT_GRAY = '#707070';
+export const APP_COLOR_TEXT_GRAY_2 = '#70707030';
 export const APP_COLOR_BLUE = '#799dd8';
+export const APP_COLOR_BLUE_2 = '#2A596B';
 
 export const FONT = {
-  Black: 'Barlow-Black',
-  Bold: 'Barlow-Bold',
-  ExtraBold: 'Barlow-ExtraBold',
-  ExtraLight: 'Barlow-ExtraLight',
-  Italic: 'Barlow-Italic',
-  Light: 'Barlow-Light',
-  Medium: 'Barlow-Medium',
-  Regular: 'Barlow-Regular',
-  SemiBold: 'Barlow-SemiBold',
-  Thin: 'Barlow-Thin'
+  Black: 'Muli-Black',
+  Bold: 'Muli-Bold',
+  ExtraBold: 'Muli-ExtraBold',
+  ExtraLight: 'Muli-ExtraLight',
+  Italic: 'Muli-Italic',
+  Light: 'Muli-Light',
+  Medium: 'Muli-Medium',
+  Regular: 'Muli-Regular',
+  SemiBold: 'Muli-SemiBold',
+  Thin: 'Muli-Thin'
 };
 
 const style = StyleSheet.create({
@@ -122,13 +130,12 @@ const style = StyleSheet.create({
     textAlign: 'center'
   },
   header: {
-    // paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+    paddingTop: fixHeaderTranslucent,
     borderTopWidth: 0,
     height: headerHeight,
     width: DEVICE_WIDTH,
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: '#fff',
     borderBottomWidth: 1,
     marginBottom: IS_IOS ? 5 : 0,
     borderColor: Platform.OS === 'ios' ? '#C7AE6D30' : 'transparent',

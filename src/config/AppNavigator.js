@@ -4,12 +4,16 @@ import React from 'react';
 import { Animated, BackHandler, Easing, NativeModules } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { ROUTE_KEY } from '../constants/Constants';
-import AlbumComponent from '../screen/album/AlbumComponent';
-import DetailAlbumComponent from '../screen/detailAlbum/DetailAlbumComponent';
 import MainComponent from '../screen/main/MainComponent';
 import SideMenu from '../screen/main/SideMenu';
 import SplashComponent from '../screen/splash/SplashComponent';
 import global from '../utils/globalUtils';
+import DetailPaySucessComponent from '../screen/detailPay/DetailPaySucessComponent';
+import DetailPayComponent from '../screen/detailPay/DetailPayComponent';
+import DetailEventComponent from '../screen/detailEvent/DetailEventComponent';
+import SearchComponent from '../screen/search/SearchComponent';
+import FilterSearchComponent from '../screen/search/FilterSearchComponent';
+import SuccessSearchComponent from '../screen/search/SuccessSearchComponent';
 
 const routeAppConfiguration = {
   [ROUTE_KEY.SPLASH]: {
@@ -26,15 +30,43 @@ const routeAppConfiguration = {
       gesturesEnabled: false
     }
   },
-  [ROUTE_KEY.ALBUM]: {
-    screen: AlbumComponent,
+  [ROUTE_KEY.DETAIL_EVENT]: {
+    screen: DetailEventComponent,
     navigationOptions: {
       header: null,
       gesturesEnabled: false
     }
   },
-  [ROUTE_KEY.DETAIL_ABLUM]: {
-    screen: DetailAlbumComponent,
+  [ROUTE_KEY.DETAIL_PAY]: {
+    screen: DetailPayComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.DETAIL_PAY_SUCESS]: {
+    screen: DetailPaySucessComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.SEARCH]: {
+    screen: SearchComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.SEARCH_FILTER]: {
+    screen: FilterSearchComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.SEARCH_SUCCESS]: {
+    screen: SuccessSearchComponent,
     navigationOptions: {
       header: null,
       gesturesEnabled: false
@@ -47,6 +79,11 @@ const routeAppConfiguration = {
       gesturesEnabled: false
     }
   }
+};
+
+const stackAppConfiguration = {
+  initialRouteName: ROUTE_KEY.SPLASH,
+  transitionConfig: TransitionConfiguration
 };
 
 const CollapseExpand = (index, position) => {
@@ -105,10 +142,6 @@ const TransitionConfiguration = () => ({
     }[transition];
   }
 });
-const stackAppConfiguration = {
-  initialRouteName: ROUTE_KEY.MAIN,
-  transitionConfig: TransitionConfiguration
-};
 
 const Navigator = createStackNavigator(routeAppConfiguration, stackAppConfiguration);
 const prevGetStateForAction = Navigator.router.getStateForAction;

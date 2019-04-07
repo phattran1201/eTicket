@@ -10,7 +10,6 @@ request.Request.prototype.finish = function (callback) {
 const requestWrapper = function (method) {
   return function (url) {
     if (Platform.OS === 'android') {
-      // console.log('dauphaiphat: requestWrapper -> url', url)
       url = url.split('%').join('%25'); //Replace all % to %25
     }
 

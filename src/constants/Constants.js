@@ -24,7 +24,14 @@ const scaleHeight = height / baseHeight;
 const scale = Math.min(scaleWidth, scaleHeight);
 
 export const FS = size => Math.ceil(size * scale);
+export const BASE_URL = 'https://eticket-vhu.herokuapp.com/api/v1/eticket/';
 export const ROUTE_KEY = {
+  SEARCH_SUCCESS: 'SEARCH_SUCCESS',
+  SEARCH_FILTER: 'SEARCH_FILTER',
+  SEARCH: 'SEARCH',
+  DETAIL_EVENT: 'DETAIL_EVENT',
+  DETAIL_PAY: 'DETAIL_PAY',
+  DETAIL_PAY_SUCESS: 'DETAIL_PAY_SUCESS',
   SPLASH: 'SPLASH',
   MAIN: 'MAIN',
   HOME: 'HOME',
@@ -91,4 +98,9 @@ export const ROUTE_KEY = {
   // detailchat
   DETAIL_CHAT: 'DETAIL_CHAT',
   DETAIL_NEWS: 'DETAIL_NEWS'
+};
+
+export const CONSTANTS_KEY = {
+  UPDATE_LIST_CATEGORY: 'UPDATE_LIST_CATEGORY',
+  UPDATE_LIST_POPUPAR_EVENTS: 'UPDATE_LIST_POPUPAR_EVENTS'
 };

@@ -3,6 +3,17 @@ import FastImage from 'react-native-fast-image';
 import AnimatedLottieView from 'lottie-react-native';
 import { View } from 'react-native';
 
+const myArray = [
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/18/67A280.jpg',
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/07/0743B5.jpg',
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/02/26/452D96.jpg',
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/01/10/65377E.jpg',
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/08/95CB22.jpg',
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/12/07E4A5.jpg',
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/14/15C228.jpg',
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/25/2C0A0E.jpg'
+];
+const item = myArray[(Math.random() * myArray.length) | 0];
 export default class MyImage extends Component {
   constructor(props) {
     super(props);
@@ -26,9 +37,8 @@ export default class MyImage extends Component {
           {...this.props}
           removeClippedSubviews
           source={
-            source && source.uri && source.uri.search('https') !== -1
-              ? { uri: source.uri }
-              : require('../assets/image_load_false.png')
+            source && source.uri && source.uri.search('https') !== -1 ? { uri: source.uri } : { uri: item }
+            // : require('../assets/image_load_false.png')
           }
           onLoad={() => this.setState({ isLoading: false, isError: false })}
           onError={() => this.setState({ isError: true, isLoading: false })}

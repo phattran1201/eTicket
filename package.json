@@ -18,28 +18,39 @@
     "r": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleRelease && cd ../"
   },
   "dependencies": {
+    "add": "^2.0.6",
     "logger": "^0.0.1",
     "lottie-react-native": "^2.6.1",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-addons-update": "^15.6.2",
     "react-native": "^0.59.3",
+    "react-native-autoheight-webview": "^1.1.1",
+    "react-native-device-info": "^1.4.1",
+    "react-native-elements": "^1.1.0",
     "react-native-fast-image": "^5.2.0",
     "react-native-gallery-swiper": "^1.20.3",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-image-view": "^2.1.4",
     "react-native-image-zoom-viewer": "^2.2.25",
     "react-native-iphone-x-helper": "^1.2.0",
+    "react-native-linear-gradient": "^2.5.4",
+    "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-material-bottom-navigation": "^1.0.2",
+    "react-native-modal": "^9.0.0",
     "react-native-popup-menu": "^0.15.5",
+    "react-native-snap-carousel": "^3.7.5",
     "react-native-vector-icons": "^6.4.2",
+    "react-native-webview": "^5.6.1",
     "react-navigation": "^2.4.1",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "superagent": "^5.0.2"
+    "superagent": "^5.0.2",
+    "yarn": "^1.15.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -52,5 +63,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./src/assets/fonts"
+    ]
   }
 }

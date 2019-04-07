@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Dimensions, Modal, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { ActivityIndicator, Dimensions, Image, Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { DEVICE_HEIGHT, SCALE_RATIO_WIDTH_BASIS, FS } from '../constants/Constants';
+import { FS, SCALE_RATIO_WIDTH_BASIS } from '../constants/Constants';
 
 export default class DetailViewableImage extends Component {
   constructor(props) {

@@ -1,171 +1,606 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
-
-import { DEVICE_WIDTH, SCALE_RATIO_WIDTH_BASIS, FS, ROUTE_KEY } from '../../constants/Constants';
-import style from '../../constants/style';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { DrawerActions } from 'react-navigation';
-import global from '../../utils/globalUtils';
-import { loadAlbumById, loadCategory } from '../splash/SplashActions';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import React from 'react';
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import { connect } from 'react-redux';
+import { DEVICE_WIDTH, FS, IS_IOS, ROUTE_KEY, SCALE_RATIO_WIDTH_BASIS, SLICE_NUM } from '../../constants/Constants';
+import { DATA_TEST } from '../../constants/dataTest';
+import style, { APP_COLOR, APP_COLOR_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY, FONT } from '../../constants/style';
+import MyComponent from '../../view/MyComponent';
+import HeaderWithAvatar from '../../view/HeaderWithAvatar';
+import BaseHeader from '../../view/BaseHeader';
+import { loadListPopularEvents } from './HomeActions';
 import MyImage from '../../view/MyImage';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import moment from 'moment';
 
-export default class HomeComponent extends Component {
+class HomeComponent extends MyComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      albumById: [],
-      categoryId: null
-    };
-    this.categoryId =
-      this.props.navigation &&
-      this.props.navigation.state &&
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.categoryId
-        ? this.props.navigation.state.params.categoryId
-        : global.categoryId;
+    this.state = { activeSlide: 0 };
+    this.store = DATA_TEST;
+    this.data = DATA_TEST;
+    this.isFirstTimeLoadNews = true;
+    this.isFirstTimeLoadPromotion = true;
+  }
+  componentDidMount() {
+    console.log('dauphaiphat:shouldComponentUpdate -> this.props.listEventPopular', this.props.listEventPopular);
+    this.props.loadListPopularEvents();
   }
 
-  componentWillMount() {
-    loadCategory()
-      .then(albumById => {
-        this.state.albumById = albumById;
-        this.forceUpdate();
-        // this.setState(previousState => ({
-        //   loading: false,
-        //   page: 2
-        // }));
-      })
-      .catch(err => {
-        // this.setState({ loading: false });
-      });
-  }
-  renderItem = ({ item, index }) => {
-    const name = item && item.name ? item.name : '';
-    const id = item && item.id ? item.id : '';
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          this.props.navigation.navigate(ROUTE_KEY.ALBUM, { albumName: name, albumId: id });
+  // shouldComponentUpdate(nextProps, nexState) {
+  //   console.log('dauphaiphat:shouldComponentUpdate -> nextProps.listEventPopular', nextProps.listEventPopular);
+  //   console.log('dauphaiphat:shouldComponentUpdate -> this.props.listEventPopular', this.props.listEventPopular);
+  //   if (this.props.listEventPopular == nextProps.listEventPopular) {
+  //     console.log('dauphaiphat:shouldComponentUpdate -> nextProps.listEventPopular', nextProps.listEventPopular);
+  //     console.log('dauphaiphat:shouldComponentUpdate -> this.props.listEventPopular', this.props.listEventPopular);
+  //     return false;
+  //   }
+  //   return true;
+  // }
+
+  // componentDidUpdate(nextProps, nexState) {
+  //   if (this.props.listEventPopular.length != nextProps.listEventPopular.length) {
+  //     console.log(
+  //       'dauphaiphat: HomeComponent -> componentDidUpdate -> this.props.listEventPopular != nextProps.listEventPopular',
+  //       this.props.listEventPopular != nextProps.listEventPopular
+  //     );
+  //     console.log('dauphaiphat:componentWillUpdate -> nextProps.listEventPopular', nextProps.listEventPopular);
+  //     console.log('dauphaiphat:componentWillUpdate -> this.props.listEventPopular', this.props.listEventPopular);
+  //   } else {
+  //     this.props.loadListPopularEvents();
+  //   }
+  // }
+  // // renderBannerItem = ({ item, index }) => (
+  // //   <TouchableOpacity onPress={() => {}}>
+  // //     <Image
+  // //       style={{
+  // //         width: '100%',
+  // //         height: 158 * SCALE_RATIO_WIDTH_BASIS,
+  // //         borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS
+  // //       }}
+  // //       source={{
+  // //         uri: item.slide_img ? item.slide_img : 'https://www.fancyhands.com/images/default-avatar-250x250.png'
+  // //       }}
+  // //     />
+  // //   </TouchableOpacity>
+  // // );
+
+  renderPopular = ({ item, index }) => (
+    <TouchableOpacity
+      onPress={() =>
+        console.log(
+          'dauphaiphat: HomeComponent -> this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { id: item.id })',
+          this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })
+        )
+      }
+    >
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 40 * SCALE_RATIO_WIDTH_BASIS,
+          height: 40 * SCALE_RATIO_WIDTH_BASIS,
+          borderRadius: (40 * SCALE_RATIO_WIDTH_BASIS) / 2,
+          position: 'absolute',
+          top: 5,
+          right: 10,
+          backgroundColor: 'white',
+          zIndex: 999
         }}
+      >
+        <MaterialCommunityIcons
+          name="heart-outline"
+          size={25 * SCALE_RATIO_WIDTH_BASIS}
+          color={APP_COLOR}
+          style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
+        />
+      </View>
+      <View style={[styles.carouselItemContainer, { marginLeft: 15, overflow: 'hidden' }]}>
+        <View>
+          <MyImage
+            style={{
+              width: '100%',
+              height: 150 * SCALE_RATIO_WIDTH_BASIS
+            }}
+            source={{
+              uri: item.image
+            }}
+          />
+        </View>
+
+        <Text
+          style={[
+            style.textCaption,
+            {
+              color: APP_COLOR_TEXT,
+              fontSize: FS(14),
+              padding: 5 * SCALE_RATIO_WIDTH_BASIS
+            }
+          ]}
+          numberOfLines={2}
+        >
+          {item.title}
+        </Text>
+
+        <Text
+          style={[
+            style.textCaption,
+            {
+              color: APP_COLOR_TEXT_GRAY,
+              fontSize: FS(10),
+              padding: 5 * SCALE_RATIO_WIDTH_BASIS
+            }
+          ]}
+          numberOfLines={2}
+        >
+          {item.start_date} - {item.end_date}
+        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ borderWidth: 0.5, borderColor: '#70707050', padding: 1, borderRadius: 3 }}>
+            <Text
+              style={[
+                style.textCaption,
+                {
+                  alignSelf: 'flex-start',
+                  color: APP_COLOR_TEXT,
+                  fontSize: FS(10),
+                  padding: 5 * SCALE_RATIO_WIDTH_BASIS
+                }
+              ]}
+              numberOfLines={2}
+            >
+              {item.category}
+            </Text>
+          </View>
+          <View style={{ marginLeft: 5, borderWidth: 0.5, borderColor: APP_COLOR, padding: 1, borderRadius: 3 }}>
+            <Text
+              style={[
+                style.textCaption,
+                {
+                  alignSelf: 'flex-start',
+                  color: APP_COLOR,
+                  fontSize: FS(10),
+                  padding: 5 * SCALE_RATIO_WIDTH_BASIS
+                }
+              ]}
+              numberOfLines={2}
+            >
+              From ${item.id}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  renderNewsItem = ({ item, index }) => (
+    <TouchableOpacity>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'absolute',
+          bottom: 10,
+          right: 20,
+          zIndex: 999
+        }}
+      >
+        <MaterialCommunityIcons
+          name="heart-outline"
+          size={20 * SCALE_RATIO_WIDTH_BASIS}
+          color={APP_COLOR}
+          style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
+        />
+      </View>
+      <View
         style={[
-          style.shadow,
           {
-            backgroundColor: '#fff',
+            paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
+            marginBottom: 10 * SCALE_RATIO_WIDTH_BASIS,
             flex: 1,
-            maxWidth: (DEVICE_WIDTH * 46) / 100,
-            marginVertical: (DEVICE_WIDTH * 2) / 100,
-            marginLeft: index % 2 ? 0 : (DEVICE_WIDTH * 2.5) / 100,
-            marginRight: index % 2 ? 0 : (DEVICE_WIDTH * 3) / 100,
-            // borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-            paddingBottom: 5 * SCALE_RATIO_WIDTH_BASIS
+            backgroundColor: 'white',
+            overflow: 'hidden',
+            flexDirection: 'row',
+            alignItems: 'center'
           }
         ]}
       >
-        <MyImage
-          source={{
-            uri:
-              'https://s3-ap-southeast-1.amazonaws.com/trelangkienviet/album-feature/1546075052077 - bia-cang-bai-vong (2).jpg'
-          }}
-          style={{
-            height: 150 * SCALE_RATIO_WIDTH_BASIS,
-            width: '100%'
-          }}
-        />
-        <View
-          style={{
-            paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS
-          }}
-        >
-          <Text style={style.text}>{name}</Text>
+        <View style={{ flex: 3 }}>
+          <MyImage
+            style={{
+              borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+              width: '100%',
+              height: 86 * SCALE_RATIO_WIDTH_BASIS
+            }}
+            source={{
+              uri: item.image
+            }}
+          />
         </View>
-      </TouchableOpacity>
-    );
-  };
-
-  render() {
-    return (
-      <ScrollView style={styles.container}>
-        <View
-          style={{
-            paddingTop: getStatusBarHeight(),
-            paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
-            height: 50,
-            backgroundColor: '#333',
-            width: DEVICE_WIDTH,
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}
-        >
+        <View style={{ flex: 6, paddingLeft: 5 * SCALE_RATIO_WIDTH_BASIS }}>
           <Text
             style={[
-              style.text,
+              style.textCaption,
               {
-                fontSize: FS(16),
-                color: '#fff',
-                flex: 8,
-                textAlign: 'left',
-                fontWeight: '500',
-                marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS
+                color: APP_COLOR_TEXT,
+                fontSize: FS(14),
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS
               }
             ]}
             numberOfLines={2}
           >
-            CATEGORY
+            {item.title}
           </Text>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())}
-            // onPress={this.context.drawer.open}
+
+          <Text
+            style={[
+              style.textCaption,
+              {
+                color: APP_COLOR_TEXT_GRAY,
+                fontSize: FS(10),
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS
+              }
+            ]}
+            numberOfLines={2}
+          >
+            {item.start_date} - {item.end_date}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ borderWidth: 0.5, borderColor: '#70707050', padding: 1, borderRadius: 3 }}>
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    alignSelf: 'flex-start',
+                    color: APP_COLOR_TEXT,
+                    fontSize: FS(10),
+                    padding: 5 * SCALE_RATIO_WIDTH_BASIS
+                  }
+                ]}
+                numberOfLines={2}
+              >
+                {item.category}
+              </Text>
+            </View>
+            <View style={{ marginLeft: 5, borderWidth: 0.5, borderColor: APP_COLOR, padding: 1, borderRadius: 3 }}>
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    alignSelf: 'flex-start',
+                    color: APP_COLOR,
+                    fontSize: FS(10),
+                    padding: 5 * SCALE_RATIO_WIDTH_BASIS
+                  }
+                ]}
+                numberOfLines={2}
+              >
+                From ${item.id}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+  render() {
+    const nickname = 'Đăng Nhập';
+    const point = 0;
+    const avatar = null;
+    console.log("dauphaiphat: HomeComponent -> render -> moment().format('YYY-MM-DD')", moment().format('YYYY-MM-DD'));
+
+    return (
+      <View style={{ backgroundColor: '#fff', flex: 1 }}>
+        {/* <BaseHeader noShadow /> */}
+
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <LinearGradient
             style={{
-              backgroundColor: 'red',
-              paddingVertical: 8 * SCALE_RATIO_WIDTH_BASIS,
-              paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
-              flex: 2
+              top: -(DEVICE_WIDTH * 1.25),
+              left: -(DEVICE_WIDTH * 0.55),
+              width: DEVICE_WIDTH * 2,
+              height: DEVICE_WIDTH * 2,
+              borderRadius: DEVICE_WIDTH,
+              position: 'absolute'
+            }}
+            start={{ x: 0.1, y: 0.75 }}
+            end={{ x: 0.75, y: 0.25 }}
+            colors={[APP_COLOR, APP_COLOR_2]}
+          />
+          <HeaderWithAvatar
+            styleContent={{ backgroundColor: 'transparent' }}
+            noShadow
+            name={nickname}
+            styleName={{ color: '#fff' }}
+            rightIconStyle={{ color: '#fff' }}
+            point={point}
+            avatar={avatar}
+            onAvatarPress={() => this.props.navigation.navigate(ROUTE_KEY.PERSONALINFO)}
+            onPointPress={() => this.props.navigation.navigate(ROUTE_KEY.REWARDS)}
+            rightIcon="bell"
+            rightIconType="SimpleLineIcons"
+            onRightPress={() => {}}
+          />
+          <View style={{ paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS }}>
+            <Text style={[style.text, { fontSize: FS(17), color: '#fff' }]}>Near by</Text>
+            <Text
+              style={[
+                style.textCaption,
+                {
+                  fontSize: FS(32),
+                  color: '#fff',
+                  textDecorationLine: 'underline',
+                  letterSpacing: 3,
+                  lineHeight: 50
+                }
+              ]}
+            >
+              Hồ Chí Minh
+            </Text>
+          </View>
+          {/* Cửa hàng gần bạn */}
+          <View
+            style={{
+              marginTop: 15 * SCALE_RATIO_WIDTH_BASIS
             }}
           >
-            <Text style={[style.text, { fontSize: FS(15), color: '#fff', textAlign: 'center', fontWeight: '500' }]}>
-              Thư Mục
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          ref="albumById"
-          initialNumToRender={10}
-          data={this.state.albumById}
-          keyExtractor={item => item.id}
-          renderItem={(item, index) => this.renderItem(item, index)}
-          numColumns={2}
-          // ListFooterComponent={this.renderFooter}
-          // onEndReached={this.handleLoadMore}
-          // onEndReachedThreshold={0.01}
-          // onRefresh={this.onRefresh}
-          // refreshing={this.state.refreshing}
-        />
-      </ScrollView>
+            <View
+              style={{
+                paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                alignContent: 'center',
+                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS
+              }}
+            >
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    fontSize: FS(16),
+                    color: 'white',
+                    fontFamily: FONT.SemiBold
+                  }
+                ]}
+              >
+                Popular events
+              </Text>
+              {/* <TouchableOpacity
+                style={{ flexDirection: 'row' }}
+                // onPress={() => alert(strings.alert, strings.this_feature_is_in_development)}
+                onPress={() => {
+                  this.props.navigation.navigate(ROUTE_KEY.PROMOTION_COMPONENT, {
+                    title: articlePromotionTitle,
+                    data: this.props.listPromotionArticles
+                  });
+                }}
+              >
+                <Text
+                  style={[
+                    style.textCaption,
+                    {
+                      color: '#9c9faa'
+                    }
+                  ]}
+                >
+                  Xem tất cả
+                </Text>
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  size={16 * SCALE_RATIO_WIDTH_BASIS}
+                  style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
+                  color="#9c9faa"
+                />
+              </TouchableOpacity> */}
+            </View>
+
+            <Carousel
+              ref={c => {
+                this._carousel = c;
+              }}
+              hasParallaxImages
+              inactiveSlideScale={0.94}
+              inactiveSlideOpacity={0.7}
+              data={this.props.listEventPopular}
+              renderItem={this.renderPopular}
+              sliderWidth={DEVICE_WIDTH}
+              itemWidth={(DEVICE_WIDTH * 70) / 100}
+              enableMomentum
+              activeSlideAlignment={'start'}
+              activeAnimationType={'spring'}
+              activeAnimationOptions={{
+                friction: 4,
+                tension: 40
+              }}
+            />
+          </View>
+          <View
+            style={{
+              marginTop: 30 * SCALE_RATIO_WIDTH_BASIS
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                alignContent: 'center',
+                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS
+              }}
+            >
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    fontSize: FS(16),
+                    color: APP_COLOR_TEXT,
+                    fontFamily: FONT.SemiBold
+                  }
+                ]}
+              >
+                Upcoming in week
+              </Text>
+            </View>
+            <FlatList
+              style={{ flex: 1 }}
+              data={this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD'))}
+              renderItem={this.renderNewsItem}
+              // onRefresh={this.onRefresh}
+              // refreshing={this.state.refreshing}
+              // onEndReached={this.handleLoadMore}
+              // onEndReachedThreshold={0.01}
+              // ListFooterComponent={this.renderFooter}
+            />
+            <TouchableOpacity
+              style={{
+                marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
+                marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+                borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                borderWidth: 1,
+                borderColor: APP_COLOR_TEXT_GRAY,
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                alignItems: 'center'
+              }}
+              onPress={() => {}}
+            >
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    fontSize: FS(14),
+                    color: '#000'
+                  }
+                ]}
+              >
+                See more event (2000+)
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              marginBottom: 30 * SCALE_RATIO_WIDTH_BASIS
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                alignContent: 'center',
+                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS
+              }}
+            >
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    fontSize: FS(16),
+                    color: APP_COLOR_TEXT,
+                    fontFamily: FONT.SemiBold
+                  }
+                ]}
+              >
+                Free entry ticket
+              </Text>
+            </View>
+            <FlatList
+              style={{ flex: 1 }}
+              data={this.props.listEventPopular}
+              renderItem={this.renderNewsItem}
+              onRefresh={this.onRefresh}
+              refreshing={this.state.refreshing}
+              onEndReached={this.handleLoadMore}
+              onEndReachedThreshold={0.01}
+              ListFooterComponent={this.renderFooter}
+            />
+            <TouchableOpacity
+              style={{
+                marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
+                marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+                borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                borderWidth: 1,
+                borderColor: APP_COLOR_TEXT_GRAY,
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                alignItems: 'center'
+              }}
+              onPress={() => {}}
+            >
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    fontSize: FS(14),
+                    color: '#000'
+                  }
+                ]}
+              >
+                See more event (2000+)
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
-  container: {
+  markerImageStyle: {
+    width: 40 * SCALE_RATIO_WIDTH_BASIS,
+    height: 40 * SCALE_RATIO_WIDTH_BASIS
+  },
+  searchInputContainer: {
+    paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+    position: 'absolute',
+    top: 20 * SCALE_RATIO_WIDTH_BASIS,
+    width: DEVICE_WIDTH,
+    height: 50 * SCALE_RATIO_WIDTH_BASIS
+  },
+  searchInput: {
+    borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
     flex: 1,
-    backgroundColor: '#F5FCFF'
+    height: 50 * SCALE_RATIO_WIDTH_BASIS,
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10
+  searchNameContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  instructions: {
+  searchNameTextStyle: {
+    fontSize: 14 * SCALE_RATIO_WIDTH_BASIS,
+    color: '#767676',
+    fontWeight: '500'
+  },
+  searchIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40 * SCALE_RATIO_WIDTH_BASIS,
+    height: '100%'
+  },
+  carouselItemContainer: {
+    overflow: 'visible',
+    borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+    marginBottom: IS_IOS ? 5 : 6,
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  carouselItemMoreInfo: {
     textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5
+    fontSize: 10 * SCALE_RATIO_WIDTH_BASIS
   }
 });
+const mapActionCreators = { loadListPopularEvents };
+
+const mapStateToProps = state => ({
+  listEventPopular: state.eventPopular.listEventPopular
+});
+
+export default connect(
+  mapStateToProps,
+  mapActionCreators
+)(HomeComponent);
