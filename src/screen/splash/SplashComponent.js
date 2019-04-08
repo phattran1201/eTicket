@@ -49,11 +49,8 @@ class SplashComponent extends Component {
      * Triggered when a particular notification has been received in foreground
      * */
     this.notificationListener = firebase.notifications().onNotification(notification => {
-      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> notification', notification);
+      console.log('dauphaiphat: Notification', notification);
       const { title, body } = notification;
-      // console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> body', body);
-      // console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> title', title);
-      // console.log('onNotification:');
 
       const localNotification = new firebase.notifications.Notification({
         show_in_foreground: true
@@ -64,7 +61,7 @@ class SplashComponent extends Component {
         .setBody(notification.body)
         .setData(notification.data)
         .android.setChannelId('eTicket') // e.g. the id you chose above
-        // .android.setSmallIcon('@drawable/ic_launcher') // create this icon in Android Studio
+        // .android.setSmallIcon('@drawable/ic_launcher') // creat`e this icon in Android Studio
         .android.setColor(APP_COLOR); // you can set a color here
       // .android.setPriority(firebase.notifications.Android.Priority.High);
 
@@ -86,7 +83,7 @@ class SplashComponent extends Component {
      * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
      * */
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
-      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> App background', notificationOpen);
+      console.log('dauphaiphat: App background', notificationOpen);
       const { title, body } = notificationOpen.notification;
       alert(title, body);
     });
@@ -96,7 +93,7 @@ class SplashComponent extends Component {
      * */
     const notificationOpen = await firebase.notifications().getInitialNotification();
     if (notificationOpen) {
-      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> App tat han', notificationOpen);
+      console.log('dauphaiphat: App tat han', notificationOpen);
       const { title, body } = notificationOpen.notification;
       console.log('getInitialNotification:', title, body);
       alert(title, body);
@@ -105,6 +102,7 @@ class SplashComponent extends Component {
      * Triggered for data only payload in foreground
      * */
     this.messageListener = firebase.messaging().onMessage(message => {
+      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> message', message);
       //process data message
       console.log(JSON.stringify(message));
     });
@@ -117,7 +115,6 @@ class SplashComponent extends Component {
       fcmToken = await firebase.messaging().getToken();
       if (fcmToken) {
         // user has a device token
-        console.log('fcmToken:', fcmToken);
         await AsyncStorage.setItem('fcmToken', fcmToken);
       }
     }
@@ -132,14 +129,11 @@ class SplashComponent extends Component {
       this.getToken();
     } catch (error) {
       // User has rejected permissions
-      console.log('permission rejected');
+      console.log('permission rejected', error);
     }
   }
   handleAppStateChange = nextAppState => {
     console.log('dauphaiphat: SplashComponent -> nextAppState', nextAppState);
-    // if (nextAppState) {
-    //   console.log('dauphaiphat: App is in background', nextAppState);
-    // }
     this.setState({ appState: nextAppState });
   };
 

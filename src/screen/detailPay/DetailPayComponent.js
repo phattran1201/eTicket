@@ -251,22 +251,11 @@ class DetailEventPayComponent extends MyComponent {
                   paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
                   paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS
                 }}
-                onPress={() => {
-                  // console.log('poi this.props.listNewsArticles:', this.props.listNewsArticles);
-                  // this.props.navigation.navigate(ROUTE_KEY.NEWS, {
-                  //   title: articleTitle,
-                  //   data: this.props.listNewsArticles
-                  // });
-                }}
+                onPress={() => {}}
               >
                 <Text
                   onPress={() => {
                     this.setState({ dialogVisible: false });
-                    // console.log('poi this.props.listNewsArticles:', this.props.listNewsArticles);
-                    // this.props.navigation.navigate(ROUTE_KEY.NEWS, {
-                    //   title: articleTitle,
-                    //   data: this.props.listNewsArticles
-                    // });
                   }}
                   style={[
                     style.text,
@@ -290,13 +279,7 @@ class DetailEventPayComponent extends MyComponent {
                   paddingHorizontal: 30 * SCALE_RATIO_WIDTH_BASIS,
                   paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS
                 }}
-                onPress={() => {
-                  // console.log('poi this.props.listNewsArticles:', this.props.listNewsArticles);
-                  // this.props.navigation.navigate(ROUTE_KEY.NEWS, {
-                  //   title: articleTitle,
-                  //   data: this.props.listNewsArticles
-                  // });
-                }}
+                onPress={() => {}}
               >
                 <Text
                   style={[

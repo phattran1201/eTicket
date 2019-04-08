@@ -50,7 +50,6 @@ class FilterSearchComponent extends MyComponent {
   render() {
     const { params } = this.props.navigation.state;
     const { filterUpComming, filterEventCategory, filterPrice } = this.state;
-    console.log('dauphaiphat: FilterSearchComponent -> render -> this.props.navigation', this.props.navigation);
 
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>

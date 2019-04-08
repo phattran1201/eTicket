@@ -67,14 +67,7 @@ class HomeComponent extends MyComponent {
   // // );
 
   renderPopular = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={() =>
-        console.log(
-          'dauphaiphat: HomeComponent -> this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { id: item.id })',
-          this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })
-        )
-      }
-    >
+    <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
       <View
         style={{
           alignItems: 'center',
@@ -288,7 +281,6 @@ class HomeComponent extends MyComponent {
     const nickname = 'Đăng Nhập';
     const point = 0;
     const avatar = null;
-    console.log("dauphaiphat: HomeComponent -> render -> moment().format('YYY-MM-DD')", moment().format('YYYY-MM-DD'));
 
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>

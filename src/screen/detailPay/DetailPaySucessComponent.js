@@ -154,13 +154,7 @@ class DetailPaySucessComponent extends MyComponent {
             paddingVertical: 15 * SCALE_RATIO_WIDTH_BASIS,
             alignItems: 'center'
           }}
-          onPress={() => {
-            // console.log('poi this.props.listNewsArticles:', this.props.listNewsArticles);
-            // this.props.navigation.navigate(ROUTE_KEY.NEWS, {
-            //   title: articleTitle,
-            //   data: this.props.listNewsArticles
-            // });
-          }}
+          onPress={() => {}}
         >
           <Text
             style={[

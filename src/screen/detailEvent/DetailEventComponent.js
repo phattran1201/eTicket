@@ -160,8 +160,6 @@ class DetailEventComponent extends MyComponent {
       'https://ticketbox.vn/event/sunspiration-city-festival-74929?utm_medium=TKB&utm_source=TKBHomePage&utm_campaign=homepage_hot_2';
 
     const { item } = this.props.navigation.state.params;
-    console.log('dauphaiphat: DetailEventComponent -> render -> item', item);
-
     return (
       <View style={{ backgroundColor: 'white', flex: 1, paddingBottom: 20 * SCALE_RATIO_HEIGHT_BASIS }}>
         {/* <LinearGradient

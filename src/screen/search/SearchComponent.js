@@ -61,11 +61,6 @@ class SearchComponent extends MyComponent {
       filterPrice: 'All'
     };
   }
-  // componentDidMount() {
-  //   console.log('dauphaiphat:shouldComponentUpdate -> this.props.listEventPopular', this.props.listEventPopular);
-  //   this.props.loadListPopularEvents();
-  // }
-
   searchFilterFunction = () => {
     this.setState({ isLoading: true });
     MySpinner.show();
