@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>953237284642-iki66p3jpl0mtur2na51r01nietjh4mu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.953237284642-iki66p3jpl0mtur2na51r01nietjh4mu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBFbhvEfiviI9GwM-RO44fJbdjHJ02ZUXI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>953237284642</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.itc.eticket</string>
+	<key>PROJECT_ID</key>
+	<string>eticket-itc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>eticket-itc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:953237284642:ios:3fc184653903f1c7</string>
+	<key>DATABASE_URL</key>
+	<string>https://eticket-itc.firebaseio.com</string>
+</dict>
+</plist>

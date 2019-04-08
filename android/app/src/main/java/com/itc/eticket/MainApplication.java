@@ -3,6 +3,9 @@ package com.itc.eticket;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -28,16 +31,11 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new RNDeviceInfo(),
-            new LinearGradientPackage(),
-            new RNCWebViewPackage(),
-            new RNGestureHandlerPackage(),
-            new VectorIconsPackage(),
-            new FastImageViewPackage(),
-            new LottiePackage()
-      );
+      return Arrays.<ReactPackage>asList(new MainReactPackage(), new RNFirebasePackage(), new RNDeviceInfo(),
+          new LinearGradientPackage(), new RNCWebViewPackage(), new RNGestureHandlerPackage(), new VectorIconsPackage(),
+          new FastImageViewPackage(), new LottiePackage(), new RNFirebaseMessagingPackage(),
+          new RNFirebaseNotificationsPackage());
+
     }
 
     @Override

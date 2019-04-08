@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { AppState, StyleSheet, View, Image, Alert, StatusBar } from 'react-native';
+import { AppState, StyleSheet, View, Image, Alert, StatusBar, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { ROUTE_KEY, DEVICE_WIDTH } from '../../constants/Constants';
-import global from '../../utils/globalUtils';
-// import SplashScreen from 'react-native-splash-screen';
-import strings from '../../constants/Strings';
 import { loadListCategory } from './SplashActions';
+import firebase from 'react-native-firebase';
+import FCMSubscriber from '../../utils/fcmSubscriber';
+import { alert } from '../../utils/alert';
+import { APP_COLOR } from '../../constants/style';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -17,26 +18,131 @@ class SplashComponent extends Component {
       allowToLoadMainComponent: false,
       persistDone: false
     };
+    // this.UNSAFE_componentWillMount.handleAppStateChange = this.handleAppStateChange.bind(this);
   }
-
-  componentDidMount() {
+  async componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
-    AppState.addEventListener('memoryWarning', this.handleLowMemoryWarning);
+    this.checkPermission();
+    this.createNotificationListeners();
     this.props.loadListCategory();
     this.props.navigation.replace(ROUTE_KEY.MAIN);
   }
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this.handleAppStateChange);
+    this.notificationListener;
+    this.notificationOpenedListener;
   }
 
+  //1
+  async checkPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      this.getToken();
+    } else {
+      this.requestPermission();
+    }
+  }
+
+  async createNotificationListeners() {
+    /*
+     * Triggered when a particular notification has been received in foreground
+     * */
+    this.notificationListener = firebase.notifications().onNotification(notification => {
+      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> notification', notification);
+      const { title, body } = notification;
+      // console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> body', body);
+      // console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> title', title);
+      // console.log('onNotification:');
+
+      const localNotification = new firebase.notifications.Notification({
+        show_in_foreground: true
+      })
+        .setNotificationId(notification.notificationId)
+        .setTitle(notification.title)
+        .setSubtitle(notification.subtitle)
+        .setBody(notification.body)
+        .setData(notification.data)
+        .android.setChannelId('eTicket') // e.g. the id you chose above
+        // .android.setSmallIcon('@drawable/ic_launcher') // create this icon in Android Studio
+        .android.setColor(APP_COLOR); // you can set a color here
+      // .android.setPriority(firebase.notifications.Android.Priority.High);
+
+      firebase
+        .notifications()
+        .displayNotification(localNotification)
+        .catch(err => console.error(err));
+    });
+
+    const channel = new firebase.notifications.Android.Channel(
+      'fcm_default_channel',
+      'eTicket',
+      firebase.notifications.Android.Importance.High
+    ).setDescription('eTicket description');
+
+    firebase.notifications().android.createChannel(channel);
+
+    /*
+     * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+     * */
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
+      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> App background', notificationOpen);
+      const { title, body } = notificationOpen.notification;
+      alert(title, body);
+    });
+
+    /*
+     * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+     * */
+    const notificationOpen = await firebase.notifications().getInitialNotification();
+    if (notificationOpen) {
+      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> App tat han', notificationOpen);
+      const { title, body } = notificationOpen.notification;
+      console.log('getInitialNotification:', title, body);
+      alert(title, body);
+    }
+    /*
+     * Triggered for data only payload in foreground
+     * */
+    this.messageListener = firebase.messaging().onMessage(message => {
+      //process data message
+      console.log(JSON.stringify(message));
+    });
+  }
+
+  //3
+  async getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    if (!fcmToken) {
+      fcmToken = await firebase.messaging().getToken();
+      if (fcmToken) {
+        // user has a device token
+        console.log('fcmToken:', fcmToken);
+        await AsyncStorage.setItem('fcmToken', fcmToken);
+      }
+    }
+    console.log('fcmToken:', fcmToken);
+  }
+
+  //2
+  async requestPermission() {
+    try {
+      await firebase.messaging().requestPermission();
+      // User has authorised
+      this.getToken();
+    } catch (error) {
+      // User has rejected permissions
+      console.log('permission rejected');
+    }
+  }
   handleAppStateChange = nextAppState => {
+    console.log('dauphaiphat: SplashComponent -> nextAppState', nextAppState);
+    // if (nextAppState) {
+    //   console.log('dauphaiphat: App is in background', nextAppState);
+    // }
     this.setState({ appState: nextAppState });
   };
 
-  handleLowMemoryWarning = () => {
-    console.log('memory low warning (due to big images)');
-  };
   render() {
     return (
       <View style={styles.content}>
