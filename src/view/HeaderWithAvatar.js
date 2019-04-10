@@ -170,7 +170,7 @@ class HeaderWithAvatar extends MyComponent {
                       {
                         fontSize: FS(16),
                         color: APP_COLOR_TEXT,
-                        fontFamily: FONT.SemiBold
+                        fontFamily: FONT.Medium
                       }
                     ]}
                   >
@@ -238,18 +238,18 @@ class HeaderWithAvatar extends MyComponent {
                   {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity
-                  disabled={btnRightDisabled}
-                  onPress={() => {
-                    this.onRightPressTimeout = setTimeout(() => {
-                      if (onRightPress) onRightPress();
-                    }, 0);
-                  }}
-                  style={[styles.rightStyle, btnRightStyle]}
-                >
-                  {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
-                </TouchableOpacity>
-              )}
+                  <TouchableOpacity
+                    disabled={btnRightDisabled}
+                    onPress={() => {
+                      this.onRightPressTimeout = setTimeout(() => {
+                        if (onRightPress) onRightPress();
+                      }, 0);
+                    }}
+                    style={[styles.rightStyle, btnRightStyle]}
+                  >
+                    {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
+                  </TouchableOpacity>
+                )}
             </View>
           ) : null}
 

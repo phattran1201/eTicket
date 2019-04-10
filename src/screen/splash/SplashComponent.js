@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { AppState, StyleSheet, View, Image, Alert, StatusBar, AsyncStorage } from 'react-native';
+import { AppState, StyleSheet, View, Image, Alert, StatusBar, AsyncStorage, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { ROUTE_KEY, DEVICE_WIDTH } from '../../constants/Constants';
 import { loadListCategory } from './SplashActions';
 import firebase from 'react-native-firebase';
-import FCMSubscriber from '../../utils/fcmSubscriber';
 import { alert } from '../../utils/alert';
 import { APP_COLOR } from '../../constants/style';
+import DeviceInfo from 'react-native-device-info';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -39,6 +39,9 @@ class SplashComponent extends Component {
     const enabled = await firebase.messaging().hasPermission();
     if (enabled) {
       this.getToken();
+      firebase.messaging().onTokenRefresh(token => {
+        this._onChangeToken(token, DeviceInfo.getDeviceLocale());
+      });
     } else {
       this.requestPermission();
     }
@@ -112,7 +115,13 @@ class SplashComponent extends Component {
   async getToken() {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
     if (!fcmToken) {
-      fcmToken = await firebase.messaging().getToken();
+      fcmToken = await firebase
+        .messaging()
+        .getToken()
+        .then(token => {
+          console.log('dauphaiphat: SplashComponent -> getToken -> token', token);
+          this._onChangeToken(token, DeviceInfo.getDeviceLocale());
+        });
       if (fcmToken) {
         // user has a device token
         await AsyncStorage.setItem('fcmToken', fcmToken);
@@ -135,6 +144,27 @@ class SplashComponent extends Component {
   handleAppStateChange = nextAppState => {
     console.log('dauphaiphat: SplashComponent -> nextAppState', nextAppState);
     this.setState({ appState: nextAppState });
+  };
+  _onChangeToken = (token, language) => {
+    const data = {
+      device_token: token,
+      device_type: Platform.OS,
+      device_language: language
+    };
+
+    this._loadDeviceInfo(data).done();
+  };
+
+  _loadDeviceInfo = async deviceData => {
+    // load the data in 'local storage'.
+    // this value will be used by login and register components.
+    const value = JSON.stringify(deviceData);
+    try {
+      await AsyncStorage.setItem('@deviceInfo:key', value);
+    } catch (error) {
+      console.log('dauphaiphat: SplashComponent -> error', error);
+      console.log(error);
+    }
   };
 
   render() {

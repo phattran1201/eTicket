@@ -26,41 +26,43 @@ export const APP_COLOR_BLUE = '#799dd8';
 export const APP_COLOR_BLUE_2 = '#2A596B';
 
 export const FONT = {
-  Black: 'Muli-Black',
-  Bold: 'Muli-Bold',
-  ExtraBold: 'Muli-ExtraBold',
-  ExtraLight: 'Muli-ExtraLight',
-  Italic: 'Muli-Italic',
-  Light: 'Muli-Light',
-  Medium: 'Muli-Medium',
-  Regular: 'Muli-Regular',
-  SemiBold: 'Muli-SemiBold',
-  Thin: 'Muli-Thin'
+  HelveticaNeue: 'HelveticaNeue',
+  Medium: 'HelveticaNeue-Medium',
+  Bold: 'HelveticaNeue-Bold',
+  BoldItalic: 'HelveticaNeue-BoldItalic',
+  CondensedBlack: 'HelveticaNeue-CondensedBlack',
+  CondensedBold: 'HelveticaNeue-CondensedBold',
+  Italic: 'HelveticaNeue-Italic',
+  LightItalic: 'HelveticaNeue-LightItalic',
+  Light: 'Helvetica Neue Light',
+  UltraLight: 'HelveticaNeue-UltraLight',
+  UltraLightItalic: 'HelveticaNeue-UltraLightItalic',
+
 };
 
 const style = StyleSheet.create({
   text: {
     fontSize: FS(14),
-    // fontFamily: FONT.Regular,
+    fontFamily: FONT.Regular,
     color: APP_COLOR_TEXT,
     backgroundColor: 'transparent'
   },
   textCaption: {
     fontSize: FS(12),
-    // fontFamily: FONT.Medium,
+    fontFamily: FONT.Medium,
     color: APP_COLOR,
     backgroundColor: 'transparent'
   },
   textHeader: {
     fontSize: FS(16),
-    // fontFamily: FONT.Black,
+    fontFamily: FONT.CondensedBold,
     color: APP_COLOR_TEXT,
     backgroundColor: 'transparent'
     // textAlign: 'center'
   },
   //Button
   button: {
-    height: 33 * SCALE_RATIO_HEIGHT_BASIS,
+    height: 40 * SCALE_RATIO_HEIGHT_BASIS,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -81,14 +83,14 @@ const style = StyleSheet.create({
   //textInput
   textInput: {
     fontSize: FS(18),
-    // fontFamily: FONT.Medium,
+    fontFamily: FONT.Medium,
     color: APP_COLOR_TEXT,
     backgroundColor: 'transparent',
     marginBottom: Platform.OS === 'ios' ? 0 : -5
   },
   textButton: {
     fontSize: FS(14),
-    // fontFamily: FONT.Medium,
+    fontFamily: FONT.Medium,
     backgroundColor: 'transparent'
   },
   viewInput: {
@@ -119,12 +121,12 @@ const style = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 3,
-    elevation: 3
+    elevation: 2
   },
   //header
   titleHeader: {
     fontSize: FS(18),
-    // fontFamily: FONT.SemiBold,
+    fontFamily: FONT.Medium,
     color: APP_COLOR_TEXT,
     backgroundColor: 'transparent',
     textAlign: 'center'
@@ -159,7 +161,7 @@ const style = StyleSheet.create({
   //modal
   textModal: {
     fontSize: FS(16),
-    // fontFamily: FONT.Regular,
+    fontFamily: FONT.Regular,
     color: APP_COLOR,
     backgroundColor: 'transparent',
     textAlign: 'center',
@@ -187,7 +189,7 @@ const style = StyleSheet.create({
 
   textNormal: {
     fontSize: FS(14),
-    // fontFamily: FONT.Regular,
+    fontFamily: FONT.Regular,
     color: APP_COLOR_TEXT,
     backgroundColor: 'transparent'
   },

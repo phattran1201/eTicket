@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -70,6 +70,18 @@
 		<string>Muli-Regular.ttf</string>
 		<string>Muli-SemiBold.ttf</string>
 		<string>Muli-SemiBoldItalic.ttf</string>
+		<string>Helvetica Neue Light.ttf</string>
+		<string>HelveticaNeue-Bold.ttf</string>
+		<string>HelveticaNeue-BoldItalic.ttf</string>
+		<string>HelveticaNeue-CondensedBlack.ttf</string>
+		<string>HelveticaNeue-CondensedBold.ttf</string>
+		<string>HelveticaNeue-Italic.ttf</string>
+		<string>HelveticaNeue-LightItalic.ttf</string>
+		<string>HelveticaNeue-Medium.ttf</string>
+		<string>HelveticaNeue-UltraLight.ttf</string>
+		<string>HelveticaNeue-UltraLightItalic.ttf</string>
+		<string>HelveticaNeue.ttf</string>
+		<string>icomoon.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

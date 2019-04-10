@@ -60,7 +60,7 @@ class SuccessSearchComponent extends MyComponent {
                 style.text,
                 {
                   color: '#727272',
-                  fontFamily: FONT.SemiBold
+                  fontFamily: FONT.Medium
                 }
               ]}
             >
@@ -90,12 +90,12 @@ class SuccessSearchComponent extends MyComponent {
               style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
             />
             <Text
-              onPress={() => {}}
+              onPress={() => { }}
               style={[
                 style.text,
                 {
                   color: '#727272',
-                  fontFamily: FONT.SemiBold
+                  fontFamily: FONT.Medium
                 }
               ]}
             >
@@ -130,7 +130,7 @@ class SuccessSearchComponent extends MyComponent {
                 style.text,
                 {
                   color: '#727272',
-                  fontFamily: FONT.SemiBold
+                  fontFamily: FONT.Medium
                 }
               ]}
             >
@@ -165,7 +165,7 @@ class SuccessSearchComponent extends MyComponent {
                 style.text,
                 {
                   color: '#727272',
-                  fontFamily: FONT.SemiBold
+                  fontFamily: FONT.Medium
                 }
               ]}
             >

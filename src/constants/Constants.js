@@ -26,6 +26,7 @@ const scale = Math.min(scaleWidth, scaleHeight);
 export const FS = size => Math.ceil(size * scale);
 export const BASE_URL = 'https://eticket-vhu.herokuapp.com/api/v1/eticket/';
 export const ROUTE_KEY = {
+  PRE_LOGIN: 'PRE_LOGIN',
   SEARCH_SUCCESS: 'SEARCH_SUCCESS',
   SEARCH_FILTER: 'SEARCH_FILTER',
   SEARCH: 'SEARCH',

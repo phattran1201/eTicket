@@ -14,6 +14,9 @@ import DetailEventComponent from '../screen/detailEvent/DetailEventComponent';
 import SearchComponent from '../screen/search/SearchComponent';
 import FilterSearchComponent from '../screen/search/FilterSearchComponent';
 import SuccessSearchComponent from '../screen/search/SuccessSearchComponent';
+import PreLoginComponent from '../screen/login/PreLoginComponent';
+import LoginComponent from '../screen/login/LoginComponent';
+import RegisterComponent from '../screen/login/RegisterComponent';
 
 const routeAppConfiguration = {
   [ROUTE_KEY.SPLASH]: {
@@ -30,6 +33,28 @@ const routeAppConfiguration = {
       gesturesEnabled: false
     }
   },
+  [ROUTE_KEY.PRE_LOGIN]: {
+    screen: PreLoginComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.LOGIN]: {
+    screen: LoginComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+  [ROUTE_KEY.REGISTER]: {
+    screen: RegisterComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    }
+  },
+
   [ROUTE_KEY.DETAIL_EVENT]: {
     screen: DetailEventComponent,
     navigationOptions: {
@@ -82,7 +107,7 @@ const routeAppConfiguration = {
 };
 
 const stackAppConfiguration = {
-  initialRouteName: ROUTE_KEY.SPLASH,
+  initialRouteName: ROUTE_KEY.LOGIN,
   transitionConfig: TransitionConfiguration
 };
 

@@ -144,10 +144,10 @@ class SearchComponent extends MyComponent {
             this.state.onFocus
               ? this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, { keySearch: this.state.keySearch })
               : this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
-                  filterUpComming: this.state.filterUpComming,
-                  filterEventCategory: this.state.filterEventCategory,
-                  filterPrice: this.state.filterPrice
-                });
+                filterUpComming: this.state.filterUpComming,
+                filterEventCategory: this.state.filterEventCategory,
+                filterPrice: this.state.filterPrice
+              });
           }}
           style={{
             zIndex: 99999,
@@ -242,7 +242,7 @@ class SearchComponent extends MyComponent {
                     {
                       fontSize: FS(16),
                       color: APP_COLOR_BLUE_2,
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -254,7 +254,7 @@ class SearchComponent extends MyComponent {
                     style.text,
                     {
                       fontSize: FS(24),
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -272,7 +272,7 @@ class SearchComponent extends MyComponent {
                     {
                       fontSize: FS(16),
                       color: APP_COLOR_BLUE_2,
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -284,7 +284,7 @@ class SearchComponent extends MyComponent {
                     style.text,
                     {
                       fontSize: FS(24),
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -302,7 +302,7 @@ class SearchComponent extends MyComponent {
                     {
                       fontSize: FS(16),
                       color: APP_COLOR_BLUE_2,
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -314,7 +314,7 @@ class SearchComponent extends MyComponent {
                     style.text,
                     {
                       fontSize: FS(24),
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -332,7 +332,7 @@ class SearchComponent extends MyComponent {
                     {
                       fontSize: FS(16),
                       color: APP_COLOR_BLUE_2,
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -344,7 +344,7 @@ class SearchComponent extends MyComponent {
                     style.text,
                     {
                       fontSize: FS(24),
-                      fontFamily: FONT.SemiBold
+                      fontFamily: FONT.Medium
                     }
                   ]}
                 >
@@ -353,8 +353,8 @@ class SearchComponent extends MyComponent {
               </View>
             </View>
           ) : (
-            <View />
-          )}
+              <View />
+            )}
         </ScrollView>
         <Modal
           onBackdropPress={() => this.setState({ filterSearch: false })}

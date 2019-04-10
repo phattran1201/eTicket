@@ -48,9 +48,19 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - React (0.59.3):
+    - React/Core (= 0.59.3)
+  - react-native-splash-screen (3.2.0):
+    - React
+  - React/Core (0.59.3):
+    - yoga (= 0.59.3.React)
+  - yoga (0.59.3.React)
 
 DEPENDENCIES:
   - Firebase/Core (~> 5.15.0)
+  - React (from `../node_modules/react-native`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -62,6 +72,14 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
 
+EXTERNAL SOURCES:
+  React:
+    :path: "../node_modules/react-native"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
 SPEC CHECKSUMS:
   Firebase: 8bb9268bff82374f2cbaaabb143e725743c316ae
   FirebaseAnalytics: c06f9d70577d79074214700a71fd5d39de5550fb
@@ -70,7 +88,10 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 98b71f5e04142793729a5ef23e5b96651ff4b70f
   GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
+  react-native-splash-screen: a49be22f0f6648b8416f3bd28258645eeaa5b42b
+  yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 37c57a167cf93149a166aeabc2a2ea532733ad0b
+PODFILE CHECKSUM: e090fc9e391518058d8dcc8eada2ca13e2f79098
 
 COCOAPODS: 1.5.3

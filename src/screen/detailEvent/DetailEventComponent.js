@@ -343,7 +343,7 @@ class DetailEventComponent extends MyComponent {
                   {
                     fontSize: FS(16),
                     color: APP_COLOR_TEXT,
-                    fontFamily: FONT.SemiBold
+                    fontFamily: FONT.Medium
                   }
                 ]}
               >
