@@ -12,11 +12,12 @@ import { DEVICE_WIDTH, DEVICE_HEIGHT } from '../../constants/Constants';
 import { loadListPopularEvents } from '../home/HomeActions';
 import SearchComponent from '../search/SearchComponent';
 import FilterSearchComponent from '../search/FilterSearchComponent';
+import PreLoginComponent from '../login/PreLoginComponent';
 
 class MainComponent extends MyComponent {
   constructor(props) {
     super(props);
-    this.state = { activeTab: 'search' };
+    this.state = { activeTab: 'more' };
   }
 
   componentDidMount() {
@@ -83,7 +84,7 @@ class MainComponent extends MyComponent {
     //   return <FilterSearchComponent navigation={this.props.navigation} />;
     // }
     if (this.state.activeTab === 'more') {
-      return <DetailPayComponent navigation={this.props.navigation} />;
+      return <PreLoginComponent navigation={this.props.navigation} />;
     }
     // return <DetailEventComponent navigation={this.props.navigation} />;
   }

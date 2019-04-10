@@ -107,7 +107,7 @@ const routeAppConfiguration = {
 };
 
 const stackAppConfiguration = {
-  initialRouteName: ROUTE_KEY.LOGIN,
+  initialRouteName: ROUTE_KEY.REGISTER,
   transitionConfig: TransitionConfiguration
 };
 
