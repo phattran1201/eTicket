@@ -119,15 +119,15 @@ class SplashComponent extends Component {
         .messaging()
         .getToken()
         .then(token => {
-          console.log('dauphaiphat: SplashComponent -> getToken -> token', token);
           this._onChangeToken(token, DeviceInfo.getDeviceLocale());
         });
       if (fcmToken) {
         // user has a device token
         await AsyncStorage.setItem('fcmToken', fcmToken);
+        console.log('dauphaiphat: user has a device token', fcmToken);
       }
     }
-    console.log('fcmToken:', fcmToken);
+    console.log('fcmToken new:', fcmToken);
   }
 
   //2

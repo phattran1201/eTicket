@@ -107,7 +107,7 @@ const routeAppConfiguration = {
 };
 
 const stackAppConfiguration = {
-  initialRouteName: ROUTE_KEY.REGISTER,
+  initialRouteName: ROUTE_KEY.SPLASH,
   transitionConfig: TransitionConfiguration
 };
 

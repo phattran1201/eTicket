@@ -19,6 +19,7 @@ import MySpinner from '../../view/MySpinner';
 // import { loginFail, loginPromise, loginSuccess } from './SignInActions';
 import MyComponent from '../../view/MyComponent';
 import { Input, Button } from 'react-native-elements';
+import { loginEmailPromise, loginSuccess } from './LoginActions';
 
 const loginBackground = require('../../assets/background.png');
 
@@ -26,48 +27,46 @@ class LoginComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
-      isLoading: false
+      email: 'admin@admin.com',
+      password: '123456',
+      isLoading: false,
+      checkemail: true,
+      checkpassword: true
     };
   }
 
-  // loginFunction() {
-  //   MySpinner.show();
-  //   if (this.state.username === '' || this.state.password === '') {
-  //     alert(strings.alert, strings.please_input_all_information);
-  //     MySpinner.hide();
-  //     return;
-  //   }
-  //   if (this.state.password.length < 6) {
-  //     alert(strings.alert, strings.password_must_atleast_6_charactor);
-  //     MySpinner.hide();
-  //     return;
-  //   }
+  validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+  loginFunction() {
+    MySpinner.show();
+    this.setState({ isLoading: true });
 
-  //   if (this.state.isLoading) return;
-  //   this.setState({ isLoading: true });
-  //   loginPromise(this.state.username, this.state.password, () => MySpinner.hide())
-  //     .then(res => {
-  //       this.props.loginSuccess(res, this, null, () => {
-  //         const temp = { ...this.props.userData };
-  //         temp.imei = DeviceInfo.getUniqueID();
-  //         this.props.updateUserInfo(temp, () => {
-  //           console.log('Hoang log uniqueId', temp.imei);
-  //           const { params } = this.props.navigation.state;
-  //           const previousScreenName = params && params.fromScreen ? params.fromScreen : '';
-  //           console.log('poi previousScreenName:', previousScreenName);
-  //           if (previousScreenName === '') {
-  //             this.props.navigation.navigate(ROUTE_KEY.MAIN);
-  //           } else {
-  //             this.props.navigation.replace(previousScreenName);
-  //           }
-  //         });
-  //         MySpinner.hide();
-  //       });
-  //     })
-  //     .catch(err => loginFail(err, this, () => MySpinner.hide()));
-  // }
+    if (this.validateEmail(this.state.email)) {
+      this.setState({ checkemail: true });
+    } else { MySpinner.hide(); this.setState({ checkemail: false, isLoading: false }); }
+
+    if (this.state.password.length > 5) {
+      this.setState({ checkpassword: true });
+    } else {
+      MySpinner.hide();
+      this.setState({ checkpassword: false, isLoading: false });
+    }
+
+    if (this.state.isLoading) return;
+    this.setState({ isLoading: true });
+    loginEmailPromise(this.state.email, this.state.password)
+      .then(res => {
+        this.props.loginSuccess(res, () => {
+          this.setState({ isLoading: false });
+          this.props.navigation.navigate(ROUTE_KEY.MAIN);
+          MySpinner.hide();
+        });
+      })
+      .catch(err => { console.log('dauphaiphat: loginFunction err', err); MySpinner.hide(); this.setState({ isLoading: false }); }
+      );
+  }
 
   render() {
     return (
@@ -109,41 +108,63 @@ class LoginComponent extends MyComponent {
             }}
           >
             <Input
+              keyboardType='email-address'
               containerStyle={{ paddingLeft: 0, paddingRight: 0 }}
               inputContainerStyle={{ borderColor: APP_COLOR_TEXT, borderWidth: SCALE_RATIO_WIDTH_BASIS, marginVertical: 5 * SCALE_RATIO_WIDTH_BASIS, paddingHorizontal: 5 * SCALE_RATIO_WIDTH_BASIS, borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS }}
               clearButtonMode="while-editing"
-              // placeholder="Nhập từ khóa..."
-              rightIcon={{ type: 'material', name: 'mail-outline' }}
-
+              rightIcon={{ type: 'material', name: 'mail-outline', color: '#999' }}
               placeholderTextColor="#999"
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               autoCorrect={false}
               label='Email'
+              errorStyle={{ color: 'red' }}
+              errorMessage={this.state.checkemail ? '' : strings.is_invalid_email}
               labelStyle={[style.text, { color: APP_COLOR_TEXT }]}
-              // errorStyle={{ color: 'red' }}
-              // errorMessage='ENTER A VALID ERROR HERE'
               inputStyle={style.text}
+              ref={instance => (this.txtEmail = instance)}
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}
+              keyboardType="email-address"
+              returnKeyType="next"
+              onSubmitEditing={() => this.txtPassword.focus()}
             />
             <Input
-              rightIcon={{ type: 'material', name: 'lock-outline' }}
-
+              rightIcon={{ type: 'material', name: 'lock-outline', color: '#999' }}
+              secureTextEntry
               containerStyle={{ paddingLeft: 0, paddingRight: 0, marginTop: 10 * SCALE_RATIO_WIDTH_BASIS }}
               inputContainerStyle={{ borderColor: APP_COLOR_TEXT, borderWidth: SCALE_RATIO_WIDTH_BASIS, marginVertical: 5 * SCALE_RATIO_WIDTH_BASIS, paddingHorizontal: 5 * SCALE_RATIO_WIDTH_BASIS, borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS }}
               clearButtonMode="while-editing"
-              // placeholder="Nhập từ khóa..."
               placeholderTextColor="#999"
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               autoCorrect={false}
               label='Password'
+              errorStyle={{ color: 'red' }}
+              errorMessage={this.state.checkpassword ? '' : strings.password_lenght}
               labelStyle={[style.text, { color: APP_COLOR_TEXT }]}
-              // errorStyle={{ color: 'red' }}
-              // errorMessage='ENTER A VALID ERROR HERE'
               inputStyle={style.textInput}
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+              returnKeyType="go"
+              ref={instance => (this.txtPassword = instance)}
+              onSubmitEditing={() => this.loginFunction()}
             />
             <Button
-              onPress={() => { }}
+              disabled={this.state.email === '' || this.state.password === ''}
+
+              // disabledTitleStyle={[style.text, { color: APP_COLOR }]}
+              // type={this.state.email === '' || this.state.password === '' ? 'outline' : 'solid'}
+              // disabledStyle={[
+              //   {
+              //     height: 47 * SCALE_RATIO_WIDTH_BASIS,
+              //     borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
+              //     paddingVertical: 8 * SCALE_RATIO_HEIGHT_BASIS,
+              //     paddingHorizontal: 25 * SCALE_RATIO_WIDTH_BASIS,
+              //     backgroundColor: 'white',
+              //     borderColor: APP_COLOR
+              //   }]}
+              onPress={() => this.loginFunction()}
               containerStyle={{
                 width: (85 / 100) * DEVICE_WIDTH, marginTop: 20 * SCALE_RATIO_WIDTH_BASIS
               }}
@@ -160,7 +181,7 @@ class LoginComponent extends MyComponent {
               title="Log in"
             />
             <Button
-              onPress={() => { }}
+              onPress={() => this.props.navigation.navigate(ROUTE_KEY.REGISTER)}
               containerStyle={{
                 marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS,
                 width: (85 / 100) * DEVICE_WIDTH,
@@ -180,38 +201,6 @@ class LoginComponent extends MyComponent {
               titleStyle={[style.text, { color: APP_COLOR }]}
               title="Create account"
             />
-            {/* <MyTextInputFloat
-                  styleContent={{ marginBottom: 30 * SCALE_RATIO_WIDTH_BASIS }}
-                  labelStyle={{ paddingHorizontal: 0, color: APP_COLOR_TEXT }}
-                  inputStyle={{ paddingHorizontal: 0 }}
-                  label={'Email'}
-                  iconClass={FontAwesomeIcon}
-                  iconName={'heart'}
-                  iconColor={'#C7AE6D'}
-                  onChangeText={username => this.setState({ username })}
-                  value={this.state.username}
-                  keyboardType="email-address"
-                  returnKeyType="next"
-                  onSubmitEditing={() => this.txtPassword.focus()}
-                />
-
-                <MyTextInputFloat
-                  styleContent={{ marginBottom: 0 }}
-                  labelStyle={{ paddingHorizontal: 0, color: APP_COLOR_TEXT }}
-                  inputStyle={{ paddingHorizontal: 0 }}
-                  label={'Mật khẩu'}
-                  iconClass={FontAwesomeIcon}
-                  iconName={'heart'}
-                  iconColor={'#C7AE6D'}
-                  onChangeText={password => this.setState({ password })}
-                  value={this.state.password}
-                  secureTextEntry
-                  returnKeyType="go"
-                  ref={instance => (this.txtPassword = instance)}
-                  onSubmitEditing={() => this.loginFunction()}
-                  disabled={this.state.isLoading || this.state.username === '' || this.state.password === ''}
-                /> */}
-
           </View></View>
       </KeyboardAwareScrollView>
     );
@@ -219,6 +208,7 @@ class LoginComponent extends MyComponent {
 }
 
 const mapActionCreators = {
+  loginSuccess
 };
 
 const mapStateToProps = state => ({

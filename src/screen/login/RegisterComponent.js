@@ -49,19 +49,18 @@ class RegisterComponent extends MyComponent {
     MySpinner.show();
     if (this.validateEmail(this.state.email)) {
       checkEmailExists(this.state.email).then(res => {
+        console.log('dauphaiphat: res', res.message);
         if (res.status_code === 200) {
           MySpinner.hide();
-          this.setState({ checkEmailExists: false, isLoading: false });
+          this.setState({ checkemail: true, checkEmailExists: false, isLoading: false });
         }
         if (res.status_code === 401) {
           MySpinner.hide();
-          this.setState({ checkEmailExistsMess: res.message }); this.setState({ checkEmailExists: true, isLoading: false });
+          this.setState({ checkEmailExists: true, isLoading: false, checkEmailExistsMess: res.message });
         }
       });
-      this.setState({ checkemail: true });
-      // alert(strings.alert, this.state.email + strings.is_invalid_email);
     } else { this.setState({ checkemail: false }); }
-    if (this.state.password.length > 6) {
+    if (this.state.password.length > 5) {
       this.setState({ checkpassword: true });
       MySpinner.show();
       // registerPromise(this.state.email, this.state.password)
@@ -152,7 +151,7 @@ class RegisterComponent extends MyComponent {
               label='Email'
               labelStyle={[style.text, { color: APP_COLOR_TEXT }]}
               errorStyle={{ color: 'red' }}
-              errorMessage={this.state.checkemail ? '' : this.state.checkEmailExists ? this.state.checkEmailExistsMess : strings.user_already_exists}
+              errorMessage={this.state.checkemail ? '' : this.state.checkEmailExists ? this.state.checkEmailExistsMess : strings.is_invalid_email}
               inputStyle={style.text}
               ref={instance => (this.txtEmail = instance)}
               onChangeText={email => this.setState({ email })}
@@ -174,14 +173,14 @@ class RegisterComponent extends MyComponent {
               autoCorrect={false}
               label='Password'
               labelStyle={[style.text, { color: APP_COLOR_TEXT }]}
-              // errorStyle={{ color: 'red' }}
+              errorStyle={{ color: 'red' }}
               errorMessage={this.state.checkpassword ? '' : strings.password_lenght}
               inputStyle={style.textInput}
               onChangeText={password => this.setState({ password })}
               value={this.state.password}
               returnKeyType="go"
               ref={instance => (this.txtPassword = instance)}
-              onSubmitEditing={() => this.loginFunction()}
+              onSubmitEditing={() => this.registerFunc()}
             />
             <CheckBox
               checkedColor={APP_COLOR}

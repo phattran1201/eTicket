@@ -1,36 +1,38 @@
 import { CONSTANTS_KEY } from '../../constants/Constants';
 import firebase from 'react-native-firebase';
 import MySpinner from '../../view/MySpinner';
+import request from '../../utils/request';
+import md5 from 'react-native-md5';
+import { alert } from '../../utils/alert';
+import strings from '../../constants/Strings';
+import { getDeviceInfo, setUserIdentity } from '../../utils/asyncStorage';
 
 
-// export function loginSuccess(res, self, info = null, onDone = () => { }) {
-//     return (dispatch, store) => {
-//         dispatch({
-//             type: CONSTANTS_KEY.UPDATE_CURRENT_TOKEN,
-//             payload: res.body.results.token
-//         });
+export function loginSuccess(res, onDone = () => { }) {
+    return (dispatch, store) => {
+        dispatch({
+            type: CONSTANTS_KEY.UPDATE_CURRENT_TOKEN,
+            payload: res.data.access_token
+        });
 
-//         dispatch({
-//             type: CONSTANTS_KEY.UPDATE_CURRENT_USER_DATA,
-//             payload: res.body.results.object
-//         });
-//         setUserIdentity({ token: res.body.results.token, userData: res.body.results.object });
-//         getUserSettingsPublic(dispatch, store);
-//         loadUserDataLoginSuccess(() => {
-//             alert(strings.congratulations, strings.login_success, () => {
-//                 self.setState({ isLoading: false });
-//                 onDone();
-//                 dispatch({
-//                     type: CONSTANTS_KEY.SET_LOGGED_IN,
-//                     payload: true
-//                 });
-//                 console.log('bambi login va chaun bi subscribe 2', res.body.results.object.id);
-//                 firebase.messaging().subscribeToTopic(res.body.results.object.id);
-//                 MySpinner.hide();
-//             });
-//         }, dispatch, store);
-//     };
-// }
+        dispatch({
+            type: CONSTANTS_KEY.UPDATE_CURRENT_USER_DATA,
+            payload: res.data
+        });
+        setUserIdentity({ access_token: res.data.access_token, userData: res.data });
+        // loadUserDataLoginSuccess(() => {
+        alert(strings.congratulations, strings.login_success, () => {
+            onDone();
+            dispatch({
+                type: CONSTANTS_KEY.SET_LOGGED_IN,
+                payload: true
+            });
+            firebase.messaging().subscribeToTopic(res.data.access_token);
+            // MySpinner.hide();
+        });
+        // }, dispatch, store);
+    };
+}
 
 // export function loginFail(err, self, onDone) {
 //     if (err === 'cancel') {
@@ -45,44 +47,28 @@ import MySpinner from '../../view/MySpinner';
 //     // onDone();
 // }
 
-// export const loginPromise = (email, password) =>
-//     new Promise((resolve, reject) => {
-//         request
-//             .post(`${BASE_URL}${AUTH_API}/login_email`)
-//             .set('Content-Type', 'application/json')
-//             .send({
-//                 email,
-//                 password: md5.hex_md5(password)
-//             })
-//             .finish((err, res) => {
-//                 if (err) {
-//                     reject(res && res.body ? res.body.message : strings.network_require_fail);
-//                     // onDone();
-//                 } else {
-//                     resolve(res);
-//                 }
-//             });
-//     });
-
-// export const loginEmailPromise = (email, password) =>
-//     new Promise((resolve, reject) => {
-//         request
-//             .post(`${BASE_URL}/auth/login_email`)
-//             .set('Content-Type', 'application/json')
-//             .send({
-//                 email,
-//                 password: md5.hex_md5(password)
-//             })
-//             .finish((err, res) => {
-//                 if (err) {
-//                     reject(strings.network_require_fail);
-//                     //console.log('Hoang log', err);
-//                     alert(strings.alert);
-//                 } else {
-//                     resolve(res);
-//                 }
-//             });
-//     });
+export const loginEmailPromise = (email, password) =>
+    new Promise((resolve, reject) => {
+        getDeviceInfo().then(deviceInfo => {
+            request
+                .post('https://eticket-vhu.herokuapp.com/api/v1/auth/login')
+                .set('Content-Type', 'application/json')
+                .send({
+                    username: email,
+                    password,
+                    device_type: deviceInfo.device_type.toUpperCase(),
+                    device_token: deviceInfo.device_token
+                })
+                .finish((err, res) => {
+                    if (err) {
+                        reject(strings.network_require_fail);
+                    } else {
+                        resolve(res.body);
+                    }
+                });
+        }
+        );
+    });
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // export const loginWithPhone = onDone => new Promise((resolve, reject) => {

@@ -40,6 +40,7 @@
     "react-native-linear-gradient": "^2.5.4",
     "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-material-bottom-navigation": "^1.0.2",
+    "react-native-md5": "^1.0.0",
     "react-native-modal": "^9.0.0",
     "react-native-popup-menu": "^0.15.5",
     "react-native-snap-carousel": "^3.7.5",

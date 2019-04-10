@@ -14,3 +14,11 @@ export const getDeviceInfo = async () => {
     };
   }
 };
+
+export const setUserIdentity = async (userInfo) => {
+  try {
+    await AsyncStorage.setItem('@userToken:key', JSON.stringify(userInfo));
+  } catch (e) {
+    console.log('setUserIdentity', e);
+  }
+};
