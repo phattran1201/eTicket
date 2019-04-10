@@ -1,7 +1,6 @@
 {
     "extends": "rallycoding",
     "rules": {
-        "max-len": "off",
         "global-require": "off",
         "no-mixed-operators": 0,
         "max-line-length": ["error", {

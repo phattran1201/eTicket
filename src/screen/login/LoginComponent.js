@@ -70,9 +70,7 @@ class LoginComponent extends MyComponent {
 
   render() {
     return (
-
-
-      <KeyboardAwareScrollView behavior="padding" style={{ flex: 1, backgroundColor: 'white' }}>
+      <KeyboardAwareScrollView behavior="padding" style={{ backgroundColor: 'white' }}>
         <BaseHeader
           noShadow
           translucent
@@ -86,7 +84,7 @@ class LoginComponent extends MyComponent {
 
         <View
           style={{
-            justifyContent: 'center',
+            // justifyContent: 'center',
             alignItems: 'center'
           }}
         >

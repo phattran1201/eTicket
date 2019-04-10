@@ -22,21 +22,21 @@ class BaseHeader extends MyComponent {
 
   renderIcon(type, icon, styles) {
     if (type === 'Ionicons') {
-      return <Ionicons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color="#C7AE6D" />;
+      return <Ionicons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color={APP_COLOR} />;
     }
     if (type === 'MaterialIcons') {
-      return <MaterialIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color="#C7AE6D" />;
+      return <MaterialIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color={APP_COLOR} />;
     }
     if (type === 'MaterialCommunityIcons') {
       return (
-        <MaterialCommunityIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color="#C7AE6D" />
+        <MaterialCommunityIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color={APP_COLOR} />
       );
     }
     if (type === 'Feather') {
-      return <Feather name={icon} size={(styles && styles.width) || FS(20)} style={styles} color="#C7AE6D" />;
+      return <Feather name={icon} size={(styles && styles.width) || FS(20)} style={styles} color={APP_COLOR} />;
     }
     if (type === 'SimpleLineIcons') {
-      return <SimpleLineIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color="#C7AE6D" />;
+      return <SimpleLineIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color={APP_COLOR} />;
     }
     if (type === 'Image') {
       return <Image source={icon} resizeMode="contain" style={[style.iconHeader, styles]} />;
@@ -143,47 +143,47 @@ class BaseHeader extends MyComponent {
                 />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  this.onLeftPressTimeout = setTimeout(() => {
-                    if (onLeftPress) onLeftPress();
-                  }, 0);
-                }}
-                style={[
-                  {
-                    paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
-                    height: FS(30),
-                    padding: FS(5),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center'
-                  },
-                  styleLeftContent
-                ]}
-              >
-                {this.renderIcon(leftIconType, leftIcon, leftIconStyle)}
-              </TouchableOpacity>
-            )}
+                <TouchableOpacity
+                  onPress={() => {
+                    this.onLeftPressTimeout = setTimeout(() => {
+                      if (onLeftPress) onLeftPress();
+                    }, 0);
+                  }}
+                  style={[
+                    {
+                      paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
+                      height: FS(30),
+                      padding: FS(5),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'center'
+                    },
+                    styleLeftContent
+                  ]}
+                >
+                  {this.renderIcon(leftIconType, leftIcon, leftIconStyle)}
+                </TouchableOpacity>
+              )}
           </View>
         ) : (
-          <View
-            style={[
-              {
-                paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
-                height: FS(30),
-                padding: FS(5),
-                backgroundColor: 'transprent',
-                borderRadius: FS(30) / 2,
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignSelf: 'center'
-              },
-              { styleLeftContent }
-            ]}
-          >
-            <Feather name="arrow-left" size={FS(20)} color="transparent" />
-          </View>
-        )}
+            <View
+              style={[
+                {
+                  paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
+                  height: FS(30),
+                  padding: FS(5),
+                  backgroundColor: 'transprent',
+                  borderRadius: FS(30) / 2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center'
+                },
+                { styleLeftContent }
+              ]}
+            >
+              <Feather name="arrow-left" size={FS(20)} color="transparent" />
+            </View>
+          )}
 
         <View
           style={{
@@ -213,18 +213,18 @@ class BaseHeader extends MyComponent {
               /> */
               }
             ) : (
-              <TouchableOpacity
-                disabled={btnRightDisabled}
-                onPress={() => {
-                  this.onRightPressTimeout = setTimeout(() => {
-                    if (onRightPress) onRightPress();
-                  }, 0);
-                }}
-                style={[styles.rightStyle, btnRightStyle]}
-              >
-                {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
-              </TouchableOpacity>
-            )}
+                <TouchableOpacity
+                  disabled={btnRightDisabled}
+                  onPress={() => {
+                    this.onRightPressTimeout = setTimeout(() => {
+                      if (onRightPress) onRightPress();
+                    }, 0);
+                  }}
+                  style={[styles.rightStyle, btnRightStyle]}
+                >
+                  {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
+                </TouchableOpacity>
+              )}
           </View>
         ) : null}
 

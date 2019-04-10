@@ -2266,7 +2266,7 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-rallycoding@3.2.0:
+eslint-config-rallycoding@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/eslint-config-rallycoding/-/eslint-config-rallycoding-3.2.0.tgz#1256f801742ba0e95757680e81fd14ff1dbeff86"
   integrity sha1-Elb4AXQroOlXV2gOgf0U/x2+/4Y=
