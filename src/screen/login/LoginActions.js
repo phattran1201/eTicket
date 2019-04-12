@@ -18,7 +18,7 @@ export function loginSuccess(res, onDone = () => {}) {
       type: CONSTANTS_KEY.UPDATE_CURRENT_USER_DATA,
       payload: res.data,
     });
-    setUserIdentity({ access_token: res.data.access_token, userData: res.data });
+    setUserIdentity({ token: res.data.access_token, userData: res.data });
     // loadUserDataLoginSuccess(() => {
     alert(strings.congratulations, strings.login_success, () => {
       onDone();
@@ -49,6 +49,7 @@ export function loginSuccess(res, onDone = () => {}) {
 export const loginEmailPromise = (email, password) =>
   new Promise((resolve, reject) => {
     getDeviceInfo().then(deviceInfo => {
+      console.log('dauphaiphat: deviceInfo', deviceInfo);
       request
         .post('https://eticket-vhu.herokuapp.com/api/v1/auth/login')
         .set('Content-Type', 'application/json')

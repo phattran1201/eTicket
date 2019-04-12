@@ -66,160 +66,64 @@ class HomeComponent extends MyComponent {
   // //   </TouchableOpacity>
   // // );
 
-  renderPopular = ({ item, index }) => (
-    <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 40 * SCALE_RATIO_WIDTH_BASIS,
-          height: 40 * SCALE_RATIO_WIDTH_BASIS,
-          borderRadius: (40 * SCALE_RATIO_WIDTH_BASIS) / 2,
-          position: 'absolute',
-          top: 5,
-          right: 10,
-          backgroundColor: 'white',
-          zIndex: 999
-        }}
-      >
-        <MaterialCommunityIcons
-          name="heart-outline"
-          size={25 * SCALE_RATIO_WIDTH_BASIS}
-          color={APP_COLOR}
-          style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
-        />
-      </View>
-      <View style={[styles.carouselItemContainer, { marginLeft: 15, overflow: 'hidden' }]}>
-        <View>
-          <MyImage
-            style={{
-              width: '100%',
-              height: 150 * SCALE_RATIO_WIDTH_BASIS
-            }}
-            source={{
-              uri: item.image
-            }}
-          />
-        </View>
+  renderPopular = ({ item, index }) => {
+    let minPrice = item.tickettype.data[0].price;
+    let maxPrice = item.tickettype.data[0].price;
+    for (let i = 1; i < item.tickettype.data.length; i++) {
+      if (minPrice > item.tickettype.data[i].price) {
+        minPrice = item.tickettype.data[i].price;
+      }
+    }
+    for (let i = 1; i < item.tickettype.data.length; i++) {
+      if (maxPrice < item.tickettype.data[i].price) {
+        maxPrice = item.tickettype.data[i].price;
+      }
+    }
 
-        <Text
-          style={[
-            style.textCaption,
-            {
-              color: APP_COLOR_TEXT,
-              fontSize: FS(14),
-              padding: 5 * SCALE_RATIO_WIDTH_BASIS
-            }
-          ]}
-          numberOfLines={2}
-        >
-          {item.title}
-        </Text>
-
-        <Text
-          style={[
-            style.textCaption,
-            {
-              color: APP_COLOR_TEXT_GRAY,
-              fontSize: FS(10),
-              padding: 5 * SCALE_RATIO_WIDTH_BASIS
-            }
-          ]}
-          numberOfLines={2}
-        >
-          {item.start_date} - {item.end_date}
-        </Text>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ borderWidth: 0.5, borderColor: '#70707050', padding: 1, borderRadius: 3 }}>
-            <Text
-              style={[
-                style.textCaption,
-                {
-                  alignSelf: 'flex-start',
-                  color: APP_COLOR_TEXT,
-                  fontSize: FS(10),
-                  padding: 5 * SCALE_RATIO_WIDTH_BASIS
-                }
-              ]}
-              numberOfLines={2}
-            >
-              {item.category}
-            </Text>
-          </View>
-          <View style={{ marginLeft: 5, borderWidth: 0.5, borderColor: APP_COLOR, padding: 1, borderRadius: 3 }}>
-            <Text
-              style={[
-                style.textCaption,
-                {
-                  alignSelf: 'flex-start',
-                  color: APP_COLOR,
-                  fontSize: FS(10),
-                  padding: 5 * SCALE_RATIO_WIDTH_BASIS
-                }
-              ]}
-              numberOfLines={2}
-            >
-              From ${item.id}
-            </Text>
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
-  renderNewsItem = ({ item, index }) => (
-    <TouchableOpacity>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          bottom: 10,
-          right: 20,
-          zIndex: 999
-        }}
-      >
-        <MaterialCommunityIcons
-          name="heart-outline"
-          size={20 * SCALE_RATIO_WIDTH_BASIS}
-          color={APP_COLOR}
-          style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
-        />
-      </View>
-      <View
-        style={[
-          {
-            paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
-            marginBottom: 10 * SCALE_RATIO_WIDTH_BASIS,
-            flex: 1,
+    return (
+      <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 40 * SCALE_RATIO_WIDTH_BASIS,
+            height: 40 * SCALE_RATIO_WIDTH_BASIS,
+            borderRadius: (40 * SCALE_RATIO_WIDTH_BASIS) / 2,
+            position: 'absolute',
+            top: 5,
+            right: 10,
             backgroundColor: 'white',
-            overflow: 'hidden',
-            flexDirection: 'row',
-            alignItems: 'center'
-          }
-        ]}
-      >
-        <View style={{ flex: 3 }}>
-          <MyImage
-            style={{
-              borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-              width: '100%',
-              height: 86 * SCALE_RATIO_WIDTH_BASIS
-            }}
-            source={{
-              uri: item.image
-            }}
+            zIndex: 999,
+          }}
+        >
+          <MaterialCommunityIcons
+            name='heart-outline'
+            size={25 * SCALE_RATIO_WIDTH_BASIS}
+            color={APP_COLOR}
+            style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
           />
         </View>
-        <View style={{ flex: 6, paddingLeft: 5 * SCALE_RATIO_WIDTH_BASIS }}>
+        <View style={[styles.carouselItemContainer, { marginLeft: 15, overflow: 'hidden' }]}>
+          <View>
+            <MyImage
+              style={{
+                width: '100%',
+                height: 150 * SCALE_RATIO_WIDTH_BASIS,
+              }}
+              source={{
+                uri: item.image,
+              }}
+            />
+          </View>
+
           <Text
             style={[
               style.textCaption,
               {
                 color: APP_COLOR_TEXT,
                 fontSize: FS(14),
-                padding: 5 * SCALE_RATIO_WIDTH_BASIS
-              }
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+              },
             ]}
             numberOfLines={2}
           >
@@ -232,12 +136,14 @@ class HomeComponent extends MyComponent {
               {
                 color: APP_COLOR_TEXT_GRAY,
                 fontSize: FS(10),
-                padding: 5 * SCALE_RATIO_WIDTH_BASIS
-              }
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+              },
             ]}
             numberOfLines={2}
           >
-            {item.start_date} - {item.end_date}
+            {moment(item.end_date).format('ddd,MMMM')}
+            {'  '}
+            {item.start_time} - {item.end_time}:00
           </Text>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ borderWidth: 0.5, borderColor: '#70707050', padding: 1, borderRadius: 3 }}>
@@ -248,40 +154,301 @@ class HomeComponent extends MyComponent {
                     alignSelf: 'flex-start',
                     color: APP_COLOR_TEXT,
                     fontSize: FS(10),
-                    padding: 5 * SCALE_RATIO_WIDTH_BASIS
-                  }
+                    padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                  },
                 ]}
                 numberOfLines={2}
               >
                 {item.category}
               </Text>
             </View>
-            <View style={{ marginLeft: 5, borderWidth: 0.5, borderColor: APP_COLOR, padding: 1, borderRadius: 3 }}>
-              <Text
-                style={[
-                  style.textCaption,
-                  {
-                    alignSelf: 'flex-start',
-                    color: APP_COLOR,
-                    fontSize: FS(10),
-                    padding: 5 * SCALE_RATIO_WIDTH_BASIS
-                  }
-                ]}
-                numberOfLines={2}
+            {/* {item.tickettype.data.map(e => ( */}
+            {item.tickettype.data.length === 1 ? (
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderWidth: 0.5,
+                  borderColor: APP_COLOR,
+                  backgroundColor: (item.tickettype.data[0].price = 1 ? APP_COLOR : 'white'),
+                  padding: 1,
+                  borderRadius: 3,
+                }}
               >
-                From ${item.id}
-              </Text>
+                <Text
+                  style={[
+                    style.textCaption,
+                    {
+                      alignSelf: 'flex-start',
+                      color: (item.tickettype.data[0].price = 1 ? 'white' : APP_COLOR),
+                      fontSize: FS(10),
+                      padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                    },
+                  ]}
+                  numberOfLines={2}
+                >
+                  {(item.tickettype.data[0].price = 1 ? 'Free' : `From ${item.tickettype.data[0].price}`)}
+                </Text>
+              </View>
+            ) : (
+              <View style={{ flexDirection: 'row' }}>
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderWidth: 0.5,
+                    borderColor: APP_COLOR,
+                    backgroundColor: (minPrice = 1 ? APP_COLOR : 'white'),
+                    padding: 1,
+                    borderRadius: 3,
+                  }}
+                >
+                  <Text
+                    style={[
+                      style.textCaption,
+                      {
+                        alignSelf: 'flex-start',
+                        color: (minPrice = 1 ? 'white' : APP_COLOR),
+                        APP_COLOR,
+                        fontSize: FS(10),
+                        padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      },
+                    ]}
+                    numberOfLines={2}
+                  >
+                    {(minPrice = 1 ? 'Free' : `From ${minPrice}`)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderWidth: 0.5,
+                    borderColor: APP_COLOR,
+                    padding: 1,
+                    borderRadius: 3,
+                  }}
+                >
+                  <Text
+                    style={[
+                      style.textCaption,
+                      {
+                        alignSelf: 'flex-start',
+                        color: APP_COLOR,
+                        fontSize: FS(10),
+                        padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      },
+                    ]}
+                    numberOfLines={2}
+                  >
+                    From ${maxPrice}
+                  </Text>
+                </View>
+              </View>
+            )}
+
+            {/* ))} */}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  renderNewsItem = ({ item, index }) => {
+    let minPrice = item.tickettype.data[0].price;
+    let maxPrice = item.tickettype.data[0].price;
+    for (let i = 1; i < item.tickettype.data.length; i++) {
+      if (minPrice > item.tickettype.data[i].price) {
+        minPrice = item.tickettype.data[i].price;
+      }
+    }
+    for (let i = 1; i < item.tickettype.data.length; i++) {
+      if (maxPrice < item.tickettype.data[i].price) {
+        maxPrice = item.tickettype.data[i].price;
+      }
+    }
+    return (
+      <TouchableOpacity>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            bottom: 10,
+            right: 20,
+            zIndex: 999,
+          }}
+        >
+          <MaterialCommunityIcons
+            name='heart-outline'
+            size={20 * SCALE_RATIO_WIDTH_BASIS}
+            color={APP_COLOR}
+            style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
+          />
+        </View>
+        <View
+          style={[
+            {
+              paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: 10 * SCALE_RATIO_WIDTH_BASIS,
+              flex: 1,
+              backgroundColor: 'white',
+              overflow: 'hidden',
+              flexDirection: 'row',
+              alignItems: 'center',
+            },
+          ]}
+        >
+          <View style={{ flex: 3 }}>
+            <MyImage
+              style={{
+                borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                width: '100%',
+                height: 86 * SCALE_RATIO_WIDTH_BASIS,
+              }}
+              source={{
+                uri: item.image,
+              }}
+            />
+          </View>
+          <View style={{ flex: 6, paddingLeft: 5 * SCALE_RATIO_WIDTH_BASIS }}>
+            <Text
+              style={[
+                style.textCaption,
+                {
+                  color: APP_COLOR_TEXT,
+                  fontSize: FS(14),
+                  padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                },
+              ]}
+              numberOfLines={2}
+            >
+              {item.title}
+            </Text>
+
+            <Text
+              style={[
+                style.textCaption,
+                {
+                  color: APP_COLOR_TEXT_GRAY,
+                  fontSize: FS(10),
+                  padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                },
+              ]}
+              numberOfLines={2}
+            >
+              {moment(item.end_date).format('ddd,MMMM')}
+              {'  '}
+              {item.start_time} - {item.end_time}:00
+            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ borderWidth: 0.5, borderColor: '#70707050', padding: 1, borderRadius: 3 }}>
+                <Text
+                  style={[
+                    style.textCaption,
+                    {
+                      alignSelf: 'flex-start',
+                      color: APP_COLOR_TEXT,
+                      fontSize: FS(10),
+                      padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                    },
+                  ]}
+                  numberOfLines={2}
+                >
+                  {item.category}
+                </Text>
+              </View>
+              {item.tickettype.data.length === 1 ? (
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderWidth: 0.5,
+                    borderColor: APP_COLOR,
+                    backgroundColor: (item.tickettype.data[0].price = 1 ? APP_COLOR : 'white'),
+                    padding: 1,
+                    borderRadius: 3,
+                  }}
+                >
+                  <Text
+                    style={[
+                      style.textCaption,
+                      {
+                        alignSelf: 'flex-start',
+                        color: (item.tickettype.data[0].price = 1 ? 'white' : APP_COLOR),
+                        fontSize: FS(10),
+                        padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      },
+                    ]}
+                    numberOfLines={2}
+                  >
+                    {(item.tickettype.data[0].price = 1 ? 'Free' : `From ${item.tickettype.data[0].price}`)}
+                  </Text>
+                </View>
+              ) : (
+                <View style={{ flexDirection: 'row' }}>
+                  <View
+                    style={{
+                      marginLeft: 5,
+                      borderWidth: 0.5,
+                      borderColor: APP_COLOR,
+                      backgroundColor: (minPrice = 1 ? APP_COLOR : 'white'),
+                      padding: 1,
+                      borderRadius: 3,
+                    }}
+                  >
+                    <Text
+                      style={[
+                        style.textCaption,
+                        {
+                          alignSelf: 'flex-start',
+                          color: (minPrice = 1 ? 'white' : APP_COLOR),
+                          APP_COLOR,
+                          fontSize: FS(10),
+                          padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                        },
+                      ]}
+                      numberOfLines={2}
+                    >
+                      {(minPrice = 1 ? 'Free' : `From ${minPrice}`)}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: 5,
+                      borderWidth: 0.5,
+                      borderColor: APP_COLOR,
+                      padding: 1,
+                      borderRadius: 3,
+                    }}
+                  >
+                    <Text
+                      style={[
+                        style.textCaption,
+                        {
+                          alignSelf: 'flex-start',
+                          color: APP_COLOR,
+                          fontSize: FS(10),
+                          padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                        },
+                      ]}
+                      numberOfLines={2}
+                    >
+                      From ${maxPrice}
+                    </Text>
+                  </View>
+                </View>
+              )}
             </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
   render() {
     const nickname = 'Đăng Nhập';
     const point = 0;
     const avatar = null;
-
+    console.log(
+      "dauphaiphat: render -> this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))",
+      this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))
+    );
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         {/* <BaseHeader noShadow /> */}
@@ -294,7 +461,7 @@ class HomeComponent extends MyComponent {
               width: DEVICE_WIDTH * 2,
               height: DEVICE_WIDTH * 2,
               borderRadius: DEVICE_WIDTH,
-              position: 'absolute'
+              position: 'absolute',
             }}
             start={{ x: 0.1, y: 0.75 }}
             end={{ x: 0.75, y: 0.25 }}
@@ -310,8 +477,8 @@ class HomeComponent extends MyComponent {
             avatar={avatar}
             onAvatarPress={() => this.props.navigation.navigate(ROUTE_KEY.PERSONALINFO)}
             onPointPress={() => this.props.navigation.navigate(ROUTE_KEY.REWARDS)}
-            rightIcon="bell"
-            rightIconType="SimpleLineIcons"
+            rightIcon='bell'
+            rightIconType='SimpleLineIcons'
             onRightPress={() => {}}
           />
           <View style={{ paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS }}>
@@ -324,8 +491,8 @@ class HomeComponent extends MyComponent {
                   color: '#fff',
                   textDecorationLine: 'underline',
                   letterSpacing: 3,
-                  lineHeight: 50
-                }
+                  lineHeight: 50,
+                },
               ]}
             >
               Hồ Chí Minh
@@ -334,7 +501,7 @@ class HomeComponent extends MyComponent {
           {/* Cửa hàng gần bạn */}
           <View
             style={{
-              marginTop: 15 * SCALE_RATIO_WIDTH_BASIS
+              marginTop: 15 * SCALE_RATIO_WIDTH_BASIS,
             }}
           >
             <View
@@ -344,7 +511,7 @@ class HomeComponent extends MyComponent {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 alignContent: 'center',
-                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS
+                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >
               <Text
@@ -353,8 +520,8 @@ class HomeComponent extends MyComponent {
                   {
                     fontSize: FS(16),
                     color: 'white',
-                    fontFamily: FONT.SemiBold
-                  }
+                    fontFamily: FONT.SemiBold,
+                  },
                 ]}
               >
                 Popular events
@@ -404,13 +571,13 @@ class HomeComponent extends MyComponent {
               activeAnimationType={'spring'}
               activeAnimationOptions={{
                 friction: 4,
-                tension: 40
+                tension: 40,
               }}
             />
           </View>
           <View
             style={{
-              marginTop: 30 * SCALE_RATIO_WIDTH_BASIS
+              marginTop: 30 * SCALE_RATIO_WIDTH_BASIS,
             }}
           >
             <View
@@ -420,7 +587,7 @@ class HomeComponent extends MyComponent {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 alignContent: 'center',
-                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS
+                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >
               <Text
@@ -429,51 +596,83 @@ class HomeComponent extends MyComponent {
                   {
                     fontSize: FS(16),
                     color: APP_COLOR_TEXT,
-                    fontFamily: FONT.SemiBold
-                  }
+                    fontFamily: FONT.SemiBold,
+                  },
                 ]}
               >
                 Upcoming in week
               </Text>
             </View>
-            <FlatList
-              style={{ flex: 1 }}
-              data={this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD'))}
-              renderItem={this.renderNewsItem}
-              // onRefresh={this.onRefresh}
-              // refreshing={this.state.refreshing}
-              // onEndReached={this.handleLoadMore}
-              // onEndReachedThreshold={0.01}
-              // ListFooterComponent={this.renderFooter}
-            />
-            <TouchableOpacity
-              style={{
-                marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
-                marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
-                borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-                borderWidth: 1,
-                borderColor: APP_COLOR_TEXT_GRAY,
-                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-                alignItems: 'center'
-              }}
-              onPress={() => {}}
-            >
-              <Text
-                style={[
-                  style.textCaption,
-                  {
-                    fontSize: FS(14),
-                    color: '#000'
-                  }
-                ]}
+            {this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))
+              .length === 0 ? (
+              <View
+                style={{
+                  // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                  // height: 86 * SCALE_RATIO_WIDTH_BASIS,
+                  marginTop: 10 * SCALE_RATIO_WIDTH_BASIS,
+                  marginBottom: 30 * SCALE_RATIO_WIDTH_BASIS,
+                }}
+                onPress={() => {}}
               >
-                See more event (2000+)
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    style.textCaption,
+                    {
+                      fontSize: FS(14),
+                      color: '#00000050',
+                    },
+                  ]}
+                >
+                  No events in the next week
+                </Text>
+              </View>
+            ) : (
+              <View>
+                <FlatList
+                  style={{ flex: 1 }}
+                  data={this.props.listEventPopular.filter(
+                    e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss')
+                  )}
+                  renderItem={this.renderNewsItem}
+                  // onRefresh={this.onRefresh}
+                  // refreshing={this.state.refreshing}
+                  // onEndReached={this.handleLoadMore}
+                  // onEndReachedThreshold={0.01}
+                  // ListFooterComponent={this.renderFooter}
+                />
+                <TouchableOpacity
+                  style={{
+                    marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
+                    marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+                    borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                    borderWidth: 1,
+                    borderColor: APP_COLOR_TEXT_GRAY,
+                    padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {}}
+                >
+                  <Text
+                    style={[
+                      style.textCaption,
+                      {
+                        fontSize: FS(14),
+                        color: '#000',
+                      },
+                    ]}
+                  >
+                    See more event (2000+)
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
           <View
             style={{
-              marginBottom: 30 * SCALE_RATIO_WIDTH_BASIS
+              marginBottom: 30 * SCALE_RATIO_WIDTH_BASIS,
             }}
           >
             <View
@@ -483,7 +682,7 @@ class HomeComponent extends MyComponent {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 alignContent: 'center',
-                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS
+                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >
               <Text
@@ -492,8 +691,8 @@ class HomeComponent extends MyComponent {
                   {
                     fontSize: FS(16),
                     color: APP_COLOR_TEXT,
-                    fontFamily: FONT.SemiBold
-                  }
+                    fontFamily: FONT.SemiBold,
+                  },
                 ]}
               >
                 Free entry ticket
@@ -517,7 +716,7 @@ class HomeComponent extends MyComponent {
                 borderWidth: 1,
                 borderColor: APP_COLOR_TEXT_GRAY,
                 padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-                alignItems: 'center'
+                alignItems: 'center',
               }}
               onPress={() => {}}
             >
@@ -526,8 +725,8 @@ class HomeComponent extends MyComponent {
                   style.textCaption,
                   {
                     fontSize: FS(14),
-                    color: '#000'
-                  }
+                    color: '#000',
+                  },
                 ]}
               >
                 See more event (2000+)
@@ -542,54 +741,54 @@ class HomeComponent extends MyComponent {
 const styles = StyleSheet.create({
   markerImageStyle: {
     width: 40 * SCALE_RATIO_WIDTH_BASIS,
-    height: 40 * SCALE_RATIO_WIDTH_BASIS
+    height: 40 * SCALE_RATIO_WIDTH_BASIS,
   },
   searchInputContainer: {
     paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
     position: 'absolute',
     top: 20 * SCALE_RATIO_WIDTH_BASIS,
     width: DEVICE_WIDTH,
-    height: 50 * SCALE_RATIO_WIDTH_BASIS
+    height: 50 * SCALE_RATIO_WIDTH_BASIS,
   },
   searchInput: {
     borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
     flex: 1,
     height: 50 * SCALE_RATIO_WIDTH_BASIS,
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
   },
   searchNameContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   searchNameTextStyle: {
     fontSize: 14 * SCALE_RATIO_WIDTH_BASIS,
     color: '#767676',
-    fontWeight: '500'
+    fontWeight: '500',
   },
   searchIconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     width: 40 * SCALE_RATIO_WIDTH_BASIS,
-    height: '100%'
+    height: '100%',
   },
   carouselItemContainer: {
     overflow: 'visible',
     borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
     marginBottom: IS_IOS ? 5 : 6,
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   carouselItemMoreInfo: {
     textAlign: 'center',
-    fontSize: 10 * SCALE_RATIO_WIDTH_BASIS
-  }
+    fontSize: 10 * SCALE_RATIO_WIDTH_BASIS,
+  },
 });
 const mapActionCreators = { loadListPopularEvents };
 
 const mapStateToProps = state => ({
-  listEventPopular: state.eventPopular.listEventPopular
+  listEventPopular: state.eventPopular.listEventPopular,
 });
 
 export default connect(

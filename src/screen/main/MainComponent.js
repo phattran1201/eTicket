@@ -13,11 +13,12 @@ import { loadListPopularEvents } from '../home/HomeActions';
 import SearchComponent from '../search/SearchComponent';
 import FilterSearchComponent from '../search/FilterSearchComponent';
 import PreLoginComponent from '../login/PreLoginComponent';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 class MainComponent extends MyComponent {
   constructor(props) {
     super(props);
-    this.state = { activeTab: 'more' };
+    this.state = { activeTab: 'home' };
   }
 
   componentDidMount() {
@@ -29,39 +30,39 @@ class MainComponent extends MyComponent {
       icon: 'home',
       // label: 'Games',
       barColor: '#388E3C',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'search',
       icon: 'search',
       // label: 'Games',
       barColor: '#462',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'heart',
       icon: 'heart',
       // label: 'Games',
       barColor: 'blue',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'ticket',
       icon: 'credit-card',
       // label: 'Movies & TV',
       barColor: '#B71C1C',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'more',
       icon: 'more-horizontal',
       // label: 'Music',
       barColor: '#E64A19',
-      pressColor: 'rgba(255, 255, 255, 0.16)'
-    }
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+    },
   ];
 
-  renderIcon = icon => ({ isActive }) => <Feather size={24} color="white" name={icon} />;
+  renderIcon = icon => ({ isActive }) => <Feather size={24} color='white' name={icon} />;
 
   renderTab = ({ tab, isActive }) => (
     <IconTab
@@ -91,12 +92,25 @@ class MainComponent extends MyComponent {
 
   render() {
     return (
-      <View style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT, flex: 1, backgroundColor: 'white' }}>
-        <StatusBar backgroundColor={'#ffffff60'} barStyle="dark-content" translucent />
-        <View style={{ height: DEVICE_HEIGHT - 56 }}>{this.renderBody()}</View>
+      <View
+        style={{
+          width: DEVICE_WIDTH,
+          height: DEVICE_HEIGHT,
+          flex: 1,
+          backgroundColor: 'white',
+        }}
+      >
+        <StatusBar backgroundColor={'#ffffff60'} barStyle='dark-content' translucent />
+        <View style={{ height: DEVICE_HEIGHT - 56 + getBottomSpace() }}>{this.renderBody()}</View>
         {/* <View style={{ position: 'absolute', top: 6, width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}> */}
         <BottomNavigation
-          style={{ position: 'absolute', height: 56, bottom: 0, width: DEVICE_WIDTH, zIndex: 999 }}
+          style={{
+            position: 'absolute',
+            height: 56 + getBottomSpace(),
+            bottom: 0,
+            width: DEVICE_WIDTH,
+            zIndex: 999,
+          }}
           tabs={this.tabs}
           activeTab={this.state.activeTab}
           onTabPress={newTab => this.setState({ activeTab: newTab.key })}

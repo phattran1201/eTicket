@@ -10,11 +10,11 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export default class HeaderWithBackButtonComponent extends MyComponent {
   static propTypes = {
-    translucent: PropTypes.bool
+    translucent: PropTypes.bool,
   };
 
   static defaultProps = {
-    translucent: true
+    translucent: true,
   };
 
   render() {
@@ -28,7 +28,7 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
       styleIcon,
       showGardient,
       styleBody,
-      iconColor
+      iconColor,
     } = this.props;
     return (
       <View
@@ -38,11 +38,11 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
             shadowColor: noShadow ? 'transparent' : APP_COLOR,
             borderBottomWidth: noShadow ? 0 : style.header.borderBottomWidth,
             elevation: noShadow ? 0 : style.header.elevation,
-            backgroundColor: 'transprent'
+            backgroundColor: 'transprent',
             // height: translucent ? (IS_ANDROID ? headerHeight + fixHeaderTranslucent : headerHeight) : headerHeight,
             // paddingTop: translucent ? fixHeaderTranslucent : IS_ANDROID ? 0 : fixHeaderTranslucent
           },
-          styleContent
+          styleContent,
         ]}
       >
         {showGardient && (
@@ -53,14 +53,14 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
             style={{
               position: 'absolute',
               width: DEVICE_WIDTH,
-              height: headerHeight
+              height: headerHeight,
             }}
           />
         )}
 
         <StatusBar
           backgroundColor={translucent ? '#ffffff60' : '#fff'}
-          barStyle="dark-content"
+          barStyle='dark-content'
           translucent={translucent}
         />
         <TouchableOpacity
@@ -68,19 +68,23 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
           style={[
             {
               paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
-              height: FS(30),
-              padding: FS(5),
+              // height: FS(30),
+              // padding: FS(5),
               justifyContent: 'center',
               alignItems: 'center',
-              alignSelf: 'center'
+              alignSelf: 'center',
             },
-            styleIcon
+            styleIcon,
           ]}
         >
           <View
-            style={{ backgroundColor: showGardient ? 'transprent' : 'white', padding: FS(5), borderRadius: FS(20) }}
+            style={{
+              backgroundColor: showGardient ? 'transprent' : 'white',
+              alignSelf: 'flex-start',
+              borderRadius: FS(20),
+            }}
           >
-            <Icons name="arrow-left" size={FS(20)} color={iconColor || APP_COLOR} />
+            <Icons name='arrow-left' size={FS(20)} color={iconColor || APP_COLOR} style={{ margin: FS(7) }} />
           </View>
         </TouchableOpacity>
 
@@ -90,7 +94,7 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
             style={[
               style.titleHeader,
               { color: showGardient ? '#fff' : APP_COLOR_TEXT, fontSize: FS(18), textAlign: 'center' },
-              styleBody
+              styleBody,
             ]}
           >
             {bodyTitle || ''}
@@ -104,13 +108,13 @@ export default class HeaderWithBackButtonComponent extends MyComponent {
               padding: FS(5),
               justifyContent: 'center',
               alignItems: 'center',
-              alignSelf: 'center'
+              alignSelf: 'center',
             },
-            styleIcon
+            styleIcon,
           ]}
         >
           <View style={{ backgroundColor: 'transprent', padding: FS(5), borderRadius: FS(20) }}>
-            <Icons name="arrow-right" size={FS(20)} color="transparent" />
+            <Icons name='arrow-right' size={FS(20)} color='transparent' />
           </View>
         </View>
       </View>

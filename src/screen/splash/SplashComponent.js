@@ -7,6 +7,8 @@ import firebase from 'react-native-firebase';
 import { alert } from '../../utils/alert';
 import { APP_COLOR } from '../../constants/style';
 import DeviceInfo from 'react-native-device-info';
+import { persistStore } from 'redux-persist';
+import store from '../../config/redux/store';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -16,16 +18,27 @@ class SplashComponent extends Component {
       appState: AppState.currentState,
       isLoading: true,
       allowToLoadMainComponent: false,
-      persistDone: false
+      persistDone: false,
     };
+
     // this.UNSAFE_componentWillMount.handleAppStateChange = this.handleAppStateChange.bind(this);
+  }
+  componentWillMount() {
+    persistStore(store, null, () => {
+      console.log('dauphaiphat: SplashComponent -> componentDidMount -> this.props.userData', this.props.userData);
+      console.log('dauphaiphat: SplashComponent -> componentDidMount -> this.props.token', this.props.token);
+      if (this.props.token !== '' && this.props.userData) {
+        this.props.navigation.replace(ROUTE_KEY.MAIN);
+      } else {
+        this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN);
+      }
+    });
   }
   async componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
     this.checkPermission();
     this.createNotificationListeners();
     this.props.loadListCategory();
-    this.props.navigation.replace(ROUTE_KEY.MAIN);
   }
 
   componentWillUnmount() {
@@ -56,7 +69,7 @@ class SplashComponent extends Component {
       const { title, body } = notification;
 
       const localNotification = new firebase.notifications.Notification({
-        show_in_foreground: true
+        show_in_foreground: true,
       })
         .setNotificationId(notification.notificationId)
         .setTitle(notification.title)
@@ -149,7 +162,7 @@ class SplashComponent extends Component {
     const data = {
       device_token: token,
       device_type: Platform.OS,
-      device_language: language
+      device_language: language,
     };
 
     this._loadDeviceInfo(data).done();
@@ -170,12 +183,12 @@ class SplashComponent extends Component {
   render() {
     return (
       <View style={styles.content}>
-        <StatusBar barStyle="dark-content" translucent />
+        <StatusBar barStyle='dark-content' translucent />
 
         <Image
           style={{ width: DEVICE_WIDTH * 0.8 }}
           source={require('../../assets/LOGO_TLKV_500.png')}
-          resizeMode="contain"
+          resizeMode='contain'
         />
       </View>
     );
@@ -184,7 +197,10 @@ class SplashComponent extends Component {
 
 const mapActionCreators = { loadListCategory };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  userData: state.user.userData,
+  token: state.user.token,
+});
 
 export default connect(
   mapStateToProps,
@@ -196,6 +212,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
