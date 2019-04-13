@@ -25,7 +25,7 @@ export default class MySpinner extends React.PureComponent {
     super(props);
     MySpinner.instance = this;
     this.state = {
-      visible: false
+      visible: false,
     };
   }
   render() {
@@ -35,7 +35,7 @@ export default class MySpinner extends React.PureComponent {
         textContent={strings.loading}
         textStyle={{ color: '#fff' }}
         style={{ zIndex: 99999, elevation: 9999 }}
-        overlayColor="transparent"
+        overlayColor='transparent'
       >
         <View
           style={{
@@ -43,7 +43,7 @@ export default class MySpinner extends React.PureComponent {
             height,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
           }}
         >
           <View
@@ -53,7 +53,7 @@ export default class MySpinner extends React.PureComponent {
               borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)'
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}
           >
             <LottieView
@@ -64,7 +64,7 @@ export default class MySpinner extends React.PureComponent {
               style={{
                 width: 50 * SCALE_RATIO_WIDTH_BASIS,
                 height: 50 * SCALE_RATIO_WIDTH_BASIS,
-                alignSelf: 'center'
+                alignSelf: 'center',
               }}
             />
           </View>

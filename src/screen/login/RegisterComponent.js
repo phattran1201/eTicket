@@ -1,42 +1,39 @@
 import React from 'react';
-import { Image, ImageBackground, Text, View } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { Image, Text, View } from 'react-native';
+import { Button, CheckBox, Input } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
   DEVICE_WIDTH,
   FS,
   ROUTE_KEY,
-  SCALE_RATIO_WIDTH_BASIS,
   SCALE_RATIO_HEIGHT_BASIS,
+  SCALE_RATIO_WIDTH_BASIS,
 } from '../../constants/Constants';
 import strings from '../../constants/Strings';
-import style, { APP_COLOR_TEXT, FONT, APP_COLOR } from '../../constants/style';
+import style, { APP_COLOR, APP_COLOR_TEXT } from '../../constants/style';
 import { alert } from '../../utils/alert';
 import BaseHeader from '../../view/BaseHeader';
-import MySpinner from '../../view/MySpinner';
 // import { loginFail, loginPromise, loginSuccess } from './SignInActions';
 import MyComponent from '../../view/MyComponent';
-import { Input, Button, CheckBox } from 'react-native-elements';
-import { checkEmailExists } from './RegisterActions';
-
-const loginBackground = require('../../assets/background.png');
+import MySpinner from '../../view/MySpinner';
+import { checkEmailExists, registerPromise } from './RegisterActions';
 
 class RegisterComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
-      checkusername: true,
       checkemail: true,
       checkEmailExists: false,
       checkEmailExistsMess: '',
       checkpassword: true,
       isLoading: false,
       checked: false,
+      btnRegister: 'Create Account',
     };
   }
 
@@ -44,19 +41,31 @@ class RegisterComponent extends MyComponent {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
-  registerFunc() {
+  registerFunction() {
     this.setState({ isLoading: true });
     MySpinner.show();
     if (this.validateEmail(this.state.email)) {
       checkEmailExists(this.state.email).then(res => {
-        console.log('dauphaiphat: res', res.message);
         if (res.status_code === 200) {
+          registerPromise(this.state.email, this.state.password, this.state.firstName, this.state.lastName, () => {
+            this.setState({ isLoading: false, btnLogin: 'Register Success' });
+            this.props.navigation.navigate(ROUTE_KEY.LOGIN);
+          }).catch(e => {
+            this.setState({ isLoading: false });
+            MySpinner.hide();
+            alert(strings.alert, e);
+          });
           MySpinner.hide();
           this.setState({ checkemail: true, checkEmailExists: false, isLoading: false });
         }
         if (res.status_code === 401) {
           MySpinner.hide();
-          this.setState({ checkEmailExists: true, isLoading: false, checkEmailExistsMess: res.message });
+          this.setState({
+            checkemail: false,
+            checkEmailExists: true,
+            isLoading: false,
+            checkEmailExistsMess: res.message,
+          });
         }
       });
     } else {
@@ -65,26 +74,12 @@ class RegisterComponent extends MyComponent {
     if (this.state.password.length > 5) {
       this.setState({ checkpassword: true });
       MySpinner.show();
-      // registerPromise(this.state.email, this.state.password)
-      //   .then(res => {
-      //     this.props.registerSuccess(res, this, () => {
-      //       const temp = {};
-      //       temp.imei = DeviceInfo.getUniqueID();
-      //       this.props.updateUserInfo(temp, () => {
-      //       });
-      //     });
-      //   })
-      //   .catch(e => {
-      //     MySpinner.hide();
-      //     alert(strings.alert, e);
-      //   });
     } else {
-      this.setState({ checkpassword: false });
+      this.setState({ checkpassword: false, isLoading: false });
       // alert(strings.alert, strings.password_lenght);
     }
   }
   render() {
-    console.log('dauphaiphat: this.state.checkEmailExists', this.state.checkEmailExists);
     return (
       <KeyboardAwareScrollView behavior='padding' style={{ backgroundColor: 'white' }}>
         <BaseHeader
@@ -121,33 +116,64 @@ class RegisterComponent extends MyComponent {
               width: (85 / 100) * DEVICE_WIDTH,
             }}
           >
-            <Input
-              containerStyle={{ paddingLeft: 0, paddingRight: 0 }}
-              inputContainerStyle={{
-                borderColor: APP_COLOR_TEXT,
-                borderWidth: SCALE_RATIO_WIDTH_BASIS,
-                marginVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
-                paddingHorizontal: 5 * SCALE_RATIO_WIDTH_BASIS,
-                borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-              }}
-              clearButtonMode='while-editing'
-              rightIcon={{
-                type: 'material',
-                name: 'person-outline',
-                color: '#999',
-              }}
-              placeholderTextColor='#999'
-              underlineColorAndroid='transparent'
-              autoCapitalize='none'
-              autoCorrect={false}
-              label='Your name'
-              labelStyle={[style.text, { color: APP_COLOR_TEXT }]}
-              inputStyle={style.text}
-              onChangeText={username => this.setState({ username })}
-              value={this.state.username}
-              returnKeyType='next'
-              onSubmitEditing={() => this.txtEmail.focus()}
-            />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Input
+                containerStyle={{ paddingLeft: 0, paddingRight: 0, width: '48%' }}
+                inputContainerStyle={{
+                  borderColor: APP_COLOR_TEXT,
+                  borderWidth: SCALE_RATIO_WIDTH_BASIS,
+                  marginVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 5 * SCALE_RATIO_WIDTH_BASIS,
+                  borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                }}
+                clearButtonMode='while-editing'
+                // rightIcon={{
+                //   type: 'material',
+                //   name: 'person-outline',
+                //   color: '#999',
+                // }}
+                placeholderTextColor='#999'
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+                autoCorrect={false}
+                label='First name'
+                labelStyle={[style.text, { color: APP_COLOR_TEXT }]}
+                inputStyle={style.text}
+                onChangeText={firstName => this.setState({ firstName })}
+                value={this.state.firstName}
+                returnKeyType='next'
+                onSubmitEditing={() => this.txtLastName.focus()}
+              />
+              <Input
+                containerStyle={{ paddingLeft: 0, paddingRight: 0, width: '48%' }}
+                inputContainerStyle={{
+                  borderColor: APP_COLOR_TEXT,
+                  borderWidth: SCALE_RATIO_WIDTH_BASIS,
+                  marginVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 5 * SCALE_RATIO_WIDTH_BASIS,
+                  borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                }}
+                clearButtonMode='while-editing'
+                // rightIcon={{
+                //   type: 'material',
+                //   name: 'person-outline',
+                //   color: '#999',
+                // }}
+                placeholderTextColor='#999'
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+                autoCorrect={false}
+                label='Last name'
+                labelStyle={[style.text, { color: APP_COLOR_TEXT }]}
+                ref={instance => (this.txtLastName = instance)}
+                inputStyle={style.text}
+                onChangeText={lastName => this.setState({ lastName })}
+                value={this.state.lastName}
+                returnKeyType='next'
+                onSubmitEditing={() => this.txtEmail.focus()}
+              />
+            </View>
+
             <Input
               keyboardType='email-address'
               containerStyle={{ paddingLeft: 0, paddingRight: 0 }}
@@ -207,9 +233,8 @@ class RegisterComponent extends MyComponent {
               inputStyle={style.textInput}
               onChangeText={password => this.setState({ password })}
               value={this.state.password}
-              returnKeyType='go'
+              returnKeyType='next'
               ref={instance => (this.txtPassword = instance)}
-              onSubmitEditing={() => this.registerFunc()}
             />
             <CheckBox
               checkedColor={APP_COLOR}
@@ -228,14 +253,15 @@ class RegisterComponent extends MyComponent {
               onPress={() => this.setState({ checked: !this.state.checked })}
             />
             <Button
-              // this.state.isLoading ||
+              loading={this.state.isLoading}
               disabled={
                 this.state.checked === false ||
-                this.state.username === '' ||
+                this.state.firstName === '' ||
+                this.state.lastName === '' ||
                 this.state.email === '' ||
                 this.state.password === ''
               }
-              onPress={() => this.registerFunc()}
+              onPress={() => this.registerFunction()}
               containerStyle={{
                 width: (85 / 100) * DEVICE_WIDTH,
                 marginTop: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -243,7 +269,8 @@ class RegisterComponent extends MyComponent {
               disabledTitleStyle={[style.text, { color: APP_COLOR }]}
               type={
                 this.state.checked === false ||
-                this.state.username === '' ||
+                this.state.firstName === '' ||
+                this.state.lastName === '' ||
                 this.state.email === '' ||
                 this.state.password === ''
                   ? 'outline'
@@ -269,7 +296,7 @@ class RegisterComponent extends MyComponent {
                 },
               ]}
               titleStyle={[style.text, { color: 'white' }]}
-              title='Create Account'
+              title={this.state.btnRegister}
             />
             <Text style={[style.text, { textAlign: 'center', marginVertical: 25 * SCALE_RATIO_WIDTH_BASIS }]}>
               Already have account? <Text style={[style.textCaption, { fontSize: FS(14) }]}>Log in here</Text>

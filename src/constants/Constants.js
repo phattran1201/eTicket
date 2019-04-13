@@ -98,7 +98,7 @@ export const ROUTE_KEY = {
 
   // detailchat
   DETAIL_CHAT: 'DETAIL_CHAT',
-  DETAIL_NEWS: 'DETAIL_NEWS'
+  DETAIL_NEWS: 'DETAIL_NEWS',
 };
 
 export const CONSTANTS_KEY = {

@@ -13,6 +13,7 @@ import BaseHeader from '../../view/BaseHeader';
 import { loadListPopularEvents } from './HomeActions';
 import MyImage from '../../view/MyImage';
 import moment from 'moment';
+import { logout } from '../login/LoginActions';
 
 class HomeComponent extends MyComponent {
   constructor(props) {
@@ -24,47 +25,8 @@ class HomeComponent extends MyComponent {
     this.isFirstTimeLoadPromotion = true;
   }
   componentDidMount() {
-    console.log('dauphaiphat:shouldComponentUpdate -> this.props.listEventPopular', this.props.listEventPopular);
     this.props.loadListPopularEvents();
   }
-
-  // shouldComponentUpdate(nextProps, nexState) {
-  //   console.log('dauphaiphat:shouldComponentUpdate -> nextProps.listEventPopular', nextProps.listEventPopular);
-  //   console.log('dauphaiphat:shouldComponentUpdate -> this.props.listEventPopular', this.props.listEventPopular);
-  //   if (this.props.listEventPopular == nextProps.listEventPopular) {
-  //     console.log('dauphaiphat:shouldComponentUpdate -> nextProps.listEventPopular', nextProps.listEventPopular);
-  //     console.log('dauphaiphat:shouldComponentUpdate -> this.props.listEventPopular', this.props.listEventPopular);
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  // componentDidUpdate(nextProps, nexState) {
-  //   if (this.props.listEventPopular.length != nextProps.listEventPopular.length) {
-  //     console.log(
-  //       'dauphaiphat: HomeComponent -> componentDidUpdate -> this.props.listEventPopular != nextProps.listEventPopular',
-  //       this.props.listEventPopular != nextProps.listEventPopular
-  //     );
-  //     console.log('dauphaiphat:componentWillUpdate -> nextProps.listEventPopular', nextProps.listEventPopular);
-  //     console.log('dauphaiphat:componentWillUpdate -> this.props.listEventPopular', this.props.listEventPopular);
-  //   } else {
-  //     this.props.loadListPopularEvents();
-  //   }
-  // }
-  // // renderBannerItem = ({ item, index }) => (
-  // //   <TouchableOpacity onPress={() => {}}>
-  // //     <Image
-  // //       style={{
-  // //         width: '100%',
-  // //         height: 158 * SCALE_RATIO_WIDTH_BASIS,
-  // //         borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS
-  // //       }}
-  // //       source={{
-  // //         uri: item.slide_img ? item.slide_img : 'https://www.fancyhands.com/images/default-avatar-250x250.png'
-  // //       }}
-  // //     />
-  // //   </TouchableOpacity>
-  // // );
 
   renderPopular = ({ item, index }) => {
     let minPrice = item.tickettype.data[0].price;
@@ -445,10 +407,6 @@ class HomeComponent extends MyComponent {
     const nickname = 'Đăng Nhập';
     const point = 0;
     const avatar = null;
-    console.log(
-      "dauphaiphat: render -> this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))",
-      this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))
-    );
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         {/* <BaseHeader noShadow /> */}
@@ -603,8 +561,8 @@ class HomeComponent extends MyComponent {
                 Upcoming in week
               </Text>
             </View>
-            {this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))
-              .length === 0 ? (
+            {this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss')).length ===
+            0 ? (
               <View
                 style={{
                   // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -633,9 +591,7 @@ class HomeComponent extends MyComponent {
               <View>
                 <FlatList
                   style={{ flex: 1 }}
-                  data={this.props.listEventPopular.filter(
-                    e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss')
-                  )}
+                  data={this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))}
                   renderItem={this.renderNewsItem}
                   // onRefresh={this.onRefresh}
                   // refreshing={this.state.refreshing}
@@ -718,7 +674,7 @@ class HomeComponent extends MyComponent {
                 padding: 5 * SCALE_RATIO_WIDTH_BASIS,
                 alignItems: 'center',
               }}
-              onPress={() => {}}
+              onPress={() => this.props.logout(() => this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN))}
             >
               <Text
                 style={[
@@ -785,7 +741,7 @@ const styles = StyleSheet.create({
     fontSize: 10 * SCALE_RATIO_WIDTH_BASIS,
   },
 });
-const mapActionCreators = { loadListPopularEvents };
+const mapActionCreators = { loadListPopularEvents, logout };
 
 const mapStateToProps = state => ({
   listEventPopular: state.eventPopular.listEventPopular,

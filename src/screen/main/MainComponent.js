@@ -1,19 +1,16 @@
 import React from 'react';
-import { View, Image, StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 import BottomNavigation, { Badge, IconTab } from 'react-native-material-bottom-navigation';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import { connect } from 'react-redux';
+import { DEVICE_HEIGHT, DEVICE_WIDTH, SCALE_RATIO_HEIGHT_BASIS } from '../../constants/Constants';
 import MyComponent from '../../view/MyComponent';
-import HomeComponent from '../home/HomeComponent';
-import DetailEventComponent from '../detailEvent/DetailEventComponent';
-import DetailPayComponent from '../detailPay/DetailPayComponent';
-import DetailPaySucessComponent from '../detailPay/DetailPaySucessComponent';
-import { DEVICE_WIDTH, DEVICE_HEIGHT } from '../../constants/Constants';
+import MySpinner from '../../view/MySpinner';
 import { loadListPopularEvents } from '../home/HomeActions';
-import SearchComponent from '../search/SearchComponent';
-import FilterSearchComponent from '../search/FilterSearchComponent';
+import HomeComponent from '../home/HomeComponent';
 import PreLoginComponent from '../login/PreLoginComponent';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import SearchComponent from '../search/SearchComponent';
 
 class MainComponent extends MyComponent {
   constructor(props) {
@@ -100,8 +97,12 @@ class MainComponent extends MyComponent {
           backgroundColor: 'white',
         }}
       >
+        <MySpinner />
+
         <StatusBar backgroundColor={'#ffffff60'} barStyle='dark-content' translucent />
-        <View style={{ height: DEVICE_HEIGHT - 56 + getBottomSpace() }}>{this.renderBody()}</View>
+        <View style={{ height: DEVICE_HEIGHT - 56 + getBottomSpace(), paddingBottom: 30 * SCALE_RATIO_HEIGHT_BASIS }}>
+          {this.renderBody()}
+        </View>
         {/* <View style={{ position: 'absolute', top: 6, width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}> */}
         <BottomNavigation
           style={{

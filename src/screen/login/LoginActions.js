@@ -7,6 +7,29 @@ import { alert } from '../../utils/alert';
 import strings from '../../constants/Strings';
 import { getDeviceInfo, setUserIdentity } from '../../utils/asyncStorage';
 
+export function logout(onDoneFunc = () => {}) {
+  return (dispatch, store) => {
+    dispatch({
+      type: CONSTANTS_KEY.SET_LOGGED_IN,
+      payload: false,
+    });
+
+    getDeviceInfo().then(deviceInfo => {
+      //  firebase.messaging().subscribeToTopic(res.data.access_token);
+      firebase.messaging().unsubscribeFromTopic(store().user.userData.access_token);
+      console.log('dauphaiphat: logout -> unsubscribeFromTopic', deviceInfo.device_token);
+    });
+
+    setTimeout(() => {
+      dispatch({
+        type: CONSTANTS_KEY.CLEAR_DATA,
+      });
+      onDoneFunc();
+      console.log('LOGOUT: STORE:', store());
+    }, 200);
+  };
+}
+
 export function loginSuccess(res, onDone = () => {}) {
   return (dispatch, store) => {
     dispatch({
@@ -19,17 +42,15 @@ export function loginSuccess(res, onDone = () => {}) {
       payload: res.data,
     });
     setUserIdentity({ token: res.data.access_token, userData: res.data });
-    // loadUserDataLoginSuccess(() => {
-    alert(strings.congratulations, strings.login_success, () => {
-      onDone();
-      dispatch({
-        type: CONSTANTS_KEY.SET_LOGGED_IN,
-        payload: true,
-      });
-      firebase.messaging().subscribeToTopic(res.data.access_token);
-      // MySpinner.hide();
+    onDone();
+    dispatch({
+      type: CONSTANTS_KEY.SET_LOGGED_IN,
+      payload: true,
     });
-    // }, dispatch, store);
+    getDeviceInfo().then(deviceInfo => {
+      firebase.messaging().subscribeToTopic(res.data.access_token);
+      console.log('dauphaiphat: subscribeToTopic', res.data.access_token);
+    });
   };
 }
 
@@ -49,7 +70,7 @@ export function loginSuccess(res, onDone = () => {}) {
 export const loginEmailPromise = (email, password) =>
   new Promise((resolve, reject) => {
     getDeviceInfo().then(deviceInfo => {
-      console.log('dauphaiphat: deviceInfo', deviceInfo);
+      console.log('deviceInfo', deviceInfo);
       request
         .post('https://eticket-vhu.herokuapp.com/api/v1/auth/login')
         .set('Content-Type', 'application/json')
@@ -61,7 +82,11 @@ export const loginEmailPromise = (email, password) =>
         })
         .finish((err, res) => {
           if (err) {
-            reject(strings.network_require_fail);
+            alert(strings.alert, strings.network_require_fail);
+            reject(err);
+          } else if (res.body.status_code === 401) {
+            alert(strings.alert, res.body.message);
+            reject(res.body.message);
           } else {
             resolve(res.body);
           }

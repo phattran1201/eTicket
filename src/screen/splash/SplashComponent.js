@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { AppState, StyleSheet, View, Image, Alert, StatusBar, AsyncStorage, Platform } from 'react-native';
-import { connect } from 'react-redux';
-import { ROUTE_KEY, DEVICE_WIDTH } from '../../constants/Constants';
-import { loadListCategory } from './SplashActions';
-import firebase from 'react-native-firebase';
-import { alert } from '../../utils/alert';
-import { APP_COLOR } from '../../constants/style';
+import { AppState, AsyncStorage, Image, Platform, StatusBar, StyleSheet, Vibration, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import firebase from 'react-native-firebase';
+import { connect } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import store from '../../config/redux/store';
+import { DEVICE_HEIGHT, DEVICE_WIDTH, ROUTE_KEY } from '../../constants/Constants';
+import { APP_COLOR } from '../../constants/style';
+import { alert } from '../../utils/alert';
+import { loadListCategory } from './SplashActions';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -25,9 +25,8 @@ class SplashComponent extends Component {
   }
   componentWillMount() {
     persistStore(store, null, () => {
-      console.log('dauphaiphat: SplashComponent -> componentDidMount -> this.props.userData', this.props.userData);
-      console.log('dauphaiphat: SplashComponent -> componentDidMount -> this.props.token', this.props.token);
-      if (this.props.token !== '' && this.props.userData) {
+      console.log('userData', this.props.userData);
+      if (this.props.token !== '' && this.props.userData && this.props.isLoggedIn) {
         this.props.navigation.replace(ROUTE_KEY.MAIN);
       } else {
         this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN);
@@ -50,6 +49,7 @@ class SplashComponent extends Component {
   //1
   async checkPermission() {
     const enabled = await firebase.messaging().hasPermission();
+    console.log('dauphaiphat: SplashComponent -> checkPermission -> enabled', enabled);
     if (enabled) {
       this.getToken();
       firebase.messaging().onTokenRefresh(token => {
@@ -66,11 +66,7 @@ class SplashComponent extends Component {
      * */
     this.notificationListener = firebase.notifications().onNotification(notification => {
       console.log('dauphaiphat: Notification', notification);
-      const { title, body } = notification;
-
-      const localNotification = new firebase.notifications.Notification({
-        show_in_foreground: true,
-      })
+      const localNotification = new firebase.notifications.Notification()
         .setNotificationId(notification.notificationId)
         .setTitle(notification.title)
         .setSubtitle(notification.subtitle)
@@ -85,6 +81,7 @@ class SplashComponent extends Component {
         .notifications()
         .displayNotification(localNotification)
         .catch(err => console.error(err));
+      Vibration.vibrate(1000);
     });
 
     const channel = new firebase.notifications.Android.Channel(
@@ -119,8 +116,6 @@ class SplashComponent extends Component {
      * */
     this.messageListener = firebase.messaging().onMessage(message => {
       console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> message', message);
-      //process data message
-      console.log(JSON.stringify(message));
     });
   }
 
@@ -133,14 +128,14 @@ class SplashComponent extends Component {
         .getToken()
         .then(token => {
           this._onChangeToken(token, DeviceInfo.getDeviceLocale());
+          console.log('FCM tu sever', token);
         });
       if (fcmToken) {
         // user has a device token
+        console.log('FCM tu device', fcmToken);
         await AsyncStorage.setItem('fcmToken', fcmToken);
-        console.log('dauphaiphat: user has a device token', fcmToken);
       }
     }
-    console.log('fcmToken new:', fcmToken);
   }
 
   //2
@@ -164,7 +159,6 @@ class SplashComponent extends Component {
       device_type: Platform.OS,
       device_language: language,
     };
-
     this._loadDeviceInfo(data).done();
   };
 
@@ -176,7 +170,6 @@ class SplashComponent extends Component {
       await AsyncStorage.setItem('@deviceInfo:key', value);
     } catch (error) {
       console.log('dauphaiphat: SplashComponent -> error', error);
-      console.log(error);
     }
   };
 
@@ -186,9 +179,9 @@ class SplashComponent extends Component {
         <StatusBar barStyle='dark-content' translucent />
 
         <Image
-          style={{ width: DEVICE_WIDTH * 0.8 }}
-          source={require('../../assets/LOGO_TLKV_500.png')}
-          resizeMode='contain'
+          style={{ flex: 1, width: DEVICE_WIDTH, height: DEVICE_HEIGHT, alignSelf: 'center' }}
+          source={require('../../assets/ic_splash.png')}
+          resizeMode='cover'
         />
       </View>
     );
@@ -199,6 +192,7 @@ const mapActionCreators = { loadListCategory };
 
 const mapStateToProps = state => ({
   userData: state.user.userData,
+  isLoggedIn: state.user.isLoggedIn,
   token: state.user.token,
 });
 

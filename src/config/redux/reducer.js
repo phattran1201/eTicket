@@ -1,33 +1,32 @@
 import { combineReducers } from 'redux';
-import AreaReducer from './reducers/areaReducer';
 import { AsyncStorage } from 'react-native';
 import { persistReducer } from 'redux-persist';
 import EventPopularReducer from './reducers/eventPopularReducer';
-import CategoryReducer from './reducers/CategoryReducer';
+import CategoryReducer from './reducers/categoryReducer';
 import UserReducer from './reducers/userReducer';
 
 const reducer = combineReducers({
   user: persistReducer(
     {
       key: 'User',
-      storage: AsyncStorage
+      storage: AsyncStorage,
     },
     UserReducer
   ),
   eventPopular: persistReducer(
     {
       key: 'EventPopular',
-      storage: AsyncStorage
+      storage: AsyncStorage,
     },
     EventPopularReducer
   ),
   categoryReducer: persistReducer(
     {
       key: 'CategoryReducer',
-      storage: AsyncStorage
+      storage: AsyncStorage,
     },
     CategoryReducer
-  )
+  ),
 });
 
 export default reducer;

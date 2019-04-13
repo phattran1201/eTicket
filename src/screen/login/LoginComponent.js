@@ -27,11 +27,12 @@ class LoginComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'phat@gmail.com',
-      password: 'Aa@123456',
+      email: 'phattran1201@gmail.com',
+      password: '123456',
       isLoading: false,
       checkemail: true,
       checkpassword: true,
+      btnLogin: 'Log in',
     };
   }
 
@@ -59,8 +60,10 @@ class LoginComponent extends MyComponent {
     loginEmailPromise(this.state.email, this.state.password)
       .then(res => {
         this.props.loginSuccess(res, () => {
-          this.setState({ isLoading: false });
-          this.props.navigation.replace(ROUTE_KEY.MAIN);
+          this.setState({ isLoading: false, btnLogin: 'Log in Success' });
+          setTimeout(() => {
+            this.props.navigation.replace(ROUTE_KEY.MAIN);
+          }, 500);
           MySpinner.hide();
         });
       })
@@ -167,6 +170,7 @@ class LoginComponent extends MyComponent {
               onSubmitEditing={() => this.loginFunction()}
             />
             <Button
+              loading={this.state.isLoading}
               disabled={this.state.email === '' || this.state.password === ''}
               // disabledTitleStyle={[style.text, { color: APP_COLOR }]}
               // type={this.state.email === '' || this.state.password === '' ? 'outline' : 'solid'}
@@ -194,7 +198,7 @@ class LoginComponent extends MyComponent {
                 },
               ]}
               titleStyle={[style.text, { color: 'white' }]}
-              title='Log in'
+              title={this.state.btnLogin}
             />
             <Button
               onPress={() => this.props.navigation.navigate(ROUTE_KEY.REGISTER)}

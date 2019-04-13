@@ -23,116 +23,116 @@ const routeAppConfiguration = {
     screen: SplashComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.MAIN]: {
     screen: MainComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.PRE_LOGIN]: {
     screen: PreLoginComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.LOGIN]: {
     screen: LoginComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.REGISTER]: {
     screen: RegisterComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
 
   [ROUTE_KEY.DETAIL_EVENT]: {
     screen: DetailEventComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.DETAIL_PAY]: {
     screen: DetailPayComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.DETAIL_PAY_SUCESS]: {
     screen: DetailPaySucessComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.SEARCH]: {
     screen: SearchComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.SEARCH_FILTER]: {
     screen: FilterSearchComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.SEARCH_SUCCESS]: {
     screen: SuccessSearchComponent,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   },
   [ROUTE_KEY.MENU]: {
     screen: SideMenu,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false
-    }
-  }
+      gesturesEnabled: false,
+    },
+  },
 };
 
 const stackAppConfiguration = {
   initialRouteName: ROUTE_KEY.SPLASH,
-  transitionConfig: TransitionConfiguration
+  transitionConfig: TransitionConfiguration,
 };
 
 const CollapseExpand = (index, position) => {
   const inputRange = [index - 1, index, index + 1];
   const opacity = position.interpolate({
     inputRange,
-    outputRange: [0, 1, 1]
+    outputRange: [0, 1, 1],
   });
 
   const scaleY = position.interpolate({
     inputRange,
-    outputRange: [0, 1, 1]
+    outputRange: [0, 1, 1],
   });
 
   return {
     opacity,
-    transform: [{ scaleY }]
+    transform: [{ scaleY }],
   };
 };
 
 const SlideFromRight = (index, position, width) => {
   const translateX = position.interpolate({
     inputRange: [index - 1, index, index + 1],
-    outputRange: [width, 0, 0]
+    outputRange: [width, 0, 0],
   });
   const slideFromRight = { transform: [{ translateX }] };
   return slideFromRight;
@@ -140,7 +140,7 @@ const SlideFromRight = (index, position, width) => {
 const slowFade = (index, position) => {
   const opacity = position.interpolate({
     inputRange: [index - 1, index, index + 1],
-    outputRange: [0, 1, 1]
+    outputRange: [0, 1, 1],
   });
   return { opacity };
 };
@@ -150,7 +150,7 @@ const TransitionConfiguration = () => ({
     duration: 500,
     easing: Easing.out(Easing.poly(4)),
     timing: Animated.timing,
-    useNativeDriver: true
+    useNativeDriver: true,
   },
   screenInterpolator: sceneProps => {
     const { layout, position, scene } = sceneProps;
@@ -163,9 +163,9 @@ const TransitionConfiguration = () => ({
       none: null,
       slowFade: slowFade(index, position),
       slideFromRight: SlideFromRight(index, position, width),
-      default: slowFade(index, position)
+      default: slowFade(index, position),
     }[transition];
-  }
+  },
 });
 
 const Navigator = createStackNavigator(routeAppConfiguration, stackAppConfiguration);
