@@ -1,7 +1,7 @@
 import { DatePicker, Form, Input, Item, Label } from 'native-base';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { Avatar, CheckBox } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
@@ -25,23 +25,17 @@ class PersonalInfoComponent extends MyComponent {
     super(props);
     this.state = {
       chosenDate: new Date(),
-      sex: 'ALL',
+      sex: 'Other',
       txtAddress: '',
       txtLatitude: '',
       txtLongitude: '',
       dialogVisible: '',
     };
-    this.setDate = this.setDate.bind(this);
   }
 
   render() {
     return (
-      <KeyboardAwareScrollView
-        style={{ backgroundColor: '#fff' }}
-        // resetScrollToCoords={{ x: 0, y: 0 }}
-        // contentContainerStyle={{ flex: 1 }}
-        // scrollEnabled={false}
-      >
+      <KeyboardAwareScrollView style={{ backgroundColor: '#fff' }}>
         <BaseHeader
           noShadow
           translucent
@@ -53,10 +47,10 @@ class PersonalInfoComponent extends MyComponent {
             backgroundColor: 'transparent',
             zIndex: 99999,
           }}
-          leftIcon='arrow-left'
-          leftIconType='Feather'
-          leftIconStyle={{ color: APP_COLOR_TEXT }}
-          onLeftPress={() => this.props.navigation.goBack()}
+          // leftIcon='arrow-left'
+          // leftIconType='Feather'
+          // leftIconStyle={{ color: APP_COLOR_TEXT }}
+          // onLeftPress={() => this.props.navigation.goBack()}
         />
         <FastImage
           style={{
@@ -176,7 +170,7 @@ class PersonalInfoComponent extends MyComponent {
         >
           <Item stackedLabel>
             <Label style={style.textInput}>Họ và tên</Label>
-            <Input style={style.textInput} value='Trần Phát' />
+            <Input style={style.textInput} value={this.props.userData.fullname} disabled />
           </Item>
 
           <Item stackedLabel>
@@ -217,12 +211,73 @@ class PersonalInfoComponent extends MyComponent {
             <View
               style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
             >
-              <Input style={style.textInput} value='phattran1201@gmail.com' />
+              <Input style={style.textInput} value={this.props.userData.email} disabled />
               <EvilIcons size={FS(20)} name='check' type='evilicon' color='green' />
             </View>
           </Item>
           <Item stackedLabel>
             <Label style={style.textInput}>Giới tính</Label>
+            <View
+              style={{
+                marginTop: 10 * SCALE_RATIO_WIDTH_BASIS,
+                flex: 1,
+                width: DEVICE_WIDTH - 60 * SCALE_RATIO_WIDTH_BASIS,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <CheckBox
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                checkedColor={APP_COLOR}
+                textStyle={style.text}
+                containerStyle={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  padding: 0,
+                  margin: 0,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0,
+                }}
+                title='Male'
+                checked={this.state.sex === 'Male'}
+                onPress={() => this.setState({ sex: 'Male' })}
+              />
+              <CheckBox
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                checkedColor={APP_COLOR}
+                textStyle={style.text}
+                containerStyle={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  padding: 0,
+                  margin: 0,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0,
+                }}
+                title='Female'
+                checked={this.state.sex === 'Female'}
+                onPress={() => this.setState({ sex: 'Female' })}
+              />
+              <CheckBox
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                checkedColor={APP_COLOR}
+                textStyle={style.text}
+                containerStyle={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  padding: 0,
+                  margin: 0,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0,
+                }}
+                title='Other'
+                checked={this.state.sex === 'Other'}
+                onPress={() => this.setState({ sex: 'Other' })}
+              />
+            </View>
 
             {/* <Dropdown
               containerStyle={{ width: '100%' }}
@@ -367,128 +422,6 @@ class PersonalInfoComponent extends MyComponent {
               /> */}
             </View>
           </Item>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View
-              style={{
-                backgroundColor: APP_COLOR,
-                width: 3 * SCALE_RATIO_WIDTH_BASIS,
-                height: '80%',
-                marginLeft: 25 * SCALE_RATIO_WIDTH_BASIS,
-              }}
-            />
-            <Item stackedLabel style={{ flex: 1 }}>
-              <Label>Địa chỉ thứ 2</Label>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                {/* <GooglePlacesAutocomplete
-                  onPress={(data, details) => {
-                    this.onPlaceSearch(data, details);
-                  }}
-                  isRowScrollable={false}
-                  enablePoweredByContainer={false}
-                  placeholder={strings.search_place}
-                  // placeholderTextColor="#fff"
-                  listViewDisplayed={false}
-                  fetchDetails
-                  renderRow={row => (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <MaterialIcons name='place' size={FS(14)} color='#707070' style={{ alignSelf: 'center' }} />
-
-                      <View style={{ justifyContent: 'center', marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS }}>
-                        <Text style={style.textInput}>{row.structured_formatting.main_text}</Text>
-                        <Text style={style.textInput}>{row.structured_formatting.secondary_text} </Text>
-                      </View>
-                    </View>
-                  )}
-                  query={{
-                    // components: 'country:vi',
-                    key: 'AIzaSyAUYfbKtctkIibOgFnNN2x9Xg9i0sVxlhQ',
-                    language: 'vi',
-                  }}
-                  styles={{
-                    textInputContainer: {
-                      width: '100%',
-                      backgroundColor: 'transparent',
-                      borderWidth: 0,
-                      borderTopColor: 'rgba(0,0,0,0)',
-                      borderBottomColor: 'rgba(0,0,0,0)',
-                      borderTopWidth: 0,
-                      borderBottomWidth: 0,
-                    },
-                    textInput: {
-                      width: '100%',
-                      fontSize: FS(16),
-                      fontFamily: FONT.Regular,
-                      color: APP_COLOR_TEXT,
-                      backgroundColor: 'transparent',
-                      marginBottom: Platform.OS === 'ios' ? 0 : -5,
-                      borderWidth: 0,
-                      paddingLeft: 0,
-                      marginLeft: 0,
-                      paddingRight: 0,
-                      marginRight: 0,
-                      // borderRadius: 25
-                    },
-                    listView: {
-                      backgroundColor: 'white',
-                      width: '100%',
-                      borderTopColor: 'rgba(0,0,0,0)',
-                      borderBottomColor: 'rgba(0,0,0,0)',
-                      borderTopWidth: 0,
-                      borderBottomWidth: 0,
-                    },
-                    separator: {
-                      backgroundColor: 'transparent',
-                    },
-                  }}
-                  nearbyPlacesAPI={'GooglePlacesSearch'}
-                  GooglePlacesSearchQuery={{
-                    // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                    rankby: 'distance',
-                    typles: 'country',
-                  }}
-                  renderRightButton={() => (
-                    <EvilIcons
-                      size={FS(20)}
-                      name='chevron-right'
-                      type='evilicon'
-                      color='green'
-                      style={{
-                        textAlign: 'center',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
-                      }}
-                    />
-                  )}
-                /> */}
-              </View>
-            </Item>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {/* <View
-              style={{
-                backgroundColor: APP_COLOR,
-                width: 3 * SCALE_RATIO_WIDTH_BASIS,
-                height: '100%',
-                marginLeft: 25 * SCALE_RATIO_WIDTH_BASIS
-              }}
-            /> */}
-            <Item
-              stackedLabel
-              style={{ flex: 1, height: '90%', marginLeft: 40 * SCALE_RATIO_WIDTH_BASIS, borderBottomWidth: 0 }}
-            >
-              <Label />
-              <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-                <Feather size={FS(20)} name='plus' color={APP_COLOR_TEXT} />
-                <Text style={style.textInput}>Thêm địa chỉ</Text>
-              </View>
-            </Item>
-          </View>
         </Form>
         <TouchableOpacity
           onPress={() => alert(strings.alert, strings.log_out)}
@@ -500,7 +433,7 @@ class PersonalInfoComponent extends MyComponent {
             alignSelf: 'center',
           }}
         >
-          {strings.log_out}
+          <Text> {strings.log_out}</Text>
         </TouchableOpacity>
         <Text
           style={[

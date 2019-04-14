@@ -26,6 +26,7 @@ const scale = Math.min(scaleWidth, scaleHeight);
 export const FS = size => Math.ceil(size * scale);
 export const BASE_URL = 'https://eticket-vhu.herokuapp.com/api/v1/eticket/';
 export const ROUTE_KEY = {
+  PERSONAL_INFO: 'PERSONAL_INFO',
   PRE_LOGIN: 'PRE_LOGIN',
   SEARCH_SUCCESS: 'SEARCH_SUCCESS',
   SEARCH_FILTER: 'SEARCH_FILTER',
@@ -102,6 +103,8 @@ export const ROUTE_KEY = {
 };
 
 export const CONSTANTS_KEY = {
+  UPDATE_LIST_IN_WEEK_EVENTS: 'UPDATE_LIST_IN_WEEK_EVENTS',
+  UPDATE_LIST_FREE_EVENTS: 'UPDATE_LIST_FREE_EVENTS',
   UPDATE_LIST_CATEGORY: 'UPDATE_LIST_CATEGORY',
   UPDATE_LIST_POPUPAR_EVENTS: 'UPDATE_LIST_POPUPAR_EVENTS',
   UPDATE_CURRENT_TOKEN: 'UPDATE_CURRENT_TOKEN',

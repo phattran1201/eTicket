@@ -10,7 +10,7 @@ import style, { APP_COLOR, APP_COLOR_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY, FON
 import MyComponent from '../../view/MyComponent';
 import HeaderWithAvatar from '../../view/HeaderWithAvatar';
 import BaseHeader from '../../view/BaseHeader';
-import { loadListPopularEvents } from './HomeActions';
+import { loadListPopularEvents, loadListInWeekEvents, loadListFreeEvents } from './HomeActions';
 import MyImage from '../../view/MyImage';
 import moment from 'moment';
 import { logout } from '../login/LoginActions';
@@ -27,6 +27,8 @@ class HomeComponent extends MyComponent {
   }
   componentDidMount() {
     this.props.loadListPopularEvents();
+    this.props.loadListInWeekEvents();
+    this.props.loadListFreeEvents();
   }
 
   renderPopular = ({ item, index }) => {
@@ -214,20 +216,16 @@ class HomeComponent extends MyComponent {
   };
 
   renderNewsItem = ({ item, index }) => {
-    console.log('dauphaiphat: item', item);
     return <ItemList item={item} />;
   };
 
   render() {
-    const nickname = 'Đăng Nhập';
-    const point = 0;
+    const nickname = this.props.userData && this.props.userData.fullname ? this.props.userData.fullname : 'Đăng Nhập';
+    // const point = 0;
     const avatar = null;
-    console.log('dauphaiphat: render -> this.props.listEventPopular', this.props.listEventPopular);
 
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
-        {/* <BaseHeader noShadow /> */}
-
         <ScrollView showsVerticalScrollIndicator={false}>
           <LinearGradient
             style={{
@@ -242,16 +240,13 @@ class HomeComponent extends MyComponent {
             end={{ x: 0.75, y: 0.25 }}
             colors={[APP_COLOR, APP_COLOR_2]}
           />
-          <HeaderWithAvatar
-            styleContent={{ backgroundColor: 'transparent' }}
+          <BaseHeader
             noShadow
-            name={nickname}
-            styleName={{ color: '#fff' }}
-            rightIconStyle={{ color: '#fff' }}
-            point={point}
-            avatar={avatar}
-            onAvatarPress={() => this.props.navigation.navigate(ROUTE_KEY.PERSONALINFO)}
-            onPointPress={() => this.props.navigation.navigate(ROUTE_KEY.REWARDS)}
+            translucent
+            styleContent={{
+              backgroundColor: 'transparent',
+            }}
+            rightIconStyle={{ color: 'white' }}
             rightIcon='bell'
             rightIconType='SimpleLineIcons'
             onRightPress={() => {}}
@@ -378,8 +373,7 @@ class HomeComponent extends MyComponent {
                 Upcoming in week
               </Text>
             </View>
-            {this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss')).length ===
-            0 ? (
+            {/* {this.props.listEventInWeek.length === 0 ? (
               <View
                 style={{
                   // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -408,7 +402,7 @@ class HomeComponent extends MyComponent {
               <View>
                 <FlatList
                   style={{ flex: 1 }}
-                  data={this.props.listEventPopular.filter(e => e.end_date === moment().format('YYYY-MM-DD hh:mm:ss'))}
+                  data={this.props.listEventInWeek}
                   renderItem={this.renderNewsItem}
                   // onRefresh={this.onRefresh}
                   // refreshing={this.state.refreshing}
@@ -441,7 +435,7 @@ class HomeComponent extends MyComponent {
                   </Text>
                 </TouchableOpacity>
               </View>
-            )}
+            )} */}
           </View>
           <View
             style={{
@@ -468,43 +462,72 @@ class HomeComponent extends MyComponent {
                   },
                 ]}
               >
-                Free entry ticket
+                Event Free
               </Text>
             </View>
-            <FlatList
-              style={{ flex: 1 }}
-              data={this.props.listEventPopular}
-              renderItem={this.renderNewsItem}
-              onRefresh={this.onRefresh}
-              refreshing={this.state.refreshing}
-              onEndReached={this.handleLoadMore}
-              onEndReachedThreshold={0.01}
-              ListFooterComponent={this.renderFooter}
-            />
-            <TouchableOpacity
-              style={{
-                marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
-                marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
-                borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-                borderWidth: 1,
-                borderColor: APP_COLOR_TEXT_GRAY,
-                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-                alignItems: 'center',
-              }}
-              onPress={() => this.props.logout(() => this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN))}
-            >
-              <Text
-                style={[
-                  style.textCaption,
-                  {
-                    fontSize: FS(14),
-                    color: '#000',
-                  },
-                ]}
+            {/* {this.props.listEventFree.length === 0 ? (
+              <View
+                style={{
+                  // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                  // height: 86 * SCALE_RATIO_WIDTH_BASIS,
+                  marginTop: 10 * SCALE_RATIO_WIDTH_BASIS,
+                  marginBottom: 30 * SCALE_RATIO_WIDTH_BASIS,
+                }}
+                onPress={() => {}}
               >
-                See more event (2000+)
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    style.textCaption,
+                    {
+                      fontSize: FS(14),
+                      color: '#00000050',
+                    },
+                  ]}
+                >
+                  No events in the next week
+                </Text>
+              </View>
+            ) : (
+              <View>
+                <FlatList
+                  style={{ flex: 1 }}
+                  data={this.props.listEventFree}
+                  renderItem={this.renderNewsItem}
+                  // onRefresh={this.onRefresh}
+                  // refreshing={this.state.refreshing}
+                  // onEndReached={this.handleLoadMore}
+                  // onEndReachedThreshold={0.01}
+                  // ListFooterComponent={this.renderFooter}
+                />
+                <TouchableOpacity
+                  style={{
+                    marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
+                    marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+                    borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                    borderWidth: 1,
+                    borderColor: APP_COLOR_TEXT_GRAY,
+                    padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {}}
+                >
+                  <Text
+                    style={[
+                      style.textCaption,
+                      {
+                        fontSize: FS(14),
+                        color: '#000',
+                      },
+                    ]}
+                  >
+                    See more event (2000+)
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )} */}
           </View>
         </ScrollView>
       </View>
@@ -558,10 +581,14 @@ const styles = StyleSheet.create({
     fontSize: 10 * SCALE_RATIO_WIDTH_BASIS,
   },
 });
-const mapActionCreators = { loadListPopularEvents, logout };
+const mapActionCreators = { loadListPopularEvents, logout, loadListInWeekEvents, loadListFreeEvents };
 
 const mapStateToProps = state => ({
-  listEventPopular: state.eventPopular.listEventPopular,
+  token: state.user.token,
+  userData: state.user.userData,
+  listEventPopular: state.event.listEventPopular,
+  listEventInWeek: state.event.listEventInWeek,
+  listEventFree: state.event.listEventFree,
 });
 
 export default connect(

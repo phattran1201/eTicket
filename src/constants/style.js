@@ -6,7 +6,7 @@ import {
   IS_IOS,
   SCALE_RATIO_HEIGHT_BASIS,
   SCALE_RATIO_WIDTH_BASIS,
-  DEVICE_WIDTH
+  DEVICE_WIDTH,
 } from './Constants';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import DeviceInfo from 'react-native-device-info';
@@ -37,7 +37,6 @@ export const FONT = {
   Light: 'Helvetica Neue Light',
   UltraLight: 'HelveticaNeue-UltraLight',
   UltraLightItalic: 'HelveticaNeue-UltraLightItalic',
-
 };
 
 const style = StyleSheet.create({
@@ -45,19 +44,19 @@ const style = StyleSheet.create({
     fontSize: FS(14),
     fontFamily: FONT.Regular,
     color: APP_COLOR_TEXT,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   textCaption: {
     fontSize: FS(12),
     fontFamily: FONT.Medium,
     color: APP_COLOR,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   textHeader: {
     fontSize: FS(16),
     fontFamily: FONT.CondensedBold,
     color: APP_COLOR_TEXT,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
     // textAlign: 'center'
   },
   //Button
@@ -69,7 +68,7 @@ const style = StyleSheet.create({
     borderRadius: (41 * SCALE_RATIO_HEIGHT_BASIS) / 2,
     paddingVertical: 8 * SCALE_RATIO_HEIGHT_BASIS,
     paddingHorizontal: 25 * SCALE_RATIO_WIDTH_BASIS,
-    shadowRadius: 4
+    shadowRadius: 4,
   },
   buttonBottom: {
     position: 'absolute',
@@ -78,7 +77,7 @@ const style = StyleSheet.create({
     height: 48 * SCALE_RATIO_HEIGHT_BASIS,
     bottom: 0,
     width,
-    backgroundColor: APP_COLOR
+    backgroundColor: APP_COLOR,
   },
   //textInput
   textInput: {
@@ -86,16 +85,16 @@ const style = StyleSheet.create({
     fontFamily: FONT.Medium,
     color: APP_COLOR_TEXT,
     backgroundColor: 'transparent',
-    marginBottom: Platform.OS === 'ios' ? 0 : -5
+    marginBottom: Platform.OS === 'ios' ? 0 : -5,
   },
   textButton: {
     fontSize: FS(14),
     fontFamily: FONT.Medium,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   viewInput: {
     flexDirection: 'row',
-    borderColor: Platform.OS === 'ios' ? '#C7AE6D30' : '#70707010',
+    borderColor: Platform.OS === 'ios' ? '#33333330' : '#70707010',
     borderWidth: 1,
     backgroundColor: '#fff',
     height: 43 * SCALE_RATIO_HEIGHT_BASIS,
@@ -105,23 +104,23 @@ const style = StyleSheet.create({
     shadowColor: APP_COLOR,
     shadowOffset: {
       width: 0,
-      height: 3
+      height: 3,
     },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 3
+    elevation: 3,
   },
   //shadow
   shadow: {
     overflow: 'visible',
-    shadowColor: APP_COLOR,
+    shadowColor: '#33333330',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.5,
     shadowRadius: 3,
-    elevation: 2
+    elevation: 2,
   },
   //header
   titleHeader: {
@@ -129,7 +128,7 @@ const style = StyleSheet.create({
     fontFamily: FONT.Medium,
     color: APP_COLOR_TEXT,
     backgroundColor: 'transparent',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   header: {
     paddingTop: fixHeaderTranslucent,
@@ -140,23 +139,23 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     marginBottom: IS_IOS ? 5 : 0,
-    borderColor: Platform.OS === 'ios' ? '#C7AE6D30' : 'transparent',
-    shadowColor: APP_COLOR,
+    borderColor: Platform.OS === 'ios' ? '#33333330' : 'transparent',
+    shadowColor: '#33333330',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 3,
-    overflow: 'visible'
+    overflow: 'visible',
   },
   iconHeader: {
     width: 20 * SCALE_RATIO_WIDTH_BASIS,
     height: 20 * SCALE_RATIO_WIDTH_BASIS,
     alignSelf: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   //modal
   textModal: {
@@ -165,12 +164,12 @@ const style = StyleSheet.create({
     color: APP_COLOR,
     backgroundColor: 'transparent',
     textAlign: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   viewModal: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: Platform.OS === 'ios' ? '#C7AE6D30' : '#70707010',
+    borderColor: Platform.OS === 'ios' ? '#33333330' : '#70707010',
     borderWidth: 1,
     backgroundColor: '#fff',
     marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
@@ -180,18 +179,18 @@ const style = StyleSheet.create({
     shadowColor: APP_COLOR,
     shadowOffset: {
       width: 0,
-      height: 3
+      height: 3,
     },
     shadowOpacity: 0.5,
     shadowRadius: 5,
-    elevation: 3
+    elevation: 3,
   },
 
   textNormal: {
     fontSize: FS(14),
     fontFamily: FONT.Regular,
     color: APP_COLOR_TEXT,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   //icon
   viewIcon: {
@@ -200,8 +199,8 @@ const style = StyleSheet.create({
     height: 42 * SCALE_RATIO_WIDTH_BASIS,
     width: 42 * SCALE_RATIO_WIDTH_BASIS,
     borderRadius: (42 * SCALE_RATIO_WIDTH_BASIS) / 2,
-    backgroundColor: APP_COLOR
-  }
+    backgroundColor: APP_COLOR,
+  },
 });
 
 export default style;

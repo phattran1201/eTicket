@@ -13,31 +13,31 @@ import MyComponent from './MyComponent';
 
 class HeaderWithAvatar extends MyComponent {
   static propTypes = {
-    translucent: PropTypes.bool
+    translucent: PropTypes.bool,
   };
 
   static defaultProps = {
-    translucent: true
+    translucent: true,
   };
 
   renderIcon(type, icon, styles) {
     if (type === 'Ionicons') {
-      return <Ionicons name={icon} size={FS(20)} style={styles} color="#C7AE6D" />;
+      return <Ionicons name={icon} size={FS(20)} style={styles} color='#333333' />;
     }
     if (type === 'MaterialIcons') {
-      return <MaterialIcons name={icon} size={FS(20)} style={styles} color="#C7AE6D" />;
+      return <MaterialIcons name={icon} size={FS(20)} style={styles} color='#333333' />;
     }
     if (type === 'MaterialCommunityIcons') {
-      return <MaterialCommunityIcons name={icon} size={FS(20)} style={styles} color="#C7AE6D" />;
+      return <MaterialCommunityIcons name={icon} size={FS(20)} style={styles} color='#333333' />;
     }
     if (type === 'Feather') {
-      return <Feather name={icon} size={FS(20)} style={styles} color="#C7AE6D" />;
+      return <Feather name={icon} size={FS(20)} style={styles} color='#333333' />;
     }
     if (type === 'SimpleLineIcons') {
-      return <SimpleLineIcons name={icon} size={FS(20)} style={styles} color="#C7AE6D" />;
+      return <SimpleLineIcons name={icon} size={FS(20)} style={styles} color='#333333' />;
     }
     if (type === 'Image') {
-      return <Image source={icon} resizeMode="contain" style={[style.iconHeader, styles]} />;
+      return <Image source={icon} resizeMode='contain' style={[style.iconHeader, styles]} />;
     }
     return <View style={{ width: 20 * SCALE_RATIO_WIDTH_BASIS, height: 20 * SCALE_RATIO_WIDTH_BASIS }} />;
   }
@@ -89,7 +89,7 @@ class HeaderWithAvatar extends MyComponent {
       ringColor,
       translucent,
       valueMenu,
-      onPointPress
+      onPointPress,
     } = this.props;
     return (
       <View>
@@ -101,14 +101,14 @@ class HeaderWithAvatar extends MyComponent {
               shadowColor: noShadow ? 'transparent' : APP_COLOR,
               borderBottomWidth: noShadow ? 0 : style.header.borderBottomWidth,
               elevation: noShadow ? 0 : style.header.elevation,
-              backgroundColor: '#fff'
+              backgroundColor: '#fff',
             },
-            styleContent
+            styleContent,
           ]}
         >
           <StatusBar
             backgroundColor={translucent ? '#ffffff60' : '#fff'}
-            barStyle="dark-content"
+            barStyle='dark-content'
             translucent={translucent}
           />
           <View style={{ flexDirection: 'row' }}>
@@ -121,12 +121,8 @@ class HeaderWithAvatar extends MyComponent {
               }}
             >
               <Image
-                source={{
-                  uri:
-                    avatar ||
-                    'https://tea-3.lozi.vn/v1/images/resized/logo-toco-toco-1529484698-1-6041526-1529484698?w=960&type=o'
-                }}
-                resizeMode="cover"
+                source={avatar ? { uri: avatar } : require('../assets/image/ic_login.png')}
+                resizeMode='cover'
                 style={[
                   {
                     width: 35 * SCALE_RATIO_WIDTH_BASIS,
@@ -134,9 +130,9 @@ class HeaderWithAvatar extends MyComponent {
                     borderRadius: (35 * SCALE_RATIO_WIDTH_BASIS) / 2,
                     alignSelf: 'center',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
                   },
-                  avatarStyle
+                  avatarStyle,
                 ]}
               />
             </TouchableOpacity>
@@ -144,7 +140,7 @@ class HeaderWithAvatar extends MyComponent {
             <View
               style={{
                 maxWidth: (DEVICE_WIDTH * 80) / 100,
-                marginLeft: -(35 * SCALE_RATIO_WIDTH_BASIS)
+                marginLeft: -(35 * SCALE_RATIO_WIDTH_BASIS),
               }}
             >
               <View
@@ -154,7 +150,7 @@ class HeaderWithAvatar extends MyComponent {
                   paddingRight: 15 * SCALE_RATIO_WIDTH_BASIS,
                   paddingLeft: 45 * SCALE_RATIO_WIDTH_BASIS,
                   borderRadius: (35 * SCALE_RATIO_WIDTH_BASIS) / 2,
-                  justifyContent: 'center'
+                  justifyContent: 'center',
                 }}
               >
                 {/* {children}
@@ -170,8 +166,8 @@ class HeaderWithAvatar extends MyComponent {
                       {
                         fontSize: FS(16),
                         color: APP_COLOR_TEXT,
-                        fontFamily: FONT.Medium
-                      }
+                        fontFamily: FONT.Medium,
+                      },
                     ]}
                   >
                     {name || 'Đăng Nhập'}
@@ -190,7 +186,7 @@ class HeaderWithAvatar extends MyComponent {
                           width: 1.5,
                           height: 35 * SCALE_RATIO_WIDTH_BASIS,
                           backgroundColor: `${APP_COLOR}10`,
-                          marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS
+                          marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
                         }}
                       />
                       <Text
@@ -198,8 +194,8 @@ class HeaderWithAvatar extends MyComponent {
                           {
                             fontSize: FS(16),
                             color: APP_COLOR,
-                            fontFamily: FONT.Medium
-                          }
+                            fontFamily: FONT.Medium,
+                          },
                         ]}
                       >
                         {point || 0}{' '}
@@ -207,7 +203,7 @@ class HeaderWithAvatar extends MyComponent {
                           style={{
                             fontSize: FS(12),
                             color: APP_COLOR_TEXT,
-                            fontFamily: FONT.Regular
+                            fontFamily: FONT.Regular,
                           }}
                         >
                           điểm
@@ -220,7 +216,7 @@ class HeaderWithAvatar extends MyComponent {
             </View>
           </View>
           {rightIcon || rightIcon2 || rightIcon3 || rightIconMenu ? null : (
-            <Feather name="arrow-right" size={FS(20)} color="transparent" style={[styles.rightStyle, btnRightStyle]} />
+            <Feather name='arrow-right' size={FS(20)} color='transparent' style={[styles.rightStyle, btnRightStyle]} />
           )}
 
           {rightIcon ? (
@@ -238,18 +234,18 @@ class HeaderWithAvatar extends MyComponent {
                   {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
                 </TouchableOpacity>
               ) : (
-                  <TouchableOpacity
-                    disabled={btnRightDisabled}
-                    onPress={() => {
-                      this.onRightPressTimeout = setTimeout(() => {
-                        if (onRightPress) onRightPress();
-                      }, 0);
-                    }}
-                    style={[styles.rightStyle, btnRightStyle]}
-                  >
-                    {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
-                  </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                  disabled={btnRightDisabled}
+                  onPress={() => {
+                    this.onRightPressTimeout = setTimeout(() => {
+                      if (onRightPress) onRightPress();
+                    }, 0);
+                  }}
+                  style={[styles.rightStyle, btnRightStyle]}
+                >
+                  {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
+                </TouchableOpacity>
+              )}
             </View>
           ) : null}
 
@@ -294,6 +290,6 @@ const styles = StyleSheet.create({
     padding: FS(5),
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
 });

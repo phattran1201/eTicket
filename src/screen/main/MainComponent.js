@@ -7,11 +7,9 @@ import { connect } from 'react-redux';
 import { DEVICE_HEIGHT, DEVICE_WIDTH, SCALE_RATIO_HEIGHT_BASIS } from '../../constants/Constants';
 import MyComponent from '../../view/MyComponent';
 import MySpinner from '../../view/MySpinner';
-import { loadListPopularEvents } from '../home/HomeActions';
 import HomeComponent from '../home/HomeComponent';
-import PreLoginComponent from '../login/PreLoginComponent';
-import SearchComponent from '../search/SearchComponent';
 import PersonalInfoComponent from '../profile/PersonalInfoComponent';
+import SearchComponent from '../search/SearchComponent';
 
 class MainComponent extends MyComponent {
   constructor(props) {
@@ -19,9 +17,6 @@ class MainComponent extends MyComponent {
     this.state = { activeTab: 'home' };
   }
 
-  componentDidMount() {
-    this.props.loadListPopularEvents();
-  }
   tabs = [
     {
       key: 'home',
@@ -125,7 +120,7 @@ class MainComponent extends MyComponent {
   }
 }
 
-const mapStateToProps = state => ({ loadListPopularEvents });
+const mapStateToProps = state => ({});
 
 const mapActionCreators = {};
 

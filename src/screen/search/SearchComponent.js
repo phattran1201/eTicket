@@ -60,6 +60,12 @@ class SearchComponent extends MyComponent {
       filterUpComming: 'All',
       filterEventCategory: 'All',
       filterPrice: 'All',
+      listFilterUpComming: [
+        { id: 'today', name: 'To Day' },
+        { id: 'tomorrow', name: 'Tomorrow' },
+        { id: 'thisWeek', name: 'This Week' },
+      ],
+      listFilterPrice: [{ id: 'free', name: 'Free ticket' }, { id: '', name: 'Paid ticket' }],
     };
   }
   searchFilterFunction = () => {
@@ -150,11 +156,17 @@ class SearchComponent extends MyComponent {
         <TouchableOpacity
           onPress={() => {
             this.state.onFocus
-              ? this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, { keySearch: this.state.keySearch })
+              ? this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
+                  keySearch: this.state.keySearch,
+                  filterUpComming: '',
+                  filterEventCategory: '',
+                  filterPrice: '',
+                })
               : this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
-                  filterUpComming: this.state.filterUpComming,
-                  filterEventCategory: this.state.filterEventCategory,
-                  filterPrice: this.state.filterPrice,
+                  searchOpiton: true,
+                  filterUpComming: this.state.filterUpComming === 'All' ? '' : this.state.filterUpComming,
+                  filterEventCategory: this.state.filterEventCategory === 'All' ? '' : this.state.filterEventCategory,
+                  filterPrice: this.state.filterPrice === 'All' ? '' : this.state.filterPrice,
                 });
           }}
           style={{
@@ -180,7 +192,7 @@ class SearchComponent extends MyComponent {
               style={{
                 position: 'absolute',
                 left: 10 * SCALE_RATIO_WIDTH_BASIS,
-                top: 25 * SCALE_RATIO_WIDTH_BASIS,
+                top: 35 * SCALE_RATIO_WIDTH_BASIS,
                 width: 40 * SCALE_RATIO_WIDTH_BASIS,
                 height: 40 * SCALE_RATIO_WIDTH_BASIS,
                 // borderRadius: 40 * SCALE_RATIO_WIDTH_BASIS,
@@ -265,7 +277,9 @@ class SearchComponent extends MyComponent {
                     },
                   ]}
                 >
-                  {this.state.filterUpComming}
+                  {this.state.filterUpComming === 'All'
+                    ? 'All'
+                    : this.state.listFilterUpComming.map(e => e.id === this.state.filterUpComming && e.name)}
                 </Text>
               </View>
               <View
@@ -325,7 +339,9 @@ class SearchComponent extends MyComponent {
                     },
                   ]}
                 >
-                  {this.state.filterEventCategory}
+                  {this.state.filterEventCategory === 'All'
+                    ? 'All'
+                    : this.props.listCategory.map(e => e.id === this.state.filterEventCategory && e.name)}
                 </Text>
               </View>
               <View
@@ -355,7 +371,9 @@ class SearchComponent extends MyComponent {
                     },
                   ]}
                 >
-                  {this.state.filterPrice}
+                  {this.state.filterPrice === 'All'
+                    ? 'All'
+                    : this.state.listFilterPrice.map(e => e.id === this.state.filterPrice && e.name)}
                 </Text>
               </View>
             </View>
@@ -451,90 +469,36 @@ class SearchComponent extends MyComponent {
                         this.setState({ filterUpComming: 'All' });
                       }}
                     />
-                    <CheckBox
-                      textStyle={[
-                        style.text,
-                        {
-                          color: this.state.filterUpComming === 'Today' ? APP_COLOR : APP_COLOR_TEXT,
-                          fontSize: FS(22),
-                        },
-                      ]}
-                      containerStyle={{
-                        justifyContent: 'space-between',
-                        borderWidth: 0,
-                        backgroundColor: 'transparent',
-                        paddingLeft: 0,
-                        marginLeft: 0,
-                      }}
-                      title='Today'
-                      iconRight
-                      iconType='material'
-                      checkedIcon='check'
-                      uncheckedIcon=''
-                      checked={this.state.filterUpComming === 'Today'}
-                      checkedColor={APP_COLOR}
-                      uncheckedColor='tranparent'
-                      size={18}
-                      onPress={() => {
-                        this.setState({ filterUpComming: 'Today' });
-                      }}
-                    />
-                    <CheckBox
-                      textStyle={[
-                        style.text,
-                        {
-                          color: this.state.filterUpComming === 'Tomorrow' ? APP_COLOR : APP_COLOR_TEXT,
-                          fontSize: FS(22),
-                        },
-                      ]}
-                      containerStyle={{
-                        justifyContent: 'space-between',
-                        borderWidth: 0,
-                        backgroundColor: 'transparent',
-                        paddingLeft: 0,
-                        marginLeft: 0,
-                      }}
-                      title='Tomorrow'
-                      iconRight
-                      iconType='material'
-                      checkedIcon='check'
-                      uncheckedIcon=''
-                      checked={this.state.filterUpComming === 'Tomorrow'}
-                      checkedColor={APP_COLOR}
-                      uncheckedColor='tranparent'
-                      size={18}
-                      onPress={() => {
-                        this.setState({ filterUpComming: 'Tomorrow' });
-                      }}
-                    />
-                    <CheckBox
-                      textStyle={[
-                        style.text,
-                        {
-                          color: this.state.filterUpComming === 'This weekend' ? APP_COLOR : APP_COLOR_TEXT,
-                          fontSize: FS(22),
-                        },
-                      ]}
-                      containerStyle={{
-                        justifyContent: 'space-between',
-                        borderWidth: 0,
-                        backgroundColor: 'transparent',
-                        paddingLeft: 0,
-                        marginLeft: 0,
-                      }}
-                      title='This weekend'
-                      iconRight
-                      iconType='material'
-                      checkedIcon='check'
-                      uncheckedIcon=''
-                      checked={this.state.filterUpComming === 'This weekend'}
-                      checkedColor={APP_COLOR}
-                      uncheckedColor='tranparent'
-                      size={18}
-                      onPress={() => {
-                        this.setState({ filterUpComming: 'This weekend' });
-                      }}
-                    />
+                    {this.state.listFilterUpComming.map(e => (
+                      <CheckBox
+                        textStyle={[
+                          style.text,
+                          {
+                            color: this.state.filterUpComming === e.id ? APP_COLOR : APP_COLOR_TEXT,
+                            fontSize: FS(22),
+                          },
+                        ]}
+                        containerStyle={{
+                          justifyContent: 'space-between',
+                          borderWidth: 0,
+                          backgroundColor: 'transparent',
+                          paddingLeft: 0,
+                          marginLeft: 0,
+                        }}
+                        title={e.name}
+                        iconRight
+                        iconType='material'
+                        checkedIcon='check'
+                        uncheckedIcon=''
+                        checked={this.state.filterUpComming === e.id}
+                        checkedColor={APP_COLOR}
+                        uncheckedColor='tranparent'
+                        size={18}
+                        onPress={() => {
+                          this.setState({ filterUpComming: e.id });
+                        }}
+                      />
+                    ))}
                   </View>
                 </View>
               )}
@@ -591,7 +555,7 @@ class SearchComponent extends MyComponent {
                         textStyle={[
                           style.text,
                           {
-                            color: this.state.filterEventCategory === e.name ? APP_COLOR : APP_COLOR_TEXT,
+                            color: this.state.filterEventCategory === e.id ? APP_COLOR : APP_COLOR_TEXT,
                             fontSize: FS(22),
                           },
                         ]}
@@ -607,12 +571,12 @@ class SearchComponent extends MyComponent {
                         iconType='material'
                         checkedIcon='check'
                         uncheckedIcon=''
-                        checked={this.state.filterEventCategory === e.name}
+                        checked={this.state.filterEventCategory === e.id}
                         checkedColor={APP_COLOR}
                         uncheckedColor='tranparent'
                         size={18}
                         onPress={() => {
-                          this.setState({ filterEventCategory: e.name });
+                          this.setState({ filterEventCategory: e.id });
                         }}
                       />
                     ))}
@@ -667,62 +631,36 @@ class SearchComponent extends MyComponent {
                         this.setState({ filterPrice: 'All' });
                       }}
                     />
-                    <CheckBox
-                      textStyle={[
-                        style.text,
-                        {
-                          color: this.state.filterPrice === 'Free ticket' ? APP_COLOR : APP_COLOR_TEXT,
-                          fontSize: FS(22),
-                        },
-                      ]}
-                      containerStyle={{
-                        justifyContent: 'space-between',
-                        borderWidth: 0,
-                        backgroundColor: 'transparent',
-                        paddingLeft: 0,
-                        marginLeft: 0,
-                      }}
-                      title='Free ticket'
-                      iconRight
-                      iconType='material'
-                      checkedIcon='check'
-                      uncheckedIcon=''
-                      checked={this.state.filterPrice === 'Free ticket'}
-                      checkedColor={APP_COLOR}
-                      uncheckedColor='tranparent'
-                      size={18}
-                      onPress={() => {
-                        this.setState({ filterPrice: 'Free ticket' });
-                      }}
-                    />
-                    <CheckBox
-                      textStyle={[
-                        style.text,
-                        {
-                          color: this.state.filterPrice === 'Paid ticket' ? APP_COLOR : APP_COLOR_TEXT,
-                          fontSize: FS(22),
-                        },
-                      ]}
-                      containerStyle={{
-                        justifyContent: 'space-between',
-                        borderWidth: 0,
-                        backgroundColor: 'transparent',
-                        paddingLeft: 0,
-                        marginLeft: 0,
-                      }}
-                      title='Paid ticket'
-                      iconRight
-                      iconType='material'
-                      checkedIcon='check'
-                      uncheckedIcon=''
-                      checked={this.state.filterPrice === 'Paid ticket'}
-                      checkedColor={APP_COLOR}
-                      uncheckedColor='tranparent'
-                      size={18}
-                      onPress={() => {
-                        this.setState({ filterPrice: 'Paid ticket' });
-                      }}
-                    />
+                    {this.state.listFilterPrice.map(e => (
+                      <CheckBox
+                        textStyle={[
+                          style.text,
+                          {
+                            color: this.state.filterPrice === e.id ? APP_COLOR : APP_COLOR_TEXT,
+                            fontSize: FS(22),
+                          },
+                        ]}
+                        containerStyle={{
+                          justifyContent: 'space-between',
+                          borderWidth: 0,
+                          backgroundColor: 'transparent',
+                          paddingLeft: 0,
+                          marginLeft: 0,
+                        }}
+                        title={e.name}
+                        iconRight
+                        iconType='material'
+                        checkedIcon='check'
+                        uncheckedIcon=''
+                        checked={this.state.filterPrice === e.id}
+                        checkedColor={APP_COLOR}
+                        uncheckedColor='tranparent'
+                        size={18}
+                        onPress={() => {
+                          this.setState({ filterPrice: e.id });
+                        }}
+                      />
+                    ))}
                   </View>
                 </View>
               )}

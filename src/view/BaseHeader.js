@@ -13,11 +13,11 @@ import MyComponent from './MyComponent';
 
 class BaseHeader extends MyComponent {
   static propTypes = {
-    translucent: PropTypes.bool
+    translucent: PropTypes.bool,
   };
 
   static defaultProps = {
-    translucent: true
+    translucent: true,
   };
 
   renderIcon(type, icon, styles) {
@@ -29,7 +29,12 @@ class BaseHeader extends MyComponent {
     }
     if (type === 'MaterialCommunityIcons') {
       return (
-        <MaterialCommunityIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color={APP_COLOR} />
+        <MaterialCommunityIcons
+          name={icon}
+          size={(styles && styles.width) || FS(20)}
+          style={styles}
+          color={APP_COLOR}
+        />
       );
     }
     if (type === 'Feather') {
@@ -39,7 +44,7 @@ class BaseHeader extends MyComponent {
       return <SimpleLineIcons name={icon} size={(styles && styles.width) || FS(20)} style={styles} color={APP_COLOR} />;
     }
     if (type === 'Image') {
-      return <Image source={icon} resizeMode="contain" style={[style.iconHeader, styles]} />;
+      return <Image source={icon} resizeMode='contain' style={[style.iconHeader, styles]} />;
     }
     return <View style={{ width: 20 * SCALE_RATIO_WIDTH_BASIS, height: 20 * SCALE_RATIO_WIDTH_BASIS }} />;
   }
@@ -90,7 +95,7 @@ class BaseHeader extends MyComponent {
       qrColor,
       translucent,
       valueMenu,
-      styleLeftContent
+      styleLeftContent,
     } = this.props;
 
     return (
@@ -98,17 +103,17 @@ class BaseHeader extends MyComponent {
         style={[
           style.header,
           {
-            shadowColor: noShadow ? 'transparent' : APP_COLOR,
+            shadowColor: noShadow ? 'transparent' : '#33333330',
             borderBottomWidth: noShadow ? 0 : style.header.borderBottomWidth,
             elevation: noShadow ? 0 : style.header.elevation,
-            backgroundColor: '#fff'
+            backgroundColor: '#fff',
           },
-          styleContent
+          styleContent,
         ]}
       >
         <StatusBar
           backgroundColor={translucent ? '#ffffff60' : '#fff'}
-          barStyle="dark-content"
+          barStyle='dark-content'
           translucent={translucent}
         />
         {leftIcon ? (
@@ -127,9 +132,9 @@ class BaseHeader extends MyComponent {
                     padding: FS(5),
                     justifyContent: 'center',
                     alignItems: 'center',
-                    alignSelf: 'center'
+                    alignSelf: 'center',
                   },
-                  styleLeftContent
+                  styleLeftContent,
                 ]}
               >
                 <Image
@@ -139,51 +144,51 @@ class BaseHeader extends MyComponent {
                   //     : require('../../assets/imgs/icons/qr.png')
                   // }
                   style={[style.iconHeader]}
-                  resizeMode="contain"
+                  resizeMode='contain'
                 />
               </TouchableOpacity>
             ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.onLeftPressTimeout = setTimeout(() => {
-                      if (onLeftPress) onLeftPress();
-                    }, 0);
-                  }}
-                  style={[
-                    {
-                      paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
-                      height: FS(30),
-                      padding: FS(5),
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      alignSelf: 'center'
-                    },
-                    styleLeftContent
-                  ]}
-                >
-                  {this.renderIcon(leftIconType, leftIcon, leftIconStyle)}
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity
+                onPress={() => {
+                  this.onLeftPressTimeout = setTimeout(() => {
+                    if (onLeftPress) onLeftPress();
+                  }, 0);
+                }}
+                style={[
+                  {
+                    paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
+                    height: FS(30),
+                    padding: FS(5),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                  },
+                  styleLeftContent,
+                ]}
+              >
+                {this.renderIcon(leftIconType, leftIcon, leftIconStyle)}
+              </TouchableOpacity>
+            )}
           </View>
         ) : (
-            <View
-              style={[
-                {
-                  paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
-                  height: FS(30),
-                  padding: FS(5),
-                  backgroundColor: 'transprent',
-                  borderRadius: FS(30) / 2,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  alignSelf: 'center'
-                },
-                { styleLeftContent }
-              ]}
-            >
-              <Feather name="arrow-left" size={FS(20)} color="transparent" />
-            </View>
-          )}
+          <View
+            style={[
+              {
+                paddingLeft: 15 * SCALE_RATIO_WIDTH_BASIS,
+                height: FS(30),
+                padding: FS(5),
+                backgroundColor: 'transprent',
+                borderRadius: FS(30) / 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+              },
+              { styleLeftContent },
+            ]}
+          >
+            <Feather name='arrow-left' size={FS(20)} color='transparent' />
+          </View>
+        )}
 
         <View
           style={{
@@ -191,40 +196,49 @@ class BaseHeader extends MyComponent {
             justifyContent: 'center',
             alignItems: 'center',
             alignContent: 'center',
-            alignSelf: 'center'
+            alignSelf: 'center',
           }}
         >
           {children}
         </View>
 
         {rightIcon || rightIcon2 || rightIcon3 || rightIconMenu ? null : (
-          <Feather name="arrow-right" size={FS(20)} color="transparent" style={[styles.rightStyle, btnRightStyle]} />
+          <Feather name='arrow-right' size={FS(20)} color='transparent' style={[styles.rightStyle, btnRightStyle]} />
         )}
 
         {rightIcon ? (
           <View>
             {rightIcon === 'envelope' || rightIcon === 'bell' ? (
-              {
-                /* <IconMessageAndBadgeComponent
+              /* <IconMessageAndBadgeComponent
                 ringColor={ringColor}
                 rightIconStyle={rightIconStyle || '#C7AE6d'}
                 navigation={this.props.navigation}
                 style={[styles.rightStyle, btnRightStyle]}
               /> */
-              }
+              <TouchableOpacity
+                disabled={btnRightDisabled}
+                onPress={() => {
+                  this.onRightPressTimeout = setTimeout(() => {
+                    if (onRightPress) onRightPress();
+                  }, 0);
+                }}
+                style={[styles.rightStyle, btnRightStyle]}
+              >
+                {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
+              </TouchableOpacity>
             ) : (
-                <TouchableOpacity
-                  disabled={btnRightDisabled}
-                  onPress={() => {
-                    this.onRightPressTimeout = setTimeout(() => {
-                      if (onRightPress) onRightPress();
-                    }, 0);
-                  }}
-                  style={[styles.rightStyle, btnRightStyle]}
-                >
-                  {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity
+                disabled={btnRightDisabled}
+                onPress={() => {
+                  this.onRightPressTimeout = setTimeout(() => {
+                    if (onRightPress) onRightPress();
+                  }, 0);
+                }}
+                style={[styles.rightStyle, btnRightStyle]}
+              >
+                {this.renderIcon(rightIconType, rightIcon, rightIconStyle)}
+              </TouchableOpacity>
+            )}
           </View>
         ) : null}
 
@@ -260,13 +274,13 @@ class BaseHeader extends MyComponent {
           <Dropdown
             data={dataMenu}
             dropdownPosition={0}
-            itemColor="rgba(0, 0, 0, .87)"
+            itemColor='rgba(0, 0, 0, .87)'
             pickerStyle={{
               width: 128,
               borderTopRightRadius: 0,
               left: null,
               right: 10 * SCALE_RATIO_WIDTH_BASIS,
-              marginTop: 10 * SCALE_RATIO_WIDTH_BASIS
+              marginTop: 10 * SCALE_RATIO_WIDTH_BASIS,
             }}
             disabled={this.props.disabledDropdown}
             overlayStyle={{ borderTopRightRadius: 0 }}
@@ -293,6 +307,6 @@ const styles = StyleSheet.create({
     padding: FS(5),
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
 });

@@ -3,8 +3,21 @@ import { ScrollView, Text, TouchableOpacity, View, ActivityIndicator, FlatList }
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import { connect } from 'react-redux';
-import { FS, SCALE_RATIO_WIDTH_BASIS, ROUTE_KEY, DEVICE_WIDTH } from '../../constants/Constants';
-import style, { APP_COLOR, APP_COLOR_BLUE_2, APP_COLOR_TEXT, APP_COLOR_2, FONT } from '../../constants/style';
+import {
+  FS,
+  SCALE_RATIO_WIDTH_BASIS,
+  ROUTE_KEY,
+  DEVICE_WIDTH,
+  SCALE_RATIO_HEIGHT_BASIS,
+} from '../../constants/Constants';
+import style, {
+  APP_COLOR,
+  APP_COLOR_BLUE_2,
+  APP_COLOR_TEXT,
+  APP_COLOR_2,
+  FONT,
+  APP_COLOR_TEXT_GRAY,
+} from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
@@ -12,7 +25,7 @@ import Entypo from 'react-native-vector-icons/dist/Entypo';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import { CheckBox } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import { loadSearchByKeyword } from './SearchActions';
+import { loadSearchByKeyword, loadSearchByOption } from './SearchActions';
 import MySpinner from '../../view/MySpinner';
 import LottieView from 'lottie-react-native';
 import ItemList from '../../view/ItemList';
@@ -20,8 +33,16 @@ import ItemList from '../../view/ItemList';
 class SuccessSearchComponent extends MyComponent {
   constructor(props) {
     super(props);
-    const { keySearch, filterUpComming, filterEventCategory, filterPrice } = this.props.navigation.state.params;
+    const {
+      keySearch,
+      filterUpComming,
+      filterEventCategory,
+      filterPrice,
+      searchOpiton,
+    } = this.props.navigation.state.params;
+
     this.state = {
+      searchOpiton,
       dataSearch: '',
       filterSearch: false,
       filter: '',
@@ -33,14 +54,38 @@ class SuccessSearchComponent extends MyComponent {
       filterUpComming,
       filterEventCategory,
       filterPrice,
+      listFilterUpComming: [
+        { id: 'today', name: 'To Day' },
+        { id: 'tomorrow', name: 'Tomorrow' },
+        { id: 'thisWeek', name: 'This Week' },
+      ],
+      listFilterPrice: [{ id: 'free', name: 'Free ticket' }, { id: '', name: 'Paid ticket' }],
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     MySpinner.show();
     if (this.state.keySearch && this.state.keySearch !== '') {
       loadSearchByKeyword(this.state.keySearch)
         .then(dataSearch => {
-          console.log('dauphaiphat: SuccessSearchComponent -> componentDidMount -> dataSearch', dataSearch);
+          this.state.dataSearch = dataSearch;
+          MySpinner.hide();
+          this.forceUpdate();
+        })
+        .catch(err => {});
+    }
+    if (
+      this.state.filterUpComming ||
+      this.state.filterEventCategory ||
+      this.state.filterPrice ||
+      this.state.searchOpiton
+    ) {
+      loadSearchByOption(
+        this.state.page,
+        this.state.filterUpComming,
+        this.state.filterEventCategory,
+        this.state.filterPrice
+      )
+        .then(dataSearch => {
           this.state.dataSearch = dataSearch;
           MySpinner.hide();
           this.forceUpdate();
@@ -49,39 +94,93 @@ class SuccessSearchComponent extends MyComponent {
     }
   }
 
+  // componentDidUpdate(nextProps, nextState) {
+  //   console.log('dauphaiphat: SuccessSearchComponent -> componentWillUpdate -> nextState', nextState);
+  //   console.log(
+  //     'dauphaiphat: SuccessSearchComponent -> componentWillUpdate -> this.state.filterUpComming',
+  //     this.state.filterUpComming
+  //   );
+  //   console.log(
+  //     'dauphaiphat: SuccessSearchComponent -> componentWillUpdate -> nextState.filterUpComming',
+  //     nextState.filterUpComming
+  //   );
+  //   if (this && this.state) {
+  //     if (
+  //       this.state.filterUpComming !== nextState.filterUpComming ||
+  //       this.state.filterEventCategory !== nextState.this.state.filterEventCategory ||
+  //       this.state.filterPrice !== nextState.this.state.filterPrice
+  //     ) {
+  //       loadSearchByOption(this.state.filterUpComming, this.state.filterEventCategory, this.state.filterPrice)
+  //         .then(dataSearch => {
+  //           console.log('dauphaiphat: SuccessSearchComponent -> componentDidMount -> dataSearch', dataSearch);
+  //           this.state.dataSearch = dataSearch;
+  //           MySpinner.hide();
+  //           this.forceUpdate();
+  //         })
+  //         .catch(err => {});
+  //     }
+  //   }
+  // }
   onRefresh = () => {
-    this.setState({ refreshing: true });
-    loadSearchByKeyword(this.state.keySearch)
-      .then(dataSearch => {
-        this.setState({ refreshing: false });
-        this.state.dataSearch = dataSearch;
-        this.forceUpdate();
-        MySpinner.hide();
-      })
-      .catch(err => {});
-  };
-  handleLoadMore = () => {
-    if (this.state.outOfData || this.state.loading) {
-      return;
+    if (this.state.searchOpiton) {
+      this.setState({ refreshing: true });
+      loadSearchByOption(
+        this.state.page,
+        this.state.filterUpComming,
+        this.state.filterEventCategory,
+        this.state.filterPrice
+      )
+        .then(dataSearch => {
+          console.log('dauphaiphat: SuccessSearchComponent -> componentDidMount -> dataSearch3', dataSearch);
+          this.setState({ refreshing: false });
+          this.state.dataSearch = dataSearch;
+          MySpinner.hide();
+          this.forceUpdate();
+        })
+        .catch(err => {});
+    } else {
+      this.setState({ refreshing: true });
+      loadSearchByKeyword(this.state.keySearch)
+        .then(dataSearch => {
+          this.setState({ refreshing: false });
+          this.state.dataSearch = dataSearch;
+          this.forceUpdate();
+          MySpinner.hide();
+        })
+        .catch(err => {});
     }
-    this.setState({ loading: true });
-    loadSearchByKeyword(this.albumId, this.state.page)
-      .then(dataSearch => {
-        if (dataSearch.length === 0) {
-          this.setState({
-            loading: false,
-            outOfData: true,
-          });
-        } else {
-          this.setState(previousState => ({
-            dataSearch: [...this.state.dataSearch, ...dataSearch],
-            loading: false,
-            page: previousState.page + 1,
-          }));
-        }
-      })
-      .catch(err => this.setState({ loading: false }));
   };
+  // handleLoadMore = () => {
+  //   if (this.state.outOfData || this.state.loading) {
+  //     return;
+  //   }
+  //   this.setState({ loading: true });
+  //   console.log('dauphaiphat: SuccessSearchComponent -> handleLoadMore -> this.state.page', this.state.page);
+
+  //   loadSearchByOption(
+  //     this.state.searchOpiton
+  //       ? (this.state.page, this.state.filterUpComming, this.state.filterEventCategory, this.state.filterPrice)
+  //       : (this.state.keySearch, this.state.page)
+  //   )
+  //     .then(dataSearch => {
+  //       if (dataSearch.length === 0) {
+  //         this.setState({
+  //           loading: false,
+  //           outOfData: true,
+  //         });
+  //       } else {
+  //         this.setState(previousState => {
+  //           console.log('dauphaiphat: SuccessSearchComponent -> handleLoadMore -> previousState', previousState);
+  //           return {
+  //             dataSearch: [...this.state.dataSearch, ...dataSearch],
+  //             loading: false,
+  //             page: previousState.page + 1,
+  //           };
+  //         });
+  //       }
+  //     })
+  //     .catch(err => this.setState({ loading: false }));
+  // };
 
   renderFooter = () => {
     if (this.state.outOfData) {
@@ -111,7 +210,7 @@ class SuccessSearchComponent extends MyComponent {
             marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS,
           }}
         >
-          <ActivityIndicator size='large' style={{ alignSelf: 'center' }} />
+          <ActivityIndicator size='small' style={{ alignSelf: 'center' }} />
         </View>
       )
     );
@@ -120,8 +219,6 @@ class SuccessSearchComponent extends MyComponent {
   renderItem = ({ item, index }) => <ItemList item={item} />;
 
   render() {
-    console.log('dauphaiphat: SuccessSearchComponent -> constructor -> dataSearch', this.state.dataSearch);
-
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <HeaderWithBackButtonComponent
@@ -131,143 +228,163 @@ class SuccessSearchComponent extends MyComponent {
           bodyTitle={this.state.keySearch ? `Search "${this.state.keySearch}"` : 'Search'}
           onPress={() => this.props.navigation.goBack()}
         />
-        <ScrollView style={{ flexDirection: 'row' }} horizontal showsHorizontalScrollIndicator={false}>
-          <View
-            style={{
-              flex: 1,
-              alignSelf: 'flex-start',
-              marginLeft: 20 * SCALE_RATIO_WIDTH_BASIS,
-              alignItems: 'center',
-              flexDirection: 'row',
-              backgroundColor: '#f7f7f7',
-              borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
-              paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
-              padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-              borderColor: '#e1e1e1',
-              borderWidth: 1,
-            }}
-          >
-            <Feather name='map' size={FS(16)} color='#727272' style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }} />
-            <Text
-              onPress={() => this.setState({ filterSearch: true, filter: 'filterUpComming' })}
-              style={[
-                style.text,
-                {
-                  color: '#727272',
-                  fontFamily: FONT.Medium,
-                },
-              ]}
-            >
-              {this.state.filterUpComming}
-            </Text>
-          </View>
+        {this.state.searchOpiton ? (
+          <View style={{ height: 30 * SCALE_RATIO_HEIGHT_BASIS, borderBottomWidth: 1, borderBottomColor: '#e1e1e1' }}>
+            <ScrollView style={{ flexDirection: 'row' }} horizontal showsHorizontalScrollIndicator={false}>
+              <View
+                style={{
+                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  flex: 1,
+                  alignSelf: 'flex-start',
+                  marginLeft: 20 * SCALE_RATIO_WIDTH_BASIS,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  backgroundColor: '#f7f7f7',
+                  borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
+                  padding: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  borderColor: '#e1e1e1',
+                  borderWidth: 1,
+                }}
+              >
+                <Feather
+                  name='map'
+                  size={FS(16)}
+                  color='#727272'
+                  style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
+                />
+                <Text
+                  onPress={() => this.setState({ filterSearch: true, filter: 'filterUpComming' })}
+                  style={[
+                    style.text,
+                    {
+                      color: '#727272',
+                      fontFamily: FONT.Medium,
+                    },
+                  ]}
+                >
+                  {this.state.filterUpComming === ''
+                    ? 'All'
+                    : this.state.listFilterUpComming.map(e => e.id === this.state.filterUpComming && e.name)}
+                </Text>
+              </View>
 
-          <View
-            style={{
-              flex: 1,
-              alignSelf: 'flex-start',
-              marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
-              alignItems: 'center',
-              flexDirection: 'row',
-              backgroundColor: '#f7f7f7',
-              borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
-              paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
-              padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-              borderColor: '#e1e1e1',
-              borderWidth: 1,
-            }}
-          >
-            <Entypo
-              name='location'
-              size={FS(16)}
-              color='#727272'
-              style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
-            />
-            <Text
-              onPress={() => {}}
-              style={[
-                style.text,
-                {
-                  color: '#727272',
-                  fontFamily: FONT.Medium,
-                },
-              ]}
-            >
-              Hồ Chí Minh
-            </Text>
-          </View>
+              <View
+                style={{
+                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  flex: 1,
+                  alignSelf: 'flex-start',
+                  marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  backgroundColor: '#f7f7f7',
+                  borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
+                  padding: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  borderColor: '#e1e1e1',
+                  borderWidth: 1,
+                }}
+              >
+                <Entypo
+                  name='location'
+                  size={FS(16)}
+                  color='#727272'
+                  style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
+                />
+                <Text
+                  onPress={() => {}}
+                  style={[
+                    style.text,
+                    {
+                      color: '#727272',
+                      fontFamily: FONT.Medium,
+                    },
+                  ]}
+                >
+                  Hồ Chí Minh
+                </Text>
+              </View>
 
-          <View
-            style={{
-              flex: 1,
-              alignSelf: 'flex-start',
-              marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
-              alignItems: 'center',
-              flexDirection: 'row',
-              backgroundColor: '#f7f7f7',
-              borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
-              paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
-              padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-              borderColor: '#e1e1e1',
-              borderWidth: 1,
-            }}
-          >
-            <MaterialCommunityIcons
-              name='tag-multiple'
-              size={FS(20)}
-              color='#727272'
-              style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
-            />
-            <Text
-              onPress={() => this.setState({ filterSearch: true, filter: 'filterEventCategory' })}
-              style={[
-                style.text,
-                {
-                  color: '#727272',
-                  fontFamily: FONT.Medium,
-                },
-              ]}
-            >
-              {this.state.filterEventCategory}
-            </Text>
-          </View>
+              <View
+                style={{
+                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  flex: 1,
+                  alignSelf: 'flex-start',
+                  marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  backgroundColor: '#f7f7f7',
+                  borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
+                  padding: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  borderColor: '#e1e1e1',
+                  borderWidth: 1,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name='tag-multiple'
+                  size={FS(20)}
+                  color='#727272'
+                  style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
+                />
+                <Text
+                  onPress={() => this.setState({ filterSearch: true, filter: 'filterEventCategory' })}
+                  style={[
+                    style.text,
+                    {
+                      color: '#727272',
+                      fontFamily: FONT.Medium,
+                    },
+                  ]}
+                >
+                  {this.state.filterEventCategory === ''
+                    ? 'All'
+                    : this.props.listCategory.map(e => e.id === this.state.filterEventCategory && e.name)}
+                </Text>
+              </View>
 
-          <View
-            style={{
-              flex: 1,
-              alignSelf: 'flex-start',
-              marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
-              alignItems: 'center',
-              flexDirection: 'row',
-              backgroundColor: '#f7f7f7',
-              borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
-              paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
-              padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-              borderColor: '#e1e1e1',
-              borderWidth: 1,
-            }}
-          >
-            <MaterialIcons
-              name='attach-money'
-              size={FS(20)}
-              color='#727272'
-              style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
-            />
-            <Text
-              onPress={() => this.setState({ filterSearch: true, filter: 'filterPrice' })}
-              style={[
-                style.text,
-                {
-                  color: '#727272',
-                  fontFamily: FONT.Medium,
-                },
-              ]}
-            >
-              {this.state.filterPrice}
-            </Text>
+              <View
+                style={{
+                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  flex: 1,
+                  alignSelf: 'flex-start',
+                  marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  backgroundColor: '#f7f7f7',
+                  borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
+                  padding: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  borderColor: '#e1e1e1',
+                  borderWidth: 1,
+                }}
+              >
+                <MaterialIcons
+                  name='attach-money'
+                  size={FS(20)}
+                  color='#727272'
+                  style={{ marginRight: 3 * SCALE_RATIO_WIDTH_BASIS }}
+                />
+                <Text
+                  onPress={() => this.setState({ filterSearch: true, filter: 'filterPrice' })}
+                  style={[
+                    style.text,
+                    {
+                      color: '#727272',
+                      fontFamily: FONT.Medium,
+                    },
+                  ]}
+                >
+                  {this.state.filterPrice === ''
+                    ? 'All'
+                    : this.state.listFilterPrice.map(e => e.id === this.state.filterPrice && e.name)}
+                </Text>
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
+        ) : null}
         <FlatList
+          style={{ paddingTop: 15 * SCALE_RATIO_WIDTH_BASIS }}
           showsVerticalScrollIndicator={false}
           data={this.state.dataSearch}
           keyExtractor={item => item.id}
@@ -278,7 +395,8 @@ class SuccessSearchComponent extends MyComponent {
           onRefresh={this.onRefresh}
           refreshing={this.state.refreshing}
         />
-        <Modal
+        {/* <Modal
+          style={{ flex: 1 }}
           onBackdropPress={() => this.setState({ filterSearch: false })}
           onSwipe={() => this.setState({ filterSearch: false })}
           swipeDirection={'down'}
@@ -338,7 +456,7 @@ class SuccessSearchComponent extends MyComponent {
                       textStyle={[
                         style.text,
                         {
-                          color: this.state.filterUpComming === 'All' ? APP_COLOR : APP_COLOR_TEXT,
+                          color: this.state.filterUpComming === '' ? APP_COLOR : APP_COLOR_TEXT,
                           fontSize: FS(22),
                         },
                       ]}
@@ -354,12 +472,12 @@ class SuccessSearchComponent extends MyComponent {
                       iconType='material'
                       checkedIcon='check'
                       uncheckedIcon=''
-                      checked={this.state.filterUpComming === 'All'}
+                      checked={this.state.filterUpComming === ''}
                       checkedColor={APP_COLOR}
                       uncheckedColor='tranparent'
                       size={18}
                       onPress={() => {
-                        this.setState({ filterUpComming: 'All' });
+                        this.setState({ filterUpComming: '' });
                       }}
                     />
                     <CheckBox
@@ -640,6 +758,7 @@ class SuccessSearchComponent extends MyComponent {
             </ScrollView>
           </View>
         </Modal>
+       */}
       </View>
     );
   }

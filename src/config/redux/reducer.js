@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { AsyncStorage } from 'react-native';
 import { persistReducer } from 'redux-persist';
-import EventPopularReducer from './reducers/eventPopularReducer';
+import EventReducer from './reducers/eventReducer';
 import CategoryReducer from './reducers/categoryReducer';
 import UserReducer from './reducers/userReducer';
 
@@ -13,12 +13,12 @@ const reducer = combineReducers({
     },
     UserReducer
   ),
-  eventPopular: persistReducer(
+  event: persistReducer(
     {
-      key: 'EventPopular',
+      key: 'Event',
       storage: AsyncStorage,
     },
-    EventPopularReducer
+    EventReducer
   ),
   categoryReducer: persistReducer(
     {

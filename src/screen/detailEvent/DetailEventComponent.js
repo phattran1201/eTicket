@@ -12,7 +12,7 @@ import {
   SCALE_RATIO_WIDTH_BASIS,
   SLICE_NUM,
   ROUTE_KEY,
-  SCALE_RATIO_HEIGHT_BASIS
+  SCALE_RATIO_HEIGHT_BASIS,
 } from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, {
@@ -20,7 +20,7 @@ import style, {
   APP_COLOR_TEXT,
   APP_COLOR_TEXT_GRAY,
   APP_COLOR_TEXT_GRAY_2,
-  FONT
+  FONT,
 } from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
@@ -49,11 +49,11 @@ class DetailEventComponent extends MyComponent {
           top: 5,
           right: 10,
           backgroundColor: 'white',
-          zIndex: 999
+          zIndex: 999,
         }}
       >
         <MaterialCommunityIcons
-          name="heart-outline"
+          name='heart-outline'
           size={25 * SCALE_RATIO_WIDTH_BASIS}
           color={APP_COLOR}
           style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
@@ -66,17 +66,17 @@ class DetailEventComponent extends MyComponent {
             flex: 1,
             backgroundColor: 'white',
             marginLeft: 15,
-            overflow: 'hidden'
-          }
+            overflow: 'hidden',
+          },
         ]}
       >
         <MyImage
           style={{
             width: '100%',
-            height: 150 * SCALE_RATIO_WIDTH_BASIS
+            height: 150 * SCALE_RATIO_WIDTH_BASIS,
           }}
           source={{
-            uri: item.image
+            uri: item.image,
           }}
         />
 
@@ -86,8 +86,8 @@ class DetailEventComponent extends MyComponent {
             {
               color: APP_COLOR_TEXT,
               fontSize: FS(14),
-              padding: 5 * SCALE_RATIO_WIDTH_BASIS
-            }
+              padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+            },
           ]}
           numberOfLines={2}
         >
@@ -100,8 +100,8 @@ class DetailEventComponent extends MyComponent {
             {
               color: APP_COLOR_TEXT_GRAY,
               fontSize: FS(10),
-              padding: 5 * SCALE_RATIO_WIDTH_BASIS
-            }
+              padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+            },
           ]}
           numberOfLines={2}
         >
@@ -116,8 +116,8 @@ class DetailEventComponent extends MyComponent {
                   alignSelf: 'flex-start',
                   color: APP_COLOR_TEXT,
                   fontSize: FS(10),
-                  padding: 5 * SCALE_RATIO_WIDTH_BASIS
-                }
+                  padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                },
               ]}
               numberOfLines={2}
             >
@@ -132,8 +132,8 @@ class DetailEventComponent extends MyComponent {
                   alignSelf: 'flex-start',
                   color: APP_COLOR,
                   fontSize: FS(10),
-                  padding: 5 * SCALE_RATIO_WIDTH_BASIS
-                }
+                  padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                },
               ]}
               numberOfLines={2}
             >
@@ -186,10 +186,10 @@ class DetailEventComponent extends MyComponent {
             style={{
               width: '100%',
               height: 150 * SCALE_RATIO_WIDTH_BASIS,
-              marginBottom: 20
+              marginBottom: 20,
             }}
             source={{
-              uri: 'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/02/26/DFB19E.jpg'
+              uri: 'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/02/26/DFB19E.jpg',
             }}
           />
           <View style={{ paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS }}>
@@ -201,8 +201,8 @@ class DetailEventComponent extends MyComponent {
                   color: APP_COLOR_TEXT,
                   // textDecorationLine: 'underline',
                   // letterSpacing: 3,
-                  lineHeight: 30
-                }
+                  lineHeight: 30,
+                },
               ]}
             >
               {item.title}
@@ -220,34 +220,34 @@ class DetailEventComponent extends MyComponent {
               paddingVertical: 15,
               borderTopWidth: 1,
               borderBottomWidth: 1,
-              borderColor: APP_COLOR_TEXT_GRAY_2
+              borderColor: APP_COLOR_TEXT_GRAY_2,
             }}
           >
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FontAwesome name="heart-o" size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
+              <FontAwesome name='heart-o' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
               <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Like Event</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FontAwesome name="map-o" size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
+              <FontAwesome name='map-o' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
               <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Share Event</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FontAwesome name="share-square-o" size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
+              <FontAwesome name='share-square-o' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
               <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Directions</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FontAwesome name="ellipsis-h" size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
+              <FontAwesome name='ellipsis-h' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
               <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>More</Text>
             </TouchableOpacity>
           </View>
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS
+              marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             }}
           >
             <FontAwesome
-              name="calendar"
+              name='calendar'
               style={{ marginTop: 5 }}
               size={14 * SCALE_RATIO_WIDTH_BASIS}
               color={APP_COLOR_TEXT_GRAY_2}
@@ -264,7 +264,7 @@ class DetailEventComponent extends MyComponent {
               marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
               borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
               paddingVertical: 15 * SCALE_RATIO_WIDTH_BASIS,
-              alignItems: 'center'
+              alignItems: 'center',
             }}
             onPress={() => {
               this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY, { item });
@@ -276,8 +276,8 @@ class DetailEventComponent extends MyComponent {
                 {
                   fontFamily: FONT.Bold,
                   fontSize: FS(14),
-                  color: '#fff'
-                }
+                  color: '#fff',
+                },
               ]}
             >
               Get Ticket Now
@@ -334,7 +334,7 @@ class DetailEventComponent extends MyComponent {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 alignContent: 'center',
-                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS
+                marginBottom: 20 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >
               <Text
@@ -343,8 +343,8 @@ class DetailEventComponent extends MyComponent {
                   {
                     fontSize: FS(16),
                     color: APP_COLOR_TEXT,
-                    fontFamily: FONT.Medium
-                  }
+                    fontFamily: FONT.Medium,
+                  },
                 ]}
               >
                 Suggested Events
@@ -367,7 +367,7 @@ class DetailEventComponent extends MyComponent {
               activeAnimationType={'spring'}
               activeAnimationOptions={{
                 friction: 4,
-                tension: 40
+                tension: 40,
               }}
             />
           </View>
@@ -379,7 +379,7 @@ class DetailEventComponent extends MyComponent {
 
 const mapActionCreators = {};
 
-const mapStateToProps = state => ({ listEventPopular: state.eventPopular.listEventPopular });
+const mapStateToProps = state => ({ listEventPopular: state.event.listEventPopular });
 
 export default connect(
   mapStateToProps,
