@@ -45,6 +45,7 @@ import global from '../../utils/globalUtils';
 import Modal from 'react-native-modal';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
 import { CheckBox } from 'react-native-elements';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 class SearchComponent extends MyComponent {
   constructor(props) {
@@ -160,7 +161,7 @@ class SearchComponent extends MyComponent {
             zIndex: 99999,
             position: 'absolute',
             right: 20 * SCALE_RATIO_WIDTH_BASIS,
-            bottom: 20 * SCALE_RATIO_WIDTH_BASIS,
+            bottom: 20 * SCALE_RATIO_WIDTH_BASIS + getBottomSpace(),
             width: 40 * SCALE_RATIO_WIDTH_BASIS,
             height: 40 * SCALE_RATIO_WIDTH_BASIS,
             borderRadius: 40 * SCALE_RATIO_WIDTH_BASIS,

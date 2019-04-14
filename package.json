@@ -21,6 +21,7 @@
     "logger": "^0.0.1",
     "lottie-react-native": "^2.6.1",
     "moment": "^2.24.0",
+    "native-base": "^2.12.1",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-addons-update": "^15.6.2",

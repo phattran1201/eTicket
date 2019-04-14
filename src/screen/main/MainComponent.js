@@ -11,6 +11,7 @@ import { loadListPopularEvents } from '../home/HomeActions';
 import HomeComponent from '../home/HomeComponent';
 import PreLoginComponent from '../login/PreLoginComponent';
 import SearchComponent from '../search/SearchComponent';
+import PersonalInfoComponent from '../profile/PersonalInfoComponent';
 
 class MainComponent extends MyComponent {
   constructor(props) {
@@ -82,7 +83,7 @@ class MainComponent extends MyComponent {
     //   return <FilterSearchComponent navigation={this.props.navigation} />;
     // }
     if (this.state.activeTab === 'more') {
-      return <PreLoginComponent navigation={this.props.navigation} />;
+      return <PersonalInfoComponent navigation={this.props.navigation} />;
     }
     // return <DetailEventComponent navigation={this.props.navigation} />;
   }

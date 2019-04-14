@@ -13,8 +13,14 @@ export default class ItemList extends Component {
   }
   render() {
     const { item } = this.props;
-    let minPrice = item.tickettype.data[0].price;
-    let maxPrice = item.tickettype.data[0].price;
+    let minPrice =
+      item.tickettype && item.tickettype.data && item.tickettype.data[0] && item.tickettype.data[0].price
+        ? item.tickettype.data[0].price
+        : 0;
+    let maxPrice =
+      item.tickettype && item.tickettype.data && item.tickettype.data[0] && item.tickettype.data[0].price
+        ? item.tickettype.data[0].price
+        : 0;
     for (let i = 1; i < item.tickettype.data.length; i++) {
       if (minPrice > item.tickettype.data[i].price) {
         minPrice = item.tickettype.data[i].price;
@@ -117,7 +123,7 @@ export default class ItemList extends Component {
                   {item.category}
                 </Text>
               </View>
-              {item.tickettype && item.tickettype.data ? (
+              {item.tickettype && item.tickettype.data && item.tickettype.data[0] && item.tickettype.data[0].price ? (
                 item.tickettype.data.length === 1 ? (
                   <View
                     style={{
@@ -192,7 +198,7 @@ export default class ItemList extends Component {
                         ]}
                         numberOfLines={2}
                       >
-                        From ${maxPrice}
+                        To ${maxPrice}
                       </Text>
                     </View>
                   </View>

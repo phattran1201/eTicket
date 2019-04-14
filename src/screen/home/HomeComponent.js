@@ -200,7 +200,7 @@ class HomeComponent extends MyComponent {
                     ]}
                     numberOfLines={2}
                   >
-                    From ${maxPrice}
+                    To ${maxPrice}
                   </Text>
                 </View>
               </View>
