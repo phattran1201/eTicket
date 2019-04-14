@@ -11,7 +11,7 @@ export default class LazyLoadComponent extends MyComponent {
     this.state = {
       refreshing: false,
       isLoadMore: false,
-      show: false
+      show: false,
     };
     this.show = false;
   }
@@ -31,7 +31,7 @@ export default class LazyLoadComponent extends MyComponent {
         style={{
           width: DEVICE_WIDTH,
           height: DEVICE_HEIGHT,
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
         }}
         source={require('../assets/ic_splash.png')}
       >
@@ -39,7 +39,7 @@ export default class LazyLoadComponent extends MyComponent {
           noShadow
           translucent
           styleContent={{
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
           }}
         />
 
@@ -51,11 +51,10 @@ export default class LazyLoadComponent extends MyComponent {
             hardwareAccelerationAndroid
             style={{
               alignSelf: 'center',
-              backgroundColor: 'white',
               width: '100%',
-              height: 150 * SCALE_RATIO_WIDTH_BASIS
+              height: 150 * SCALE_RATIO_WIDTH_BASIS,
             }}
-            resizeMode="cover"
+            resizeMode='cover'
           />
         ) : null}
       </ImageBackground>

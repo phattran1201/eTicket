@@ -14,11 +14,10 @@ export function logout(onDoneFunc = () => {}) {
       payload: false,
     });
 
-    getDeviceInfo().then(deviceInfo => {
-      //  firebase.messaging().subscribeToTopic(res.data.access_token);
-      firebase.messaging().unsubscribeFromTopic(store().user.userData.access_token);
-      console.log('dauphaiphat: logout -> unsubscribeFromTopic', deviceInfo.device_token);
-    });
+    // getDeviceInfo().then(deviceInfo => {
+    //  firebase.messaging().subscribeToTopic(res.data.access_token);
+    firebase.messaging().unsubscribeFromTopic(store().user.userData.access_token);
+    // });
 
     setTimeout(() => {
       dispatch({
@@ -47,10 +46,10 @@ export function loginSuccess(res, onDone = () => {}) {
       type: CONSTANTS_KEY.SET_LOGGED_IN,
       payload: true,
     });
-    getDeviceInfo().then(deviceInfo => {
-      firebase.messaging().subscribeToTopic(res.data.access_token);
-      console.log('dauphaiphat: subscribeToTopic', res.data.access_token);
-    });
+    // getDeviceInfo().then(deviceInfo => {
+    firebase.messaging().subscribeToTopic(res.data.access_token);
+    console.log('dauphaiphat: subscribeToTopic', res.data.access_token);
+    // });
   };
 }
 

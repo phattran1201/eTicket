@@ -11,7 +11,7 @@ import {
   ROUTE_KEY,
   SCALE_RATIO_WIDTH_BASIS,
   SLICE_NUM,
-  SCALE_RATIO_HEIGHT_BASIS
+  SCALE_RATIO_HEIGHT_BASIS,
 } from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, {
@@ -20,7 +20,7 @@ import style, {
   APP_COLOR_TEXT,
   APP_COLOR_TEXT_GRAY,
   FONT,
-  APP_COLOR_BLUE_2
+  APP_COLOR_BLUE_2,
 } from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
 import HeaderWithAvatar from '../../view/HeaderWithAvatar';
@@ -44,7 +44,7 @@ class FilterSearchComponent extends MyComponent {
       isLoading: false,
       filterUpComming: global.filterUpComming,
       filterEventCategory: global.filterEventCategory,
-      filterPrice: global.filterPrice
+      filterPrice: global.filterPrice,
     };
   }
   render() {
@@ -60,7 +60,7 @@ class FilterSearchComponent extends MyComponent {
             width: DEVICE_WIDTH * 0.3,
             height: DEVICE_WIDTH * 0.3,
             borderRadius: DEVICE_WIDTH,
-            position: 'absolute'
+            position: 'absolute',
           }}
           start={{ x: 0.1, y: 0.75 }}
           end={{ x: 0.75, y: 0.25 }}
@@ -73,7 +73,7 @@ class FilterSearchComponent extends MyComponent {
             width: DEVICE_WIDTH * 0.3,
             height: DEVICE_WIDTH * 0.3,
             borderRadius: DEVICE_WIDTH,
-            position: 'absolute'
+            position: 'absolute',
           }}
           start={{ x: 0.1, y: 0.75 }}
           end={{ x: 0.75, y: 0.25 }}
@@ -85,7 +85,7 @@ class FilterSearchComponent extends MyComponent {
             <View
               style={{
                 marginTop: 60 * SCALE_RATIO_WIDTH_BASIS,
-                paddingHorizontal: 60 * SCALE_RATIO_WIDTH_BASIS
+                paddingHorizontal: 60 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >
               <Text
@@ -94,8 +94,8 @@ class FilterSearchComponent extends MyComponent {
                   {
                     fontSize: FS(32),
                     color: APP_COLOR_BLUE_2,
-                    fontFamily: FONT.Bold
-                  }
+                    fontFamily: FONT.Bold,
+                  },
                 ]}
               >
                 Upcomming
@@ -106,24 +106,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterUpComming === '' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="All"
+                  title='All'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterUpComming === ''}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterUpComming = '';
@@ -135,24 +135,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterUpComming === 'today' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="Today"
+                  title='Today'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterUpComming === 'today'}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterUpComming = 'today';
@@ -164,24 +164,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterUpComming === 'tomorrow' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="Tomorrow"
+                  title='Tomorrow'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterUpComming === 'tomorrow'}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterUpComming = 'tomorrow';
@@ -193,24 +193,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterUpComming === 'thisWeekend' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="This weekend"
+                  title='This weekend'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterUpComming === 'thisWeekend'}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterUpComming = 'thisWeekend';
@@ -224,7 +224,7 @@ class FilterSearchComponent extends MyComponent {
             <View
               style={{
                 marginTop: 60 * SCALE_RATIO_WIDTH_BASIS,
-                paddingHorizontal: 60 * SCALE_RATIO_WIDTH_BASIS
+                paddingHorizontal: 60 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >
               <Text
@@ -233,8 +233,8 @@ class FilterSearchComponent extends MyComponent {
                   {
                     fontSize: FS(32),
                     color: APP_COLOR_BLUE_2,
-                    fontFamily: FONT.Bold
-                  }
+                    fontFamily: FONT.Bold,
+                  },
                 ]}
               >
                 Event category
@@ -245,24 +245,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterEventCategory === '' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="All"
+                  title='All'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterEventCategory === ''}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterEventCategory = '';
@@ -275,24 +275,24 @@ class FilterSearchComponent extends MyComponent {
                       style.text,
                       {
                         color: filterEventCategory === e.id ? APP_COLOR : APP_COLOR_TEXT,
-                        fontSize: FS(22)
-                      }
+                        fontSize: FS(22),
+                      },
                     ]}
                     containerStyle={{
                       justifyContent: 'space-between',
                       borderWidth: 0,
                       backgroundColor: 'transparent',
                       paddingLeft: 0,
-                      marginLeft: 0
+                      marginLeft: 0,
                     }}
                     title={e.name}
                     iconRight
-                    iconType="material"
-                    checkedIcon="check"
-                    uncheckedIcon=""
+                    iconType='material'
+                    checkedIcon='check'
+                    uncheckedIcon=''
                     checked={filterEventCategory === e.id}
                     checkedColor={APP_COLOR}
-                    uncheckedColor="tranparent"
+                    uncheckedColor='tranparent'
                     size={18}
                     onPress={() => {
                       global.filterEventCategory = e.id;
@@ -307,7 +307,7 @@ class FilterSearchComponent extends MyComponent {
             <View
               style={{
                 marginTop: 60 * SCALE_RATIO_WIDTH_BASIS,
-                paddingHorizontal: 60 * SCALE_RATIO_WIDTH_BASIS
+                paddingHorizontal: 60 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >
               <Text
@@ -316,8 +316,8 @@ class FilterSearchComponent extends MyComponent {
                   {
                     fontSize: FS(32),
                     color: APP_COLOR_BLUE_2,
-                    fontFamily: FONT.Bold
-                  }
+                    fontFamily: FONT.Bold,
+                  },
                 ]}
               >
                 Price
@@ -328,24 +328,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterPrice === '' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="All"
+                  title='All'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterPrice === ''}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterPrice = '';
@@ -357,24 +357,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterPrice === 'Free ticket' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="Free ticket"
+                  title='Free ticket'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterPrice === 'Free ticket'}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterPrice = 'Free ticket';
@@ -386,24 +386,24 @@ class FilterSearchComponent extends MyComponent {
                     style.text,
                     {
                       color: filterPrice === 'Paid ticket' ? APP_COLOR : APP_COLOR_TEXT,
-                      fontSize: FS(22)
-                    }
+                      fontSize: FS(22),
+                    },
                   ]}
                   containerStyle={{
                     justifyContent: 'space-between',
                     borderWidth: 0,
                     backgroundColor: 'transparent',
                     paddingLeft: 0,
-                    marginLeft: 0
+                    marginLeft: 0,
                   }}
-                  title="Tomorrow"
+                  title='Tomorrow'
                   iconRight
-                  iconType="material"
-                  checkedIcon="check"
-                  uncheckedIcon=""
+                  iconType='material'
+                  checkedIcon='check'
+                  uncheckedIcon=''
                   checked={filterPrice === 'Paid ticket'}
                   checkedColor={APP_COLOR}
-                  uncheckedColor="tranparent"
+                  uncheckedColor='tranparent'
                   size={18}
                   onPress={() => {
                     global.filterPrice = 'Paid ticket';
@@ -421,7 +421,7 @@ class FilterSearchComponent extends MyComponent {
 const mapActionCreators = {};
 
 const mapStateToProps = state => ({
-  listCategory: state.categoryReducer.listCategory
+  listCategory: state.categoryReducer.listCategory,
 });
 
 export default connect(

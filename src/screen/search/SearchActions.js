@@ -1,17 +1,19 @@
 import { BASE_URL, CONSTANTS_KEY } from '../../constants/Constants';
 import request from '../../utils/request';
+import { ToastAndroid } from 'react-native';
 
-export function loadListPopularEvents(page = 1, onOutOfData = () => {}) {
-  return (dispatch, store) => {
-    request.get(`${BASE_URL}get-event?limit=10&page=${page}`).finish((err, res) => {
-      if (!err && res && res.body && res.body.data) {
-        if (res.body.data.length === 0) onOutOfData();
-
-        dispatch({
-          type: CONSTANTS_KEY.UPDATE_LIST_POPUPAR_EVENTS,
-          payload: res.body.data
-        });
-      }
-    });
-  };
-}
+export const loadSearchByKeyword = (keyword, page = 1) =>
+  new Promise((resolve, reject) => {
+    request
+      .post(`https://eticket-vhu.herokuapp.com/api/v1/eticket/search-event?keyword=${keyword}&limit=10&page=${page}`)
+      .finish((err, res) => {
+        console.log('dauphaiphat: res', res);
+        console.log('dauphaiphat: err', err);
+        if (err) {
+          ToastAndroid.show(`Kiểm tra kết nối mạng!\n Lỗi loadSearchByKeyword: ${err}`, ToastAndroid.LONG);
+          reject(err);
+        } else {
+          resolve(res.body.data);
+        }
+      });
+  });

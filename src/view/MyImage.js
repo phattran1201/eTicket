@@ -11,7 +11,7 @@ const myArray = [
   'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/08/95CB22.jpg',
   'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/12/07E4A5.jpg',
   'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/14/15C228.jpg',
-  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/25/2C0A0E.jpg'
+  'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/03/25/2C0A0E.jpg',
 ];
 const item = myArray[(Math.random() * myArray.length) | 0];
 export default class MyImage extends Component {
@@ -19,7 +19,7 @@ export default class MyImage extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      isError: false
+      isError: false,
     };
   }
 
@@ -54,11 +54,10 @@ export default class MyImage extends Component {
               {
                 position: 'absolute',
                 alignSelf: 'center',
-                backgroundColor: '#F3F3F3'
+                backgroundColor: '#F3F3F3',
               },
-              this.props.style
             ]}
-            resizeMode="cover"
+            resizeMode='cover'
           />
         )}
       </View>

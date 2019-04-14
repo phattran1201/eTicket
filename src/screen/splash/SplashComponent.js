@@ -65,7 +65,17 @@ class SplashComponent extends Component {
      * Triggered when a particular notification has been received in foreground
      * */
     this.notificationListener = firebase.notifications().onNotification(notification => {
-      console.log('dauphaiphat: Notification', notification);
+      const channel = new firebase.notifications.Android.Channel(
+        'eTicket',
+        'eTicket',
+        firebase.notifications.Android.Importance.Min
+      ).setDescription('eTicket');
+      // Create the channel
+      firebase.notifications().android.createChannel(channel);
+      // Build a channel group
+      const channelGroup = new firebase.notifications.Android.ChannelGroup('eTicket', 'eTicket');
+      // Create the channel group
+      firebase.notifications().android.createChannelGroup(channelGroup);
       const localNotification = new firebase.notifications.Notification()
         .setNotificationId(notification.notificationId)
         .setTitle(notification.title)
@@ -82,15 +92,8 @@ class SplashComponent extends Component {
         .displayNotification(localNotification)
         .catch(err => console.error(err));
       Vibration.vibrate(1000);
+      console.log('dauphaiphat: Notification', notification);
     });
-
-    const channel = new firebase.notifications.Android.Channel(
-      'fcm_default_channel',
-      'eTicket',
-      firebase.notifications.Android.Importance.High
-    ).setDescription('eTicket description');
-
-    firebase.notifications().android.createChannel(channel);
 
     /*
      * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
@@ -115,7 +118,34 @@ class SplashComponent extends Component {
      * Triggered for data only payload in foreground
      * */
     this.messageListener = firebase.messaging().onMessage(message => {
-      console.log('dauphaiphat: SplashComponent -> createNotificationListeners -> message', message);
+      const channel = new firebase.notifications.Android.Channel(
+        'eTicket',
+        'eTicket',
+        firebase.notifications.Android.Importance.Min
+      ).setDescription('eTicket');
+      // Create the channel
+      firebase.notifications().android.createChannel(channel);
+      // Build a channel group
+      const channelGroup = new firebase.notifications.Android.ChannelGroup('eTicket', 'eTicket');
+      // Create the channel group
+      firebase.notifications().android.createChannelGroup(channelGroup);
+      console.log('dauphaiphat: messageListener', message);
+      const notification = new firebase.notifications.Notification()
+        .setNotificationId(message.notificationId)
+        .android.setAutoCancel(true)
+        .setTitle(message.title)
+        .setSubtitle(message.subtitle)
+        .setBody(message.body)
+        .setData(message.data)
+        .android.setChannelId('eTicket') // e.g. the id you chose above
+        // .android.setSmallIcon('@drawable/ic_launcher') // creat`e this icon in Android Studio
+        .android.setColor(APP_COLOR); // you can set a color here
+      // .android.setPriority(firebase.notifications.Android.Priority.High);
+      firebase
+        .notifications()
+        .displayNotification(notification)
+        .catch(err => console.error(err));
+      Vibration.vibrate(1000);
     });
   }
 
