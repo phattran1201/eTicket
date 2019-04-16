@@ -15,6 +15,7 @@ import MyImage from '../../view/MyImage';
 import moment from 'moment';
 import { logout } from '../login/LoginActions';
 import ItemList from '../../view/ItemList';
+import { QRCode } from 'react-native-custom-qr-codes';
 
 class HomeComponent extends MyComponent {
   constructor(props) {

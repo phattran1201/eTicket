@@ -3,6 +3,7 @@ package com.itc.eticket;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(new MainReactPackage(),
+            new SvgPackage(),
             new SplashScreenReactPackage(), new RNFirebasePackage(), new RNDeviceInfo(),
           new LinearGradientPackage(), new RNCWebViewPackage(), new RNGestureHandlerPackage(), new VectorIconsPackage(),
           new FastImageViewPackage(), new LottiePackage(), new RNFirebaseMessagingPackage(),

@@ -102,14 +102,17 @@ class PersonalInfoComponent extends MyComponent {
       status,
       updated_at,
     } = this.state;
-    // MySpinner.show();
-    this.props.updateUserData(first_name, last_name, dob, phone_number, gender, address, () =>
-      this.props.loadUserData(this.props.token)
+    MySpinner.show();
+    this.props.updateUserData(
+      first_name,
+      last_name,
+      dob,
+      phone_number,
+      gender,
+      address,
+      () => this.props.loadUserData(this.props.token),
+      MySpinner.hide()
     );
-    // .then(res => {})
-    // .catch(err => {
-    //   MySpinner.hide();
-    // });
   }
   render() {
     console.log('dauphaiphat: PersonalInfoComponent -> render -> userData', this.props.userData);

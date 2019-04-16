@@ -8,21 +8,45 @@ import { DATA_TEST } from '../../constants/dataTest';
 import style, { APP_COLOR, APP_COLOR_BLUE_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY_2, FONT } from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
+import { buyTicket } from './DetailPayAction';
+import MySpinner from '../../view/MySpinner';
+import { alert } from '../../utils/alert';
+import strings from '../../constants/Strings';
+import moment from 'moment';
 
 class DetailEventPayComponent extends MyComponent {
   constructor(props) {
     super(props);
-    this.state = { activeSlide: 0, loadDone: false, dialogVisible: false };
+    this.state = { dialogVisible: false, type_id: null };
   }
-
+  buyTicket() {
+    const { item } = this.props.navigation.state.params;
+    MySpinner.show();
+    buyTicket(this.props.token, item.id, this.state.type_id)
+      .then(res => {
+        console.log('dauphaiphat: buyTicket -> res', res);
+        this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
+          item,
+          res,
+        });
+        this.setState({ isLoading: false, btnLogin: 'Log in Success' });
+        MySpinner.hide();
+      })
+      .catch(err => {
+        MySpinner.hide();
+        this.setState({ isLoading: false });
+        alert(strings.alert, 'Ticket purchase failed');
+      });
+  }
   render() {
     const { item } = this.props.navigation.state.params;
+    console.log('dauphaiphat: DetailEventPayComponent -> render -> item', item);
 
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <HeaderWithBackButtonComponent
-          iconColor="#fff"
-          bodyTitle="Ticket Detail"
+          iconColor='#fff'
+          bodyTitle='Ticket Detail'
           showGardient
           onPress={() => this.props.navigation.goBack()}
         />
@@ -36,8 +60,8 @@ class DetailEventPayComponent extends MyComponent {
                   color: APP_COLOR_TEXT,
                   // textDecorationLine: 'underline',
                   // letterSpacing: 3,
-                  lineHeight: 30
-                }
+                  lineHeight: 30,
+                },
               ]}
             >
               {item.title}
@@ -51,17 +75,21 @@ class DetailEventPayComponent extends MyComponent {
               flexDirection: 'row',
               marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
               marginTop: 25,
-              marginBottom: 15
+              marginBottom: 15,
             }}
           >
             <FontAwesome
-              name="calendar"
+              name='calendar'
               style={{ marginTop: 5 }}
               size={14 * SCALE_RATIO_WIDTH_BASIS}
               color={APP_COLOR_TEXT_GRAY_2}
             />
             <View style={{ marginLeft: 10 }}>
-              <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>{item.end_date}</Text>
+              <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>
+                {moment(item.end_date).format('ddd,MMMM')}
+                {'  '}
+                {item.start_time} - {item.end_time}:00
+              </Text>
               <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>{item.type}</Text>
             </View>
           </View>
@@ -69,11 +97,11 @@ class DetailEventPayComponent extends MyComponent {
             style={{
               flexDirection: 'row',
               marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
-              marginBottom: 15
+              marginBottom: 15,
             }}
           >
             <FontAwesome
-              name="calendar"
+              name='calendar'
               style={{ marginTop: 5 }}
               size={14 * SCALE_RATIO_WIDTH_BASIS}
               color={APP_COLOR_TEXT_GRAY_2}
@@ -87,11 +115,11 @@ class DetailEventPayComponent extends MyComponent {
             style={{
               flexDirection: 'row',
               marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
-              marginBottom: 15
+              marginBottom: 15,
             }}
           >
             <FontAwesome
-              name="calendar"
+              name='calendar'
               style={{ marginTop: 5 }}
               size={14 * SCALE_RATIO_WIDTH_BASIS}
               color={APP_COLOR_TEXT_GRAY_2}
@@ -106,53 +134,67 @@ class DetailEventPayComponent extends MyComponent {
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS
+              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
             }}
           >
-            <TouchableOpacity
-              onPress={() => this.setState({ dialogVisible: true })}
-              style={{
-                width: 100 * SCALE_RATIO_WIDTH_BASIS,
-                marginLeft: 25,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderWidth: 1,
-                borderColor: APP_COLOR,
-                backgroundColor: APP_COLOR,
-                paddingHorizontal: 15,
-                paddingVertical: 5,
-                borderRadius: 4
-              }}
-            >
-              <Text style={[style.text, { fontSize: FS(10), color: '#fff' }]}>Common Ticket</Text>
-              <Text style={[style.text, { fontFamily: FONT.Bold, fontSize: FS(12), color: '#fff' }]}>$14</Text>
-              <Text style={[style.text, { fontSize: FS(10), color: '#fff' }]}>QTY: 100</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.setState({ dialogVisible: true })}
-              style={{
-                width: 100 * SCALE_RATIO_WIDTH_BASIS,
-                marginLeft: 15,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderWidth: 1,
-                borderColor: APP_COLOR_BLUE_2,
-                paddingHorizontal: 15,
-                paddingVertical: 5,
-                borderRadius: 4
-              }}
-            >
-              <Text style={[style.text, { fontSize: FS(10), color: APP_COLOR_BLUE_2 }]}>VIP Ticket</Text>
-              <Text style={[style.text, { fontFamily: FONT.Bold, fontSize: FS(12), color: APP_COLOR_BLUE_2 }]}>
-                $20
-              </Text>
-              <Text style={[style.text, { fontSize: FS(10), color: APP_COLOR_BLUE_2 }]}>QTY: 200</Text>
-            </TouchableOpacity>
+            {item &&
+              item.tickettype &&
+              item.tickettype.data &&
+              item.tickettype.data
+                .sort((a, b) => a.price - b.price)
+                .map((item2, index) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => this.setState({ type_id: item2.id })}
+                      style={{
+                        // width: 100 * SCALE_RATIO_WIDTH_BASIS,
+                        marginLeft: 25,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderWidth: 1,
+                        borderColor: item2.id === this.state.type_id ? APP_COLOR : APP_COLOR_BLUE_2,
+                        backgroundColor: item2.id === this.state.type_id ? APP_COLOR : 'white',
+                        paddingHorizontal: 15,
+                        paddingVertical: 5,
+                        borderRadius: 4,
+                      }}
+                    >
+                      <Text
+                        style={[
+                          style.text,
+                          { fontSize: FS(10), color: item2.id === this.state.type_id ? '#fff' : APP_COLOR_BLUE_2 },
+                        ]}
+                      >
+                        {item2.name}
+                      </Text>
+                      <Text
+                        style={[
+                          style.text,
+                          {
+                            fontFamily: FONT.Bold,
+                            fontSize: FS(12),
+                            color: item2.id === this.state.type_id ? '#fff' : APP_COLOR_BLUE_2,
+                          },
+                        ]}
+                      >
+                        {item2.price < 0.1 ? 'Free' : item2.price}
+                      </Text>
+                      <Text
+                        style={[
+                          style.text,
+                          { fontSize: FS(10), color: item2.id === this.state.type_id ? '#fff' : APP_COLOR_BLUE_2 },
+                        ]}
+                      >
+                        QTY: {item2.total - item2.ticket_bought}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
           </View>
           <View
             style={{
               marginTop: 10 * SCALE_RATIO_WIDTH_BASIS,
-              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS
+              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
             }}
           >
             <View
@@ -165,7 +207,7 @@ class DetailEventPayComponent extends MyComponent {
                 backgroundColor: '#70707020',
                 paddingHorizontal: 15,
                 paddingVertical: 10,
-                borderRadius: 4
+                borderRadius: 4,
               }}
             >
               <Text style={[style.text, { fontSize: FS(12) }]}>
@@ -180,18 +222,17 @@ class DetailEventPayComponent extends MyComponent {
             position: 'absolute',
             bottom: 15 * SCALE_RATIO_WIDTH_BASIS,
             alignSelf: 'center',
-            backgroundColor: APP_COLOR,
+            borderWidth: 1,
+            borderColor: this.state.type_id === null ? APP_COLOR_BLUE_2 : APP_COLOR,
+            backgroundColor: this.state.type_id === null ? 'white' : APP_COLOR,
             marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
             marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
             paddingVertical: 15 * SCALE_RATIO_WIDTH_BASIS,
-            alignItems: 'center'
+            alignItems: 'center',
           }}
-          onPress={() => {
-            this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
-              item
-            });
-          }}
+          disabled={this.state.type_id === null}
+          onPress={() => this.buyTicket()}
         >
           <Text
             style={[
@@ -199,8 +240,8 @@ class DetailEventPayComponent extends MyComponent {
               {
                 fontFamily: FONT.Bold,
                 fontSize: FS(14),
-                color: '#fff'
-              }
+                color: this.state.type_id === null ? APP_COLOR_BLUE_2 : '#fff',
+              },
             ]}
           >
             PAY NOW
@@ -222,14 +263,14 @@ class DetailEventPayComponent extends MyComponent {
               paddingVertical: 10 * SCALE_RATIO_WIDTH_BASIS,
               // width: DEVICE_WIDTH * 0.7,
               // height: DEVICE_WIDTH * 0.7,
-              backgroundColor: 'white'
+              backgroundColor: 'white',
             }}
           >
             <Text style={[style.textCaption, { fontSize: FS(24), textAlign: 'center' }]}>Opps! </Text>
             <Text
               style={[
                 style.text,
-                { fontSize: FS(12), textAlign: 'center', marginVertical: 15 * SCALE_RATIO_WIDTH_BASIS }
+                { fontSize: FS(12), textAlign: 'center', marginVertical: 15 * SCALE_RATIO_WIDTH_BASIS },
               ]}
             >
               Account in your wallet is not enough to pay. Please top up your account to continue using.
@@ -238,7 +279,7 @@ class DetailEventPayComponent extends MyComponent {
               style={{
                 justifyContent: 'center',
                 flexDirection: 'row',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <TouchableOpacity
@@ -249,7 +290,7 @@ class DetailEventPayComponent extends MyComponent {
                   backgroundColor: '#fff',
                   borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
                   paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
-                  paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS
+                  paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
                 }}
                 onPress={() => {}}
               >
@@ -262,8 +303,8 @@ class DetailEventPayComponent extends MyComponent {
                     {
                       textAlign: 'center',
                       fontSize: FS(14),
-                      color: APP_COLOR_TEXT
-                    }
+                      color: APP_COLOR_TEXT,
+                    },
                   ]}
                 >
                   Cancel
@@ -277,7 +318,7 @@ class DetailEventPayComponent extends MyComponent {
                   backgroundColor: APP_COLOR,
                   borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
                   paddingHorizontal: 30 * SCALE_RATIO_WIDTH_BASIS,
-                  paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS
+                  paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
                 }}
                 onPress={() => {}}
               >
@@ -288,8 +329,8 @@ class DetailEventPayComponent extends MyComponent {
                       textAlign: 'center',
                       fontFamily: FONT.Bold,
                       fontSize: FS(14),
-                      color: '#fff'
-                    }
+                      color: '#fff',
+                    },
                   ]}
                 >
                   Recharge{' '}
@@ -303,9 +344,9 @@ class DetailEventPayComponent extends MyComponent {
   }
 }
 
-const mapActionCreators = {};
+const mapActionCreators = { buyTicket };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ token: state.user.token, userData: state.user.userData });
 
 export default connect(
   mapStateToProps,
