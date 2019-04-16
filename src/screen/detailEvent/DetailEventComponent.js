@@ -318,6 +318,9 @@ class DetailEventComponent extends MyComponent {
     border-bottom:  none !important;
 }
 `}
+              thirdPartyCookiesEnabled
+              domStorageEnabled
+              mixedContentMode='compatibility'
               onLoadEnd={() => this.setState({ loadDone: true })}
               style={{ width: DEVICE_WIDTH }}
               javaScriptEnabled

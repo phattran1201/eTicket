@@ -20,6 +20,7 @@ import MySpinner from '../../view/MySpinner';
 import MyComponent from '../../view/MyComponent';
 import { Input, Button } from 'react-native-elements';
 import { loginEmailPromise, loginSuccess } from './LoginActions';
+import { loadUserData } from '../profile/PersonalInfoActions';
 
 const loginBackground = require('../../assets/background.png');
 
@@ -60,6 +61,7 @@ class LoginComponent extends MyComponent {
     loginEmailPromise(this.state.email, this.state.password)
       .then(res => {
         this.props.loginSuccess(res, () => {
+          this.props.loadUserData(res.data.access_token);
           this.setState({ isLoading: false, btnLogin: 'Log in Success' });
           setTimeout(() => {
             this.props.navigation.replace(ROUTE_KEY.MAIN);
@@ -230,6 +232,7 @@ class LoginComponent extends MyComponent {
 
 const mapActionCreators = {
   loginSuccess,
+  loadUserData,
 };
 
 const mapStateToProps = state => ({

@@ -25,12 +25,24 @@ class HomeComponent extends MyComponent {
     this.isFirstTimeLoadNews = true;
     this.isFirstTimeLoadPromotion = true;
   }
-  componentDidMount() {
+
+  componentWillMount() {
     this.props.loadListPopularEvents();
     this.props.loadListInWeekEvents();
     this.props.loadListFreeEvents();
   }
-
+  shouldComponentUpdate(nextProps, nextSate) {
+    if (this.props.listEventPopular !== nextProps.listEventPopular) {
+      return true;
+    }
+    if (this.props.listEventInWeek !== nextProps.listEventInWeek) {
+      return true;
+    }
+    if (this.props.listEventFree !== nextProps.listEventFree) {
+      return true;
+    }
+    return false;
+  }
   renderPopular = ({ item, index }) => {
     let minPrice = item.tickettype.data[0].price;
     let maxPrice = item.tickettype.data[0].price;
@@ -223,7 +235,6 @@ class HomeComponent extends MyComponent {
     const nickname = this.props.userData && this.props.userData.fullname ? this.props.userData.fullname : 'Đăng Nhập';
     // const point = 0;
     const avatar = null;
-
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -249,7 +260,7 @@ class HomeComponent extends MyComponent {
             rightIconStyle={{ color: 'white' }}
             rightIcon='bell'
             rightIconType='SimpleLineIcons'
-            onRightPress={() => {}}
+            onRightPress={() => this.props.logout(() => this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN))}
           />
           <View style={{ paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS }}>
             <Text style={[style.text, { fontSize: FS(17), color: '#fff' }]}>Near by</Text>
@@ -373,7 +384,7 @@ class HomeComponent extends MyComponent {
                 Upcoming in week
               </Text>
             </View>
-            {/* {this.props.listEventInWeek.length === 0 ? (
+            {this.props.listEventInWeek.length === 0 ? (
               <View
                 style={{
                   // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -435,7 +446,7 @@ class HomeComponent extends MyComponent {
                   </Text>
                 </TouchableOpacity>
               </View>
-            )} */}
+            )}
           </View>
           <View
             style={{
@@ -465,7 +476,7 @@ class HomeComponent extends MyComponent {
                 Event Free
               </Text>
             </View>
-            {/* {this.props.listEventFree.length === 0 ? (
+            {this.props.listEventFree.length === 0 ? (
               <View
                 style={{
                   // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -527,7 +538,7 @@ class HomeComponent extends MyComponent {
                   </Text>
                 </TouchableOpacity>
               </View>
-            )} */}
+            )}
           </View>
         </ScrollView>
       </View>

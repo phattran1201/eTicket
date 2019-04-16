@@ -36,8 +36,6 @@ export const loadSearchByOption = (page = 1, time = '', categoryId = '', free = 
         `https://eticket-vhu.herokuapp.com/api/v1/eticket/search-event?${TIME}${CATEGOTY}${FREE}limit=10&page=${page}`
       )
       .finish((err, res) => {
-        console.log('dauphaiphat: res', res);
-        console.log('dauphaiphat: err', err);
         if (err) {
           ToastAndroid.show(`Kiểm tra kết nối mạng!\n Lỗi loadSearchByKeyword: ${err}`, ToastAndroid.LONG);
           reject(err);

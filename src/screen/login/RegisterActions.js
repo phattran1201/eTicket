@@ -55,7 +55,7 @@ export const registerPromise = (email, password, firstName, lastName, onDoneFunc
 //       type: UPDATE_CURRENT_USER_DATA,
 //       payload: res.body.results.object,
 //     });
-//     setUserIdentity({ token: res.body.results.token, userData: res.body.results.object });
+//     setUserData({ token: res.body.results.token, userData: res.body.results.object });
 
 //     getUserSettingsPublic(dispatch, store);
 //     loadUserDataLoginSuccess(

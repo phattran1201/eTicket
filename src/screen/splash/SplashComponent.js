@@ -9,6 +9,7 @@ import { DEVICE_HEIGHT, DEVICE_WIDTH, ROUTE_KEY } from '../../constants/Constant
 import { APP_COLOR } from '../../constants/style';
 import { alert } from '../../utils/alert';
 import { loadListCategory } from './SplashActions';
+import { getUserToken } from '../../utils/asyncStorage';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class SplashComponent extends Component {
   }
   componentWillMount() {
     persistStore(store, null, () => {
-      console.log('userData', this.props.userData);
+      console.log('userData', getUserToken(), this.props.userData);
       if (this.props.token !== '' && this.props.userData && this.props.isLoggedIn) {
         this.props.navigation.replace(ROUTE_KEY.MAIN);
       } else {
@@ -49,7 +50,7 @@ class SplashComponent extends Component {
   //1
   async checkPermission() {
     const enabled = await firebase.messaging().hasPermission();
-    console.log('dauphaiphat: SplashComponent -> checkPermission -> enabled', enabled);
+    console.log('dauphaiphat:checkPermission ', enabled);
     if (enabled) {
       this.getToken();
       firebase.messaging().onTokenRefresh(token => {

@@ -5,7 +5,8 @@ import request from '../../utils/request';
 import md5 from 'react-native-md5';
 import { alert } from '../../utils/alert';
 import strings from '../../constants/Strings';
-import { getDeviceInfo, setUserIdentity } from '../../utils/asyncStorage';
+import { getDeviceInfo, setUserData, setUserToken } from '../../utils/asyncStorage';
+import { loadUserData } from '../profile/PersonalInfoActions';
 
 export function logout(onDoneFunc = () => {}) {
   return (dispatch, store) => {
@@ -16,9 +17,8 @@ export function logout(onDoneFunc = () => {}) {
 
     // getDeviceInfo().then(deviceInfo => {
     //  firebase.messaging().subscribeToTopic(res.data.access_token);
-    firebase.messaging().unsubscribeFromTopic(store().user.userData.access_token);
+    // firebase.messaging().unsubscribeFromTopic(store().user.userData.access_token);
     // });
-
     setTimeout(() => {
       dispatch({
         type: CONSTANTS_KEY.CLEAR_DATA,
@@ -35,20 +35,15 @@ export function loginSuccess(res, onDone = () => {}) {
       type: CONSTANTS_KEY.UPDATE_CURRENT_TOKEN,
       payload: res.data.access_token,
     });
-
-    dispatch({
-      type: CONSTANTS_KEY.UPDATE_CURRENT_USER_DATA,
-      payload: res.data,
-    });
-    setUserIdentity({ token: res.data.access_token, userData: res.data });
+    setUserToken({ token: res.data.access_token });
     onDone();
     dispatch({
       type: CONSTANTS_KEY.SET_LOGGED_IN,
       payload: true,
     });
     // getDeviceInfo().then(deviceInfo => {
-    firebase.messaging().subscribeToTopic(res.data.access_token);
-    console.log('dauphaiphat: subscribeToTopic', res.data.access_token);
+    // firebase.messaging().subscribeToTopic(res.data.access_token);
+    // console.log('dauphaiphat: subscribeToTopic', res.data.access_token);
     // });
   };
 }

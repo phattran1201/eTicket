@@ -10,6 +10,7 @@ import MySpinner from '../../view/MySpinner';
 import HomeComponent from '../home/HomeComponent';
 import PersonalInfoComponent from '../profile/PersonalInfoComponent';
 import SearchComponent from '../search/SearchComponent';
+import { loadUserData } from '../profile/PersonalInfoActions';
 
 class MainComponent extends MyComponent {
   constructor(props) {
@@ -55,6 +56,9 @@ class MainComponent extends MyComponent {
     },
   ];
 
+  componentDidMount() {
+    this.props.loadUserData(this.props.token);
+  }
   renderIcon = icon => ({ isActive }) => <Feather size={24} color='white' name={icon} />;
 
   renderTab = ({ tab, isActive }) => (
@@ -120,9 +124,9 @@ class MainComponent extends MyComponent {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ token: state.user.token });
 
-const mapActionCreators = {};
+const mapActionCreators = { loadUserData };
 
 export default connect(
   mapStateToProps,

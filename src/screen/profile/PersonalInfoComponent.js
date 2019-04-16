@@ -19,21 +19,121 @@ import style, { APP_COLOR, APP_COLOR_TEXT } from '../../constants/style';
 import { alert } from '../../utils/alert';
 import BaseHeader from '../../view/BaseHeader';
 import MyComponent from '../../view/MyComponent';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { updateUserData, loadUserData } from './PersonalInfoActions';
+import MySpinner from '../../view/MySpinner';
 
 class PersonalInfoComponent extends MyComponent {
   constructor(props) {
     super(props);
+    const {
+      address,
+      bio,
+      cash,
+      companyName,
+      created_at,
+      dob,
+      email,
+      first_name,
+      flag,
+      gender,
+      id,
+      imageURL,
+      last_login,
+      last_name,
+      permissions,
+      phone_number,
+      post_code,
+      status,
+      updated_at,
+    } = this.props.userData;
     this.state = {
       chosenDate: new Date(),
-      sex: 'Other',
-      txtAddress: '',
-      txtLatitude: '',
-      txtLongitude: '',
       dialogVisible: '',
+      tagAddressLocation: '',
+      address,
+      bio,
+      cash,
+      companyName,
+      created_at,
+      dob,
+      email,
+      first_name,
+      flag,
+      gender: gender === null ? 'Other' : gender,
+      id,
+      imageURL,
+      last_login,
+      last_name,
+      permissions,
+      phone_number,
+      post_code,
+      status,
+      updated_at,
     };
   }
-
+  onPlaceSearch = (data, details) => {
+    console.log('dauphaiphat: PersonalInfoComponent -> onPlaceSearch -> data', data);
+    this.setState({
+      address: data.description,
+      tagAddressLocation: details.geometry.location,
+    });
+  };
+  updateUserData() {
+    const {
+      address,
+      bio,
+      cash,
+      companyName,
+      created_at,
+      dob,
+      email,
+      first_name,
+      flag,
+      gender,
+      id,
+      imageURL,
+      last_login,
+      last_name,
+      permissions,
+      phone_number,
+      post_code,
+      status,
+      updated_at,
+    } = this.state;
+    // MySpinner.show();
+    this.props.updateUserData(first_name, last_name, dob, phone_number, gender, address, () =>
+      this.props.loadUserData(this.props.token)
+    );
+    // .then(res => {})
+    // .catch(err => {
+    //   MySpinner.hide();
+    // });
+  }
   render() {
+    console.log('dauphaiphat: PersonalInfoComponent -> render -> userData', this.props.userData);
+    const {
+      address,
+      bio,
+      cash,
+      companyName,
+      created_at,
+      dob,
+      email,
+      first_name,
+      flag,
+      gender,
+      id,
+      imageURL,
+      last_login,
+      last_name,
+      permissions,
+      phone_number,
+      post_code,
+      status,
+      updated_at,
+    } = this.state;
     return (
       <KeyboardAwareScrollView style={{ backgroundColor: '#fff' }}>
         <BaseHeader
@@ -47,10 +147,10 @@ class PersonalInfoComponent extends MyComponent {
             backgroundColor: 'transparent',
             zIndex: 99999,
           }}
-          // leftIcon='arrow-left'
-          // leftIconType='Feather'
-          // leftIconStyle={{ color: APP_COLOR_TEXT }}
-          // onLeftPress={() => this.props.navigation.goBack()}
+          rightIcon='account-edit'
+          rightIconType='MaterialCommunityIcons'
+          rightIconStyle={{ color: APP_COLOR_TEXT }}
+          onRightPress={() => this.updateUserData()}
         />
         <FastImage
           style={{
@@ -115,50 +215,16 @@ class PersonalInfoComponent extends MyComponent {
               />
             </View>
           </View>
-          <View style={{ flexDirection: 'row', marginTop: 10 * SCALE_RATIO_HEIGHT_BASIS }}>
-            <View
-              style={{
-                flex: 1,
-                borderColor: APP_COLOR,
-                borderRightWidth: 0.3 * SCALE_RATIO_WIDTH_BASIS,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={[style.text, { fontSize: FS(12), marginBottom: 4 * SCALE_RATIO_HEIGHT_BASIS }]}>
-                Bạn đã uống (cốc)
-              </Text>
-              <Text style={[style.text, { fontSize: FS(18), color: APP_COLOR }]}>56</Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                borderColor: APP_COLOR,
-                borderLeftWidth: 0.3 * SCALE_RATIO_WIDTH_BASIS,
-                borderRightWidth: 0.3 * SCALE_RATIO_WIDTH_BASIS,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={[style.text, { fontSize: FS(12), marginBottom: SCALE_RATIO_HEIGHT_BASIS * 2 }]}>
-                Đến cửa hàng (lần)
-              </Text>
-              <Text style={[style.text, { fontSize: FS(18), color: APP_COLOR }]}>35</Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                borderColor: APP_COLOR,
-                borderLeftWidth: 0.3 * SCALE_RATIO_WIDTH_BASIS,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={[style.text, { fontSize: FS(12), marginBottom: SCALE_RATIO_HEIGHT_BASIS * 2 }]}>
-                Gian tận nơi (lần)
-              </Text>
-              <Text style={[style.text, { fontSize: FS(18), color: APP_COLOR }]}>12</Text>
-            </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 10 * SCALE_RATIO_HEIGHT_BASIS,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <MaterialIcons name='attach-money' size={FS(30)} color='#707070' style={{ alignSelf: 'center' }} />
+            <Text style={[style.titleHeader, { fontSize: FS(20) }]}>{cash}</Text>
           </View>
         </View>
         <Form
@@ -168,13 +234,28 @@ class PersonalInfoComponent extends MyComponent {
             paddingVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
           }}
         >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Item stackedLabel style={{ width: '48%' }}>
+              <Label style={style.textInput}>First name</Label>
+              <Input
+                style={style.textInput}
+                value={first_name}
+                onChangeText={value => this.setState({ first_name: value })}
+                placeholder='First name..'
+              />
+            </Item>
+            <Item stackedLabel style={{ width: '48%' }}>
+              <Label style={style.textInput}>Last name</Label>
+              <Input
+                style={style.textInput}
+                value={last_name}
+                onChangeText={value => this.setState({ last_name: value })}
+                placeholder='Last name..'
+              />
+            </Item>
+          </View>
           <Item stackedLabel>
-            <Label style={style.textInput}>Họ và tên</Label>
-            <Input style={style.textInput} value={this.props.userData.fullname} disabled />
-          </Item>
-
-          <Item stackedLabel>
-            <Label style={style.textInput}>Sinh Nhật</Label>
+            <Label style={style.textInput}>Birthday</Label>
             <View
               style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
             >
@@ -190,18 +271,23 @@ class PersonalInfoComponent extends MyComponent {
                 // placeHolderText="Select date"
                 textStyle={[style.textInput, { marginLeft: -10 }]}
                 placeHolderTextStyle={{ color: '#d3d3d3' }}
-                onDateChange={this.setDate}
-                disabled={false}
+                onDateChange={date => this.setState({ dob: date })}
               />
               <EvilIcons size={FS(20)} name='calendar' type='evilicon' color={APP_COLOR} />
             </View>
           </Item>
           <Item stackedLabel>
-            <Label style={style.textInput}>Số điện thoại</Label>
+            <Label style={style.textInput}>Phone number</Label>
             <View
               style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
             >
-              <Input style={style.textInput} value='0348103321' />
+              <Input
+                keyboardType='number-pad'
+                style={style.textInput}
+                value={phone_number}
+                onChangeText={value => this.setState({ phone_number: value })}
+                placeholder='Phone number...'
+              />
               <EvilIcons size={FS(20)} name='check' type='evilicon' color='green' />
             </View>
           </Item>
@@ -211,12 +297,18 @@ class PersonalInfoComponent extends MyComponent {
             <View
               style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
             >
-              <Input style={style.textInput} value={this.props.userData.email} disabled />
+              <Input
+                style={style.textInput}
+                value={email}
+                onChangeText={value => this.setState({ email: value })}
+                placeholder='Email...'
+                disabled
+              />
               <EvilIcons size={FS(20)} name='check' type='evilicon' color='green' />
             </View>
           </Item>
           <Item stackedLabel>
-            <Label style={style.textInput}>Giới tính</Label>
+            <Label style={style.textInput}>Gender</Label>
             <View
               style={{
                 marginTop: 10 * SCALE_RATIO_WIDTH_BASIS,
@@ -337,7 +429,9 @@ class PersonalInfoComponent extends MyComponent {
           <Item stackedLabel>
             <Label style={style.textInput}>Địa chỉ mặc định</Label>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-              {/* <GooglePlacesAutocomplete
+              <GooglePlacesAutocomplete
+                getDefaultValue={() => this.state.address}
+                currentLocationLabel={this.state.address}
                 onPress={(data, details) => {
                   this.onPlaceSearch(data, details);
                 }}
@@ -354,11 +448,11 @@ class PersonalInfoComponent extends MyComponent {
                       alignItems: 'center',
                     }}
                   >
-                    <MaterialIcons name='place' size={FS(14)} color='#707070' style={{ alignSelf: 'center' }} />
+                    <MaterialIcons name='place' size={FS(12)} color='#707070' style={{ alignSelf: 'center' }} />
 
                     <View style={{ justifyContent: 'center', marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS }}>
                       <Text style={style.textInput}>{row.structured_formatting.main_text}</Text>
-                      <Text style={style.textInput}>{row.structured_formatting.secondary_text} </Text>
+                      <Text style={style.text}>{row.structured_formatting.secondary_text} </Text>
                     </View>
                   </View>
                 )}
@@ -419,7 +513,7 @@ class PersonalInfoComponent extends MyComponent {
                     }}
                   />
                 )}
-              /> */}
+              />
             </View>
           </Item>
         </Form>
@@ -452,7 +546,7 @@ class PersonalInfoComponent extends MyComponent {
     );
   }
 }
-const mapActionCreators = {};
+const mapActionCreators = { updateUserData, loadUserData };
 
 const mapStateToProps = state => ({
   token: state.user.token,
