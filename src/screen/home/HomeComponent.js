@@ -16,13 +16,14 @@ import moment from 'moment';
 import { logout } from '../login/LoginActions';
 import ItemList from '../../view/ItemList';
 import { QRCode } from 'react-native-custom-qr-codes';
+import { followEvent, unfollowEvent, getListFollowEvent } from '../follow/FollowActions';
+import { alert } from '../../utils/alert';
+import strings from '../../constants/Strings';
 
 class HomeComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = { activeSlide: 0 };
-    this.store = DATA_TEST;
-    this.data = DATA_TEST;
     this.isFirstTimeLoadNews = true;
     this.isFirstTimeLoadPromotion = true;
   }
@@ -42,7 +43,33 @@ class HomeComponent extends MyComponent {
     if (this.props.listEventFree !== nextProps.listEventFree) {
       return true;
     }
+    if (this.props.listFollow !== nextProps.listFollow) {
+      return true;
+    }
     return false;
+  }
+
+  onFollow(id) {
+    followEvent(this.props.token, id)
+      .then(res => {
+        this.props.getListFollowEvent();
+        this.forceUpdate();
+        // alert(strings.alert, 'Follow success');
+      })
+      .catch(err => {
+        alert(strings.alert, 'Follow false');
+      });
+  }
+  unFollow(id) {
+    unfollowEvent(this.props.token, id)
+      .then(res => {
+        this.props.getListFollowEvent();
+        this.forceUpdate();
+        // alert(strings.alert, 'Unfollow success');
+      })
+      .catch(err => {
+        alert(strings.alert, 'Unfollow false');
+      });
   }
   renderPopular = ({ item, index }) => {
     let minPrice = item.tickettype.data[0].price;
@@ -57,10 +84,16 @@ class HomeComponent extends MyComponent {
         maxPrice = item.tickettype.data[i].price;
       }
     }
-
+    let isFollow = false;
+    this.props.listFollow.forEach(e => {
+      if (e.id === item.id) {
+        isFollow = true;
+      }
+    });
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
-        <View
+        <TouchableOpacity
+          onPress={() => (isFollow ? this.unFollow(item.id) : this.onFollow(item.id))}
           style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -75,12 +108,12 @@ class HomeComponent extends MyComponent {
           }}
         >
           <MaterialCommunityIcons
-            name='heart-outline'
+            name={isFollow ? 'heart' : 'heart-outline'}
             size={25 * SCALE_RATIO_WIDTH_BASIS}
             color={APP_COLOR}
             style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
           />
-        </View>
+        </TouchableOpacity>
         <View
           style={[
             {
@@ -594,7 +627,13 @@ const styles = StyleSheet.create({
     fontSize: 10 * SCALE_RATIO_WIDTH_BASIS,
   },
 });
-const mapActionCreators = { loadListPopularEvents, logout, loadListInWeekEvents, loadListFreeEvents };
+const mapActionCreators = {
+  loadListPopularEvents,
+  logout,
+  loadListInWeekEvents,
+  loadListFreeEvents,
+  getListFollowEvent,
+};
 
 const mapStateToProps = state => ({
   token: state.user.token,
@@ -602,6 +641,7 @@ const mapStateToProps = state => ({
   listEventPopular: state.event.listEventPopular,
   listEventInWeek: state.event.listEventInWeek,
   listEventFree: state.event.listEventFree,
+  listFollow: state.user.listFollow,
 });
 
 export default connect(

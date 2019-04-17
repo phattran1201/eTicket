@@ -15,20 +15,18 @@ import {
 import style, { APP_COLOR, APP_COLOR_2 } from '../../constants/style';
 import ItemList from '../../view/ItemList';
 import MyComponent from '../../view/MyComponent';
-import { loadTicket } from './TicketActions';
+import { getListFollowEvent } from './FollowActions';
 
-class TicketComponent extends MyComponent {
+class FollowComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
     };
   }
-  componentWillMount() {
-    this.props.loadTicket();
-  }
+
   shouldComponentUpdate(nextProps, nextSate) {
-    if (this.props.listTicket !== nextProps.listTicket) {
+    if (this.props.listFollow !== nextProps.listFollow) {
       return true;
     }
     return false;
@@ -50,10 +48,7 @@ class TicketComponent extends MyComponent {
     );
   };
   render() {
-    console.log(
-      'dauphaiphat: TicketComponent -> shouldComponentUpdate -> this.props.listTicket',
-      this.props.listTicket
-    );
+    console.log('dauphaiphat: Follow -> shouldComponentUpdate -> this.props.listTicket', this.props.listFollow);
 
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
@@ -108,14 +103,14 @@ class TicketComponent extends MyComponent {
           }}
         >
           <FontAwesome
-            name='ticket'
+            name='heart-o'
             color='white'
             size={FS(32)}
             style={{ marginRight: 10 * SCALE_RATIO_WIDTH_BASIS }}
           />
           <TextInput
             editable={false}
-            placeholder='My ticket'
+            placeholder='Likes'
             placeholderTextColor='white'
             underlineColorAndroid='transparent'
             autoCapitalize='none'
@@ -139,7 +134,7 @@ class TicketComponent extends MyComponent {
             paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             marginBottom: 10 + 2 * getBottomSpace(),
           }}
-          data={this.props.listTicket}
+          data={this.props.listFollow}
           renderItem={this.renderItem}
           // onRefresh={this.onRefresh}
           // refreshing={this.state.refreshing}
@@ -151,13 +146,13 @@ class TicketComponent extends MyComponent {
     );
   }
 }
-const mapActionCreators = { loadTicket };
+const mapActionCreators = { getListFollowEvent };
 
 const mapStateToProps = state => ({
-  listTicket: state.user.listTicket,
+  listFollow: state.user.listFollow,
 });
 
 export default connect(
   mapStateToProps,
   mapActionCreators
-)(TicketComponent);
+)(FollowComponent);

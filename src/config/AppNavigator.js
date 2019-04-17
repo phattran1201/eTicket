@@ -19,6 +19,7 @@ import LoginComponent from '../screen/login/LoginComponent';
 import RegisterComponent from '../screen/login/RegisterComponent';
 import PersonalInfoComponent from '../screen/profile/PersonalInfoComponent';
 import TicketComponent from '../screen/ticket/TicketComponent';
+import FollowComponent from '../screen/follow/FollowComponent';
 
 const routeAppConfiguration = {
   [ROUTE_KEY.SPLASH]: {
@@ -115,6 +116,13 @@ const routeAppConfiguration = {
   },
   [ROUTE_KEY.TICKET]: {
     screen: TicketComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false,
+    },
+  },
+  [ROUTE_KEY.FOLLOW]: {
+    screen: FollowComponent,
     navigationOptions: {
       header: null,
       gesturesEnabled: false,

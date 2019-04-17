@@ -11,6 +11,7 @@ const initialState = {
   currentSettings: null,
   isLoggedIn: false,
   listTicket: [],
+  listFollow: null,
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -61,9 +62,9 @@ const UserReducer = (state = initialState, action) => {
           $set: action.payload,
         },
       });
-    case CONSTANTS_KEY.UPDATE_LIST_FOLLOWINGS:
+    case CONSTANTS_KEY.UPDATE_LIST_FOLLOW:
       return update(state, {
-        listFollowings: {
+        listFollow: {
           $set: action.payload,
         },
       });

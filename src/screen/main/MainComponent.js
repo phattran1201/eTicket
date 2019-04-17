@@ -12,6 +12,7 @@ import PersonalInfoComponent from '../profile/PersonalInfoComponent';
 import SearchComponent from '../search/SearchComponent';
 import { loadUserData } from '../profile/PersonalInfoActions';
 import TicketComponent from '../ticket/TicketComponent';
+import FollowComponent from '../follow/FollowComponent';
 
 class MainComponent extends MyComponent {
   constructor(props) {
@@ -77,9 +78,9 @@ class MainComponent extends MyComponent {
     if (this.state.activeTab === 'search') {
       return <SearchComponent navigation={this.props.navigation} />;
     }
-    // if (this.state.activeTab === 'heart') {
-    //   return <FilterSearchComponent navigation={this.props.navigation} />;
-    // }
+    if (this.state.activeTab === 'heart') {
+      return <FollowComponent navigation={this.props.navigation} />;
+    }
     if (this.state.activeTab === 'ticket') {
       return <TicketComponent navigation={this.props.navigation} />;
     }

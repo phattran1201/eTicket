@@ -24,7 +24,6 @@ class DetailEventPayComponent extends MyComponent {
     MySpinner.show();
     buyTicket(this.props.token, item.id, this.state.type_id)
       .then(res => {
-        console.log('dauphaiphat: buyTicket -> res', res);
         this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
           item,
           res,

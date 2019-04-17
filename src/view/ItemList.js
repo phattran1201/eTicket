@@ -1,15 +1,49 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { View, Text, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { SCALE_RATIO_WIDTH_BASIS, FS, ROUTE_KEY } from '../constants/Constants';
 import style, { APP_COLOR, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY } from '../constants/style';
 import MyImage from './MyImage';
 import moment from 'moment';
+import { followEvent, unfollowEvent, getListFollowEvent } from '../screen/follow/FollowActions';
+import { alert } from '../utils/alert';
+import strings from '../constants/Strings';
 
-export default class ItemList extends Component {
+class ItemList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  shouldComponentUpdate(nextProps, nextSate) {
+    if (this.props.listFollow !== nextProps.listFollow) {
+      return true;
+    }
+    return false;
+  }
+
+  onFollow(id) {
+    followEvent(this.props.token, id)
+      .then(res => {
+        this.props.getListFollowEvent();
+        this.forceUpdate();
+        alert(strings.alert, 'Follow success');
+      })
+      .catch(err => {
+        alert(strings.alert, 'Follow false');
+      });
+  }
+  unFollow(id) {
+    unfollowEvent(this.props.token, id)
+      .then(res => {
+        this.props.getListFollowEvent();
+        this.forceUpdate();
+        alert(strings.alert, 'Unfollow success');
+      })
+      .catch(err => {
+        alert(strings.alert, 'Unfollow false');
+      });
   }
   render() {
     const { item, onPress } = this.props;
@@ -31,10 +65,16 @@ export default class ItemList extends Component {
         maxPrice = item.tickettype.data[i].price;
       }
     }
-
+    let isFollow = false;
+    this.props.listFollow.forEach(e => {
+      if (e.id === item.id) {
+        isFollow = true;
+      }
+    });
     return (
       <TouchableOpacity onPress={onPress || (() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item }))}>
-        <View
+        <TouchableOpacity
+          onPress={() => (isFollow ? this.unFollow(item.id) : this.onFollow(item.id))}
           style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -45,12 +85,12 @@ export default class ItemList extends Component {
           }}
         >
           <MaterialCommunityIcons
-            name='heart-outline'
+            name={isFollow ? 'heart' : 'heart-outline'}
             size={20 * SCALE_RATIO_WIDTH_BASIS}
             color={APP_COLOR}
             style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
           />
-        </View>
+        </TouchableOpacity>
         <View
           style={[
             {
@@ -237,3 +277,15 @@ export default class ItemList extends Component {
     );
   }
 }
+const mapActionCreators = { getListFollowEvent };
+
+const mapStateToProps = state => ({
+  token: state.user.token,
+  userData: state.user.userData,
+  listFollow: state.user.listFollow,
+});
+
+export default connect(
+  mapStateToProps,
+  mapActionCreators
+)(ItemList);
