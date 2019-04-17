@@ -24,6 +24,8 @@ export const APP_COLOR_TEXT_GRAY = '#707070';
 export const APP_COLOR_TEXT_GRAY_2 = '#70707030';
 export const APP_COLOR_BLUE = '#799dd8';
 export const APP_COLOR_BLUE_2 = '#2A596B';
+export const APP_COLOR_BORDER = '#e1e1e1';
+export const APP_COLOR_TEXT_BORDER = '#727272';
 
 export const FONT = {
   HelveticaNeue: 'HelveticaNeue',

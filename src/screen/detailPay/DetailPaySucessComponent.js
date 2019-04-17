@@ -3,7 +3,7 @@ import { Image, ScrollView, Text, View, TouchableOpacity, Animated } from 'react
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { DEVICE_HEIGHT, FS, SCALE_RATIO_WIDTH_BASIS, DEVICE_WIDTH } from '../../constants/Constants';
+import { DEVICE_HEIGHT, FS, SCALE_RATIO_WIDTH_BASIS, DEVICE_WIDTH, ROUTE_KEY } from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, {
   APP_COLOR,
@@ -32,6 +32,8 @@ class DetailPaySucessComponent extends MyComponent {
   }
 
   render() {
+    console.log('dauphaiphat: DetailPaySucessComponent -> render -> this.props.navigation', this.props.navigation);
+
     const { item, res } = this.props.navigation.state.params;
 
     return (
@@ -158,7 +160,7 @@ class DetailPaySucessComponent extends MyComponent {
         >
           <QRCode
             linearGradient={[APP_COLOR, APP_COLOR_2]}
-            content={res.QR_code}
+            content={res.QR_code ? res.QR_code : item.qr_code}
             size={150 * SCALE_RATIO_WIDTH_BASIS}
           />
           <View
@@ -237,7 +239,7 @@ class DetailPaySucessComponent extends MyComponent {
             paddingVertical: 15 * SCALE_RATIO_WIDTH_BASIS,
             alignItems: 'center',
           }}
-          onPress={() => {}}
+          onPress={() => this.props.navigation.navigate(ROUTE_KEY.MAIN)}
         >
           <Text
             style={[

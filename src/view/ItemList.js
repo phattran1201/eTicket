@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import { SCALE_RATIO_WIDTH_BASIS, FS } from '../constants/Constants';
+import { SCALE_RATIO_WIDTH_BASIS, FS, ROUTE_KEY } from '../constants/Constants';
 import style, { APP_COLOR, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY } from '../constants/style';
 import MyImage from './MyImage';
 import moment from 'moment';
@@ -12,7 +12,7 @@ export default class ItemList extends Component {
     this.state = {};
   }
   render() {
-    const { item } = this.props;
+    const { item, onPress } = this.props;
     let minPrice =
       item.tickettype && item.tickettype.data && item.tickettype.data[0] && item.tickettype.data[0].price
         ? item.tickettype.data[0].price
@@ -33,7 +33,7 @@ export default class ItemList extends Component {
     }
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress || (() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item }))}>
         <View
           style={{
             alignItems: 'center',

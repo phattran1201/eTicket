@@ -11,6 +11,7 @@ import { alert } from '../../utils/alert';
 import { loadListCategory } from './SplashActions';
 import { getUserToken } from '../../utils/asyncStorage';
 import SplashScreen from 'react-native-splash-screen';
+import { loadUserData } from '../profile/PersonalInfoActions';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class SplashComponent extends Component {
     persistStore(store, null, () => {
       console.log('userData', getUserToken(), this.props.userData);
       if (this.props.token !== '' && this.props.userData && this.props.isLoggedIn) {
+        this.props.loadUserData(this.props.token);
         this.props.navigation.replace(ROUTE_KEY.MAIN);
       } else {
         this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN);
@@ -207,6 +209,7 @@ class SplashComponent extends Component {
   };
 
   render() {
+    console.log('dauphaiphat: PersonalInfoComponent -> updateUserData -> this.props.token', this.props.token);
     return (
       <View style={styles.content}>
         <StatusBar barStyle='dark-content' translucent />
@@ -221,7 +224,7 @@ class SplashComponent extends Component {
   }
 }
 
-const mapActionCreators = { loadListCategory };
+const mapActionCreators = { loadListCategory, loadUserData };
 
 const mapStateToProps = state => ({
   userData: state.user.userData,

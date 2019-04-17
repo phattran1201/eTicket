@@ -66,24 +66,49 @@ class DetailEventPayComponent extends MyComponent {
             >
               {item.title}
             </Text>
-            <Text style={[style.text, { fontSize: FS(12), color: APP_COLOR_TEXT, marginTop: 10 }]}>
+            <Text style={[style.text, { fontSize: FS(12), color: APP_COLOR_TEXT, marginTop: 10, marginLeft: 5 }]}>
               By {item.contactPerson}
             </Text>
           </View>
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
               marginTop: 25,
+              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
               marginBottom: 15,
             }}
           >
-            <FontAwesome
-              name='calendar'
-              style={{ marginTop: 5 }}
-              size={14 * SCALE_RATIO_WIDTH_BASIS}
-              color={APP_COLOR_TEXT_GRAY_2}
-            />
+            <View style={{ width: FS(18), alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome
+                name='user'
+                style={{ marginTop: FS(5), alignSeft: 'center' }}
+                size={FS(17)}
+                color={APP_COLOR_TEXT_GRAY_2}
+              />
+            </View>
+            <View style={{ marginLeft: 10 }}>
+              <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>{item.contactPerson}</Text>
+              <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>
+                {item.contactNumber}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: 15,
+            }}
+          >
+            <View style={{ width: FS(18), alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome
+                name='calendar'
+                style={{ marginTop: FS(5), alignSeft: 'center' }}
+                size={FS(17)}
+                color={APP_COLOR_TEXT_GRAY_2}
+              />
+            </View>
+
             <View style={{ marginLeft: 10 }}>
               <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>
                 {moment(item.end_date).format('ddd,MMMM')}
@@ -100,12 +125,14 @@ class DetailEventPayComponent extends MyComponent {
               marginBottom: 15,
             }}
           >
-            <FontAwesome
-              name='calendar'
-              style={{ marginTop: 5 }}
-              size={14 * SCALE_RATIO_WIDTH_BASIS}
-              color={APP_COLOR_TEXT_GRAY_2}
-            />
+            <View style={{ width: FS(18), alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome
+                name='map-marker'
+                style={{ marginTop: FS(5), alignSeft: 'center' }}
+                size={FS(17)}
+                color={APP_COLOR_TEXT_GRAY_2}
+              />
+            </View>
             <View style={{ marginLeft: 10 }}>
               <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>{item.locationName}</Text>
               <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>{item.address}</Text>
@@ -118,12 +145,14 @@ class DetailEventPayComponent extends MyComponent {
               marginBottom: 15,
             }}
           >
-            <FontAwesome
-              name='calendar'
-              style={{ marginTop: 5 }}
-              size={14 * SCALE_RATIO_WIDTH_BASIS}
-              color={APP_COLOR_TEXT_GRAY_2}
-            />
+            <View style={{ width: FS(18), alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome
+                name='ticket'
+                style={{ marginTop: FS(5), alignSeft: 'center' }}
+                size={FS(17)}
+                color={APP_COLOR_TEXT_GRAY_2}
+              />
+            </View>
             <View style={{ marginLeft: 10 }}>
               <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>Select the type of ticket</Text>
               <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>

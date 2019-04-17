@@ -18,6 +18,7 @@ import PreLoginComponent from '../screen/login/PreLoginComponent';
 import LoginComponent from '../screen/login/LoginComponent';
 import RegisterComponent from '../screen/login/RegisterComponent';
 import PersonalInfoComponent from '../screen/profile/PersonalInfoComponent';
+import TicketComponent from '../screen/ticket/TicketComponent';
 
 const routeAppConfiguration = {
   [ROUTE_KEY.SPLASH]: {
@@ -107,6 +108,13 @@ const routeAppConfiguration = {
   },
   [ROUTE_KEY.PERSONAL_INFO]: {
     screen: PersonalInfoComponent,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false,
+    },
+  },
+  [ROUTE_KEY.TICKET]: {
+    screen: TicketComponent,
     navigationOptions: {
       header: null,
       gesturesEnabled: false,

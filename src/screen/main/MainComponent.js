@@ -11,6 +11,7 @@ import HomeComponent from '../home/HomeComponent';
 import PersonalInfoComponent from '../profile/PersonalInfoComponent';
 import SearchComponent from '../search/SearchComponent';
 import { loadUserData } from '../profile/PersonalInfoActions';
+import TicketComponent from '../ticket/TicketComponent';
 
 class MainComponent extends MyComponent {
   constructor(props) {
@@ -56,9 +57,7 @@ class MainComponent extends MyComponent {
     },
   ];
 
-  componentDidMount() {
-    this.props.loadUserData(this.props.token);
-  }
+  componentDidMount() {}
   renderIcon = icon => ({ isActive }) => <Feather size={24} color='white' name={icon} />;
 
   renderTab = ({ tab, isActive }) => (
@@ -81,6 +80,9 @@ class MainComponent extends MyComponent {
     // if (this.state.activeTab === 'heart') {
     //   return <FilterSearchComponent navigation={this.props.navigation} />;
     // }
+    if (this.state.activeTab === 'ticket') {
+      return <TicketComponent navigation={this.props.navigation} />;
+    }
     if (this.state.activeTab === 'more') {
       return <PersonalInfoComponent navigation={this.props.navigation} />;
     }
@@ -100,9 +102,7 @@ class MainComponent extends MyComponent {
         <MySpinner />
 
         <StatusBar backgroundColor={'#ffffff60'} barStyle='dark-content' translucent />
-        <View style={{ height: DEVICE_HEIGHT - 56 + getBottomSpace(), paddingBottom: 30 * SCALE_RATIO_HEIGHT_BASIS }}>
-          {this.renderBody()}
-        </View>
+        <View style={{ height: DEVICE_HEIGHT - 56 + getBottomSpace() }}>{this.renderBody()}</View>
         {/* <View style={{ position: 'absolute', top: 6, width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}> */}
         <BottomNavigation
           style={{

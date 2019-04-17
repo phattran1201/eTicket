@@ -10,6 +10,7 @@ const initialState = {
   userData: null,
   currentSettings: null,
   isLoggedIn: false,
+  listTicket: [],
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -54,6 +55,12 @@ const UserReducer = (state = initialState, action) => {
     //       $set: action.payload,
     //     },
     //   });
+    case CONSTANTS_KEY.UPDATE_LIST_TICKET:
+      return update(state, {
+        listTicket: {
+          $set: action.payload,
+        },
+      });
     case CONSTANTS_KEY.UPDATE_LIST_FOLLOWINGS:
       return update(state, {
         listFollowings: {

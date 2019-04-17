@@ -13,6 +13,7 @@ import {
   SLICE_NUM,
   ROUTE_KEY,
   SCALE_RATIO_HEIGHT_BASIS,
+  IS_IOS,
 } from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, {
@@ -25,6 +26,7 @@ import style, {
 import MyComponent from '../../view/MyComponent';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
 import MyImage from '../../view/MyImage';
+import moment from 'moment';
 
 class DetailEventComponent extends MyComponent {
   constructor(props) {
@@ -36,114 +38,200 @@ class DetailEventComponent extends MyComponent {
     this.isFirstTimeLoadPromotion = true;
   }
 
-  renderSuggested = ({ item, index }) => (
-    <TouchableOpacity>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 40 * SCALE_RATIO_WIDTH_BASIS,
-          height: 40 * SCALE_RATIO_WIDTH_BASIS,
-          borderRadius: (40 * SCALE_RATIO_WIDTH_BASIS) / 2,
-          position: 'absolute',
-          top: 5,
-          right: 10,
-          backgroundColor: 'white',
-          zIndex: 999,
-        }}
-      >
-        <MaterialCommunityIcons
-          name='heart-outline'
-          size={25 * SCALE_RATIO_WIDTH_BASIS}
-          color={APP_COLOR}
-          style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
-        />
-      </View>
-      <View
-        style={[
-          {
-            borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-            flex: 1,
-            backgroundColor: 'white',
-            marginLeft: 15,
-            overflow: 'hidden',
-          },
-        ]}
-      >
-        <MyImage
+  renderSuggested = ({ item, index }) => {
+    let minPrice = item.tickettype.data[0].price;
+    let maxPrice = item.tickettype.data[0].price;
+    for (let i = 1; i < item.tickettype.data.length; i++) {
+      if (minPrice > item.tickettype.data[i].price) {
+        minPrice = item.tickettype.data[i].price;
+      }
+    }
+    for (let i = 1; i < item.tickettype.data.length; i++) {
+      if (maxPrice < item.tickettype.data[i].price) {
+        maxPrice = item.tickettype.data[i].price;
+      }
+    }
+
+    return (
+      <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
+        <View
           style={{
-            width: '100%',
-            height: 150 * SCALE_RATIO_WIDTH_BASIS,
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 40 * SCALE_RATIO_WIDTH_BASIS,
+            height: 40 * SCALE_RATIO_WIDTH_BASIS,
+            borderRadius: (40 * SCALE_RATIO_WIDTH_BASIS) / 2,
+            position: 'absolute',
+            top: 5,
+            right: 10,
+            backgroundColor: 'white',
+            zIndex: 999,
           }}
-          source={{
-            uri: item.image,
-          }}
-        />
-
-        <Text
+        >
+          <MaterialCommunityIcons
+            name='heart-outline'
+            size={25 * SCALE_RATIO_WIDTH_BASIS}
+            color={APP_COLOR}
+            style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
+          />
+        </View>
+        <View
           style={[
-            style.textCaption,
             {
-              color: APP_COLOR_TEXT,
-              fontSize: FS(14),
-              padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+              overflow: 'visible',
+              borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: IS_IOS ? 5 : 6,
+              flex: 1,
+              backgroundColor: 'white',
+              marginLeft: 15,
             },
           ]}
-          numberOfLines={2}
         >
-          {item.title}
-        </Text>
-
-        <Text
-          style={[
-            style.textCaption,
-            {
-              color: APP_COLOR_TEXT_GRAY,
-              fontSize: FS(10),
-              padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-            },
-          ]}
-          numberOfLines={2}
-        >
-          Sun, February 22 - 17:00
-        </Text>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ borderWidth: 0.5, borderColor: '#70707050', padding: 1, borderRadius: 3 }}>
-            <Text
-              style={[
-                style.textCaption,
-                {
-                  alignSelf: 'flex-start',
-                  color: APP_COLOR_TEXT,
-                  fontSize: FS(10),
-                  padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-                },
-              ]}
-              numberOfLines={2}
-            >
-              Bussiness
-            </Text>
+          <View>
+            <MyImage
+              style={{
+                width: '100%',
+                height: 150 * SCALE_RATIO_WIDTH_BASIS,
+              }}
+              source={{
+                uri: item.image,
+              }}
+            />
           </View>
-          <View style={{ marginLeft: 5, borderWidth: 0.5, borderColor: APP_COLOR, padding: 1, borderRadius: 3 }}>
-            <Text
-              style={[
-                style.textCaption,
-                {
-                  alignSelf: 'flex-start',
-                  color: APP_COLOR,
-                  fontSize: FS(10),
-                  padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-                },
-              ]}
-              numberOfLines={2}
-            >
-              From $14
-            </Text>
+
+          <Text
+            style={[
+              style.textCaption,
+              {
+                color: APP_COLOR_TEXT,
+                fontSize: FS(14),
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+              },
+            ]}
+            numberOfLines={2}
+          >
+            {item.title}
+          </Text>
+
+          <Text
+            style={[
+              style.textCaption,
+              {
+                color: APP_COLOR_TEXT_GRAY,
+                fontSize: FS(10),
+                padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+              },
+            ]}
+            numberOfLines={2}
+          >
+            {moment(item.end_date).format('ddd,MMMM')}
+            {'  '}
+            {item.start_time} - {item.end_time}:00
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ borderWidth: 0.5, borderColor: '#70707050', padding: 1, borderRadius: 3 }}>
+              <Text
+                style={[
+                  style.textCaption,
+                  {
+                    alignSelf: 'flex-start',
+                    color: APP_COLOR_TEXT,
+                    fontSize: FS(10),
+                    padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                  },
+                ]}
+                numberOfLines={2}
+              >
+                {item.category}
+              </Text>
+            </View>
+            {/* {item.tickettype.data.map(e => ( */}
+            {item.tickettype.data.length === 1 ? (
+              <View
+                style={{
+                  marginLeft: 5,
+                  borderWidth: 0.5,
+                  borderColor: APP_COLOR,
+                  backgroundColor: item.tickettype.data[0].price < 1 ? APP_COLOR : 'white',
+                  padding: 1,
+                  borderRadius: 3,
+                }}
+              >
+                <Text
+                  style={[
+                    style.textCaption,
+                    {
+                      alignSelf: 'flex-start',
+                      color: item.tickettype.data[0].price < 1 ? 'white' : APP_COLOR,
+                      fontSize: FS(10),
+                      padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                    },
+                  ]}
+                  numberOfLines={2}
+                >
+                  {item.tickettype.data[0].price < 1 ? 'Free' : `From ${item.tickettype.data[0].price}`}
+                </Text>
+              </View>
+            ) : (
+              <View style={{ flexDirection: 'row' }}>
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderWidth: 0.5,
+                    borderColor: APP_COLOR,
+                    backgroundColor: minPrice < 1 ? APP_COLOR : 'white',
+                    padding: 1,
+                    borderRadius: 3,
+                  }}
+                >
+                  <Text
+                    style={[
+                      style.textCaption,
+                      {
+                        alignSelf: 'flex-start',
+                        color: minPrice < 1 ? 'white' : APP_COLOR,
+                        fontSize: FS(10),
+                        padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      },
+                    ]}
+                    numberOfLines={2}
+                  >
+                    {minPrice < 1 ? 'Free' : `From ${minPrice}`}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    marginLeft: 5,
+                    borderWidth: 0.5,
+                    borderColor: APP_COLOR,
+                    padding: 1,
+                    borderRadius: 3,
+                  }}
+                >
+                  <Text
+                    style={[
+                      style.textCaption,
+                      {
+                        alignSelf: 'flex-start',
+                        color: APP_COLOR,
+                        fontSize: FS(10),
+                        padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      },
+                    ]}
+                    numberOfLines={2}
+                  >
+                    To ${maxPrice}
+                  </Text>
+                </View>
+              </View>
+            )}
+
+            {/* ))} */}
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   render() {
     const jsCode = `
@@ -243,18 +331,68 @@ class DetailEventComponent extends MyComponent {
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
+              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: 15,
             }}
           >
-            <FontAwesome
-              name='calendar'
-              style={{ marginTop: 5 }}
-              size={14 * SCALE_RATIO_WIDTH_BASIS}
-              color={APP_COLOR_TEXT_GRAY_2}
-            />
+            <View style={{ width: FS(18), alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome
+                name='user'
+                style={{ marginTop: FS(5), alignSeft: 'center' }}
+                size={FS(17)}
+                color={APP_COLOR_TEXT_GRAY_2}
+              />
+            </View>
             <View style={{ marginLeft: 10 }}>
-              <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>{item.end_date}</Text>
-              <Text style={[style.text, { fontSize: FS(12), fontcolor: APP_COLOR_TEXT_GRAY }]}>{item.type}</Text>
+              <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>{item.contactPerson}</Text>
+              <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>
+                {item.contactNumber}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: 15,
+            }}
+          >
+            <View style={{ width: FS(18), alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome
+                name='calendar'
+                style={{ marginTop: FS(5), alignSeft: 'center' }}
+                size={FS(17)}
+                color={APP_COLOR_TEXT_GRAY_2}
+              />
+            </View>
+
+            <View style={{ marginLeft: 10 }}>
+              <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>
+                {moment(item.end_date).format('ddd,MMMM')}
+                {'  '}
+                {item.start_time} - {item.end_time}:00
+              </Text>
+              <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>{item.type}</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: 15,
+            }}
+          >
+            <View style={{ width: FS(18), alignItems: 'center', justifyContent: 'center' }}>
+              <FontAwesome
+                name='map-marker'
+                style={{ marginTop: FS(5), alignSeft: 'center' }}
+                size={FS(17)}
+                color={APP_COLOR_TEXT_GRAY_2}
+              />
+            </View>
+            <View style={{ marginLeft: 10 }}>
+              <Text style={[style.text, { fontSize: FS(16), color: APP_COLOR_TEXT }]}>{item.locationName}</Text>
+              <Text style={[style.text, { fontSize: FS(10), fontcolor: APP_COLOR_TEXT_GRAY_2 }]}>{item.address}</Text>
             </View>
           </View>
           <TouchableOpacity

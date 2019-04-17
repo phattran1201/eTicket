@@ -3,6 +3,7 @@ import request from '../../utils/request';
 import strings from '../../constants/Strings';
 import { alert } from '../../utils/alert';
 import { setUserData } from '../../utils/asyncStorage';
+import MySpinner from '../../view/MySpinner';
 
 export function loadUserData(token) {
   return (dispatch, store) => {
@@ -23,7 +24,17 @@ export function loadUserData(token) {
       });
   };
 }
-export function updateUserData(first_name, last_name, dob, phone_number, gender, address, onSuccessFunc = () => {}) {
+export function updateUserData(
+  first_name,
+  last_name,
+  dob,
+  phone_number,
+  gender,
+  address,
+  onSuccessFunc = () => {},
+  onFailFunc = () => {}
+) {
+  console.log('dauphaiphat: updateUserData -> gender', gender);
   return (dispatch, store) => {
     request
       .post(`${BASE_URL}post-profile`)
@@ -31,14 +42,12 @@ export function updateUserData(first_name, last_name, dob, phone_number, gender,
       .set('Authorization', store().user.token)
       .send({ first_name, last_name, dob, phone_number, gender, address })
       .finish((err, res) => {
-        console.log('dauphaiphat: updateUserData -> err', err);
         console.log('dauphaiphat: updateUserData -> res', res);
         if (err) {
-          alert(strings.alert, 'Updated false');
+          onFailFunc();
         }
         if (!err && res.body && res.body.status_code === 200) {
           onSuccessFunc();
-          alert(strings.alert, 'Updated successfully');
         }
       });
   };

@@ -81,7 +81,18 @@ class HomeComponent extends MyComponent {
             style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
           />
         </View>
-        <View style={[styles.carouselItemContainer, { marginLeft: 15, overflow: 'hidden' }]}>
+        <View
+          style={[
+            {
+              overflow: 'visible',
+              borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: IS_IOS ? 5 : 6,
+              flex: 1,
+              backgroundColor: 'white',
+              marginLeft: 15,
+            },
+          ]}
+        >
           <View>
             <MyImage
               style={{
@@ -228,14 +239,11 @@ class HomeComponent extends MyComponent {
     );
   };
 
-  renderNewsItem = ({ item, index }) => {
-    return <ItemList item={item} />;
+  renderItem = ({ item, index }) => {
+    return <ItemList item={item} navigation={this.props.navigation} />;
   };
 
   render() {
-    const nickname = this.props.userData && this.props.userData.fullname ? this.props.userData.fullname : 'Đăng Nhập';
-    // const point = 0;
-    const avatar = null;
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -415,7 +423,7 @@ class HomeComponent extends MyComponent {
                 <FlatList
                   style={{ flex: 1 }}
                   data={this.props.listEventInWeek}
-                  renderItem={this.renderNewsItem}
+                  renderItem={this.renderItem}
                   // onRefresh={this.onRefresh}
                   // refreshing={this.state.refreshing}
                   // onEndReached={this.handleLoadMore}
@@ -507,7 +515,7 @@ class HomeComponent extends MyComponent {
                 <FlatList
                   style={{ flex: 1 }}
                   data={this.props.listEventFree}
-                  renderItem={this.renderNewsItem}
+                  renderItem={this.renderItem}
                   // onRefresh={this.onRefresh}
                   // refreshing={this.state.refreshing}
                   // onEndReached={this.handleLoadMore}
@@ -580,13 +588,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 40 * SCALE_RATIO_WIDTH_BASIS,
     height: '100%',
-  },
-  carouselItemContainer: {
-    overflow: 'visible',
-    borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-    marginBottom: IS_IOS ? 5 : 6,
-    flex: 1,
-    backgroundColor: 'white',
   },
   carouselItemMoreInfo: {
     textAlign: 'center',
