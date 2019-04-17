@@ -10,6 +10,7 @@ import { APP_COLOR } from '../../constants/style';
 import { alert } from '../../utils/alert';
 import { loadListCategory } from './SplashActions';
 import { getUserToken } from '../../utils/asyncStorage';
+import SplashScreen from 'react-native-splash-screen';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class SplashComponent extends Component {
     this.checkPermission();
     this.createNotificationListeners();
     this.props.loadListCategory();
+    SplashScreen.hide();
   }
 
   componentWillUnmount() {
@@ -208,12 +210,12 @@ class SplashComponent extends Component {
     return (
       <View style={styles.content}>
         <StatusBar barStyle='dark-content' translucent />
-
+        {/*
         <Image
           style={{ flex: 1, width: DEVICE_WIDTH, height: DEVICE_HEIGHT, alignSelf: 'center' }}
           source={require('../../assets/ic_splash.png')}
           resizeMode='cover'
-        />
+        /> */}
       </View>
     );
   }

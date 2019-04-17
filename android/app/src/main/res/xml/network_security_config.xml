@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+         <domain includeSubdomains="true">ticketbox.vn</domain>
+         <domain includeSubdomains="true">eticket-vhu.herokuapp.com</domain>
+    </domain-config>
+</network-security-config>

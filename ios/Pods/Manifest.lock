@@ -32,20 +32,20 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.7.0)
-  - React (0.59.3):
-    - React/Core (= 0.59.3)
+  - React (0.59.4):
+    - React/Core (= 0.59.4)
   - react-native-splash-screen (3.2.0):
     - React
-  - React/Core (0.59.3):
-    - yoga (= 0.59.3.React)
-  - React/RCTImage (0.59.3):
+  - React/Core (0.59.4):
+    - yoga (= 0.59.4.React)
+  - React/RCTImage (0.59.4):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.59.3):
+  - React/RCTNetwork (0.59.4):
     - React/Core
   - RNSVG (9.4.0):
     - React
-  - yoga (0.59.3.React)
+  - yoga (0.59.4.React)
 
 DEPENDENCIES:
   - Firebase/Core (~> 5.3.0)
@@ -53,7 +53,7 @@ DEPENDENCIES:
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React/RCTImage (from `../node_modules/react-native`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -74,7 +74,7 @@ EXTERNAL SOURCES:
   RNSVG:
     :path: "../node_modules/react-native-svg"
   yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga"
+    :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
   Firebase: 68afeeb05461db02d7c9e3215cda28068670f4aa
@@ -90,6 +90,6 @@ SPEC CHECKSUMS:
   RNSVG: 4834be1d644eb77f0e3f6de851881b83758a3124
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 80a2bbadd03b43fa4e260d6f476c1e82a60d6444
+PODFILE CHECKSUM: a1d628c7f23e3982ad3a19c5726d72e53b832a45
 
 COCOAPODS: 1.5.3
