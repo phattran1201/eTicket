@@ -24,12 +24,19 @@ class DetailEventPayComponent extends MyComponent {
     MySpinner.show();
     buyTicket(this.props.token, item.id, this.state.type_id)
       .then(res => {
-        this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
-          item,
-          res,
-        });
-        this.setState({ isLoading: false, btnLogin: 'Log in Success' });
-        MySpinner.hide();
+        if (res.status === 'error') {
+          MySpinner.hide();
+          setTimeout(() => {
+            alert(strings.alert, res.message);
+          }, 100);
+        } else {
+          this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
+            item,
+            res,
+          });
+          this.setState({ isLoading: false, btnLogin: 'Log in Success' });
+          MySpinner.hide();
+        }
       })
       .catch(err => {
         MySpinner.hide();
@@ -39,7 +46,7 @@ class DetailEventPayComponent extends MyComponent {
   }
   render() {
     const { item } = this.props.navigation.state.params;
-    console.log('dauphaiphat: DetailEventPayComponent -> render -> item', item);
+    // console.log('dauphaiphat: DetailEventPayComponent -> render -> item', item);
 
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>

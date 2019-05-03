@@ -31,9 +31,9 @@ class SplashComponent extends Component {
     persistStore(store, null, () => {
       console.log('userData', getUserToken(), this.props.userData);
       if (this.props.token !== '' && this.props.userData && this.props.isLoggedIn) {
-        this.props.loadUserData(this.props.token);
-        this.props.getListFollowEvent();
-        this.props.navigation.replace(ROUTE_KEY.MAIN);
+        this.props.loadUserData(this.props.token, () =>
+          this.props.getListFollowEvent(() => this.props.navigation.replace(ROUTE_KEY.MAIN))
+        );
       } else {
         this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN);
       }
@@ -214,13 +214,12 @@ class SplashComponent extends Component {
     console.log('dauphaiphat: PersonalInfoComponent -> updateUserData -> this.props.token', this.props.token);
     return (
       <View style={styles.content}>
-        <StatusBar barStyle='dark-content' translucent />
-        {/*
+        <StatusBar backgroundColor='transparent' barStyle='dark-content' translucent />
         <Image
           style={{ flex: 1, width: DEVICE_WIDTH, height: DEVICE_HEIGHT, alignSelf: 'center' }}
           source={require('../../assets/ic_splash.png')}
           resizeMode='cover'
-        /> */}
+        />
       </View>
     );
   }

@@ -6,8 +6,6 @@ import md5 from 'react-native-md5';
 import { alert } from '../../utils/alert';
 import strings from '../../constants/Strings';
 import { getDeviceInfo, setUserData, setUserToken } from '../../utils/asyncStorage';
-import { loadUserData } from '../profile/PersonalInfoActions';
-
 export function logout(onDoneFunc = () => {}) {
   return (dispatch, store) => {
     dispatch({

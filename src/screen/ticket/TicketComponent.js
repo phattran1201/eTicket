@@ -24,15 +24,22 @@ class TicketComponent extends MyComponent {
       isLoading: false,
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.loadTicket();
   }
-  shouldComponentUpdate(nextProps, nextSate) {
-    if (this.props.listTicket !== nextProps.listTicket) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextSate) {
+  //   if (this.props.listTicket === nextProps.listTicket) {
+  //     console.log(
+  //       'phat: TicketComponent -> shouldComponentUpdate -> this.props.listTicket !== nextProps.listTicke',
+  //       this.props.listTicket === nextProps.listTicke
+  //     );
+  //     console.log('phat: TicketComponent -> shouldComponentUpdate -> nextProps.listTicket', nextProps.listTicket);
+  //     console.log('phat: TicketComponent -> shouldComponentUpdate -> this.props.listTicket ', this.props.listTicket);
+
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   renderItem = ({ item, index }) => {
     const res = { Qr_code: item.qr_code };
@@ -50,11 +57,6 @@ class TicketComponent extends MyComponent {
     );
   };
   render() {
-    console.log(
-      'dauphaiphat: TicketComponent -> shouldComponentUpdate -> this.props.listTicket',
-      this.props.listTicket
-    );
-
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <View style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT, position: 'absolute' }}>
@@ -135,7 +137,7 @@ class TicketComponent extends MyComponent {
         <FlatList
           showsVerticalScrollIndicator={false}
           style={{
-            marginTop: DEVICE_WIDTH * 1.5 - DEVICE_WIDTH - 80 * SCALE_RATIO_HEIGHT_BASIS,
+            marginTop: DEVICE_WIDTH * 1.5 - DEVICE_WIDTH - 80 * SCALE_RATIO_HEIGHT_BASIS - FS(32),
             paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             marginBottom: 10 + 2 * getBottomSpace(),
           }}

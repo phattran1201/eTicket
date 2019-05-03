@@ -216,7 +216,7 @@ class SuccessSearchComponent extends MyComponent {
     );
   };
 
-  renderItem = ({ item, index }) => <ItemList item={item} />;
+  renderItem = ({ item, index }) => <ItemList item={item} navigation={this.props.navigation} />;
 
   render() {
     return (

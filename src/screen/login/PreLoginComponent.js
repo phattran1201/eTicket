@@ -8,7 +8,7 @@ import {
   FS,
   SCALE_RATIO_HEIGHT_BASIS,
   SCALE_RATIO_WIDTH_BASIS,
-  ROUTE_KEY
+  ROUTE_KEY,
 } from '../../constants/Constants';
 import style, { APP_COLOR, APP_COLOR_TEXT } from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
@@ -17,7 +17,6 @@ import { Button, Icon } from 'react-native-elements';
 const loginBackground = require('../../assets/background.png');
 
 class PreLoginComponent extends MyComponent {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +25,7 @@ class PreLoginComponent extends MyComponent {
       isLoading: false,
       isShowingIntroduction: false,
       isShowMoreOption: true,
-      showAccessPermission: false
+      showAccessPermission: false,
     };
     // const { params } = this.props.navigation.state;
     // this.previousScreenName = params && params.fromScreen ? params.fromScreen : '';
@@ -75,26 +74,26 @@ class PreLoginComponent extends MyComponent {
           flex: 1,
           alignContent: 'center',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
-        <StatusBar backgroundColor='#ffffff60' barStyle="dark-content" translucent />
+        <StatusBar backgroundColor='transparent' barStyle='dark-content' translucent />
 
         <View
           style={{
             flex: 1,
             zIndex: 99,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Image
             style={{
               alignSelf: 'center',
               width: (85 / 100) * DEVICE_WIDTH,
-              marginBottom: 50
+              marginBottom: 50,
             }}
-            resizeMode="contain"
+            resizeMode='contain'
             source={require('../../assets/logo.png')}
           />
           {/* <Button
@@ -110,7 +109,7 @@ class PreLoginComponent extends MyComponent {
           <Button
             onPress={() => this.props.navigation.navigate(ROUTE_KEY.LOGIN)}
             containerStyle={{
-              width: (85 / 100) * DEVICE_WIDTH
+              width: (85 / 100) * DEVICE_WIDTH,
             }}
             outline
             buttonStyle={[
@@ -118,10 +117,11 @@ class PreLoginComponent extends MyComponent {
               {
                 paddingVertical: 8 * SCALE_RATIO_HEIGHT_BASIS,
                 paddingHorizontal: 25 * SCALE_RATIO_WIDTH_BASIS,
-                backgroundColor: '#fff'
-              }]}
+                backgroundColor: '#fff',
+              },
+            ]}
             titleStyle={style.text}
-            title="Đăng nhập bằng email"
+            title='Đăng nhập bằng email'
           />
           <View
             style={{
@@ -129,14 +129,14 @@ class PreLoginComponent extends MyComponent {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              width: (70 / 100) * DEVICE_WIDTH
+              width: (70 / 100) * DEVICE_WIDTH,
             }}
           >
             <View
               style={{
                 height: SCALE_RATIO_WIDTH_BASIS,
                 backgroundColor: 'white',
-                flex: 1
+                flex: 1,
               }}
             />
             <Text
@@ -146,8 +146,8 @@ class PreLoginComponent extends MyComponent {
                   textAlign: 'center',
                   fontSize: FS(13),
                   color: 'white',
-                  flex: 3
-                }
+                  flex: 3,
+                },
               ]}
             >
               hoặc đăng nhập bằng
@@ -156,17 +156,16 @@ class PreLoginComponent extends MyComponent {
               style={{
                 height: SCALE_RATIO_WIDTH_BASIS,
                 backgroundColor: 'white',
-                flex: 1
+                flex: 1,
               }}
             />
           </View>
-
 
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              width: (85 / 100) * DEVICE_WIDTH
+              width: (85 / 100) * DEVICE_WIDTH,
             }}
           >
             <Button
@@ -178,25 +177,16 @@ class PreLoginComponent extends MyComponent {
                   // flex: 1,
                   paddingVertical: 8 * SCALE_RATIO_HEIGHT_BASIS,
                   paddingHorizontal: 25 * SCALE_RATIO_WIDTH_BASIS,
-                  backgroundColor: '#3b5998'
-                }]}
-              icon={
-                <Icon
-                  type='font-awesome'
-                  name="facebook"
-                  size={FS(16)}
-                  color="white"
-                />
-              }
+                  backgroundColor: '#3b5998',
+                },
+              ]}
+              icon={<Icon type='font-awesome' name='facebook' size={FS(16)} color='white' />}
               titleStyle={[style.text, { color: 'white', marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS }]}
-              title="Facebook"
+              title='Facebook'
             />
-            <View
-              style={{ flex: 2 }}
-            />
+            <View style={{ flex: 2 }} />
             <Button
               containerStyle={{ flex: 8 }}
-
               outline
               buttonStyle={[
                 style.shadow,
@@ -204,31 +194,22 @@ class PreLoginComponent extends MyComponent {
                   // flex: 1,
                   paddingVertical: 8 * SCALE_RATIO_HEIGHT_BASIS,
                   paddingHorizontal: 25 * SCALE_RATIO_WIDTH_BASIS,
-                  backgroundColor: '#CB4036'
-                }]}
-              icon={
-                <Icon
-                  type='font-awesome'
-                  name="google"
-                  size={FS(16)}
-                  color="white"
-                />
-              }
+                  backgroundColor: '#CB4036',
+                },
+              ]}
+              icon={<Icon type='font-awesome' name='google' size={FS(16)} color='white' />}
               titleStyle={[style.text, { color: 'white', marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS }]}
-              title="Google"
+              title='Google'
             />
           </View>
-
         </View>
       </ImageBackground>
     );
   }
 }
 
-const mapActionCreators = {
-};
-const mapStateToProps = state => ({
-});
+const mapActionCreators = {};
+const mapStateToProps = state => ({});
 export default connect(
   mapStateToProps,
   mapActionCreators

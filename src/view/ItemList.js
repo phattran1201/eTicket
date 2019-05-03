@@ -66,11 +66,13 @@ class ItemList extends Component {
       }
     }
     let isFollow = false;
-    this.props.listFollow.forEach(e => {
-      if (e.id === item.id) {
-        isFollow = true;
-      }
-    });
+    if (this.props.listFollow && this.props.listFollow !== null) {
+      this.props.listFollow.forEach(e => {
+        if (e.id === item.id) {
+          isFollow = true;
+        }
+      });
+    }
     return (
       <TouchableOpacity onPress={onPress || (() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item }))}>
         <TouchableOpacity
@@ -88,7 +90,7 @@ class ItemList extends Component {
             name={isFollow ? 'heart' : 'heart-outline'}
             size={20 * SCALE_RATIO_WIDTH_BASIS}
             color={APP_COLOR}
-            style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
+            // style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
           />
         </TouchableOpacity>
         <View

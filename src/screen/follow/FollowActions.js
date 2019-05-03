@@ -4,7 +4,7 @@ import { alert } from '../../utils/alert';
 import strings from '../../constants/Strings';
 import store from '../../config/redux/store';
 
-export function getListFollowEvent(page = 1) {
+export function getListFollowEvent(onDoneFunc = () => {}, page = 1) {
   return (dispatch, store) => {
     request
       .get(`${BASE_URL}get-event-of-client-follow?limit=99&page=${page}`)
@@ -18,6 +18,7 @@ export function getListFollowEvent(page = 1) {
             type: CONSTANTS_KEY.UPDATE_LIST_FOLLOW,
             payload: res.body.data,
           });
+          onDoneFunc();
         }
       });
   };

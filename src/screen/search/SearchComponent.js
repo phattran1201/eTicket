@@ -45,7 +45,7 @@ import global from '../../utils/globalUtils';
 import Modal from 'react-native-modal';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
 import { CheckBox } from 'react-native-elements';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 class SearchComponent extends MyComponent {
   constructor(props) {
@@ -173,7 +173,7 @@ class SearchComponent extends MyComponent {
             zIndex: 99999,
             position: 'absolute',
             right: 20 * SCALE_RATIO_WIDTH_BASIS,
-            bottom: 20 * SCALE_RATIO_WIDTH_BASIS + getBottomSpace(),
+            bottom: 20 * SCALE_RATIO_WIDTH_BASIS + 2 * getBottomSpace(),
             width: 40 * SCALE_RATIO_WIDTH_BASIS,
             height: 40 * SCALE_RATIO_WIDTH_BASIS,
             borderRadius: 40 * SCALE_RATIO_WIDTH_BASIS,
@@ -192,7 +192,7 @@ class SearchComponent extends MyComponent {
               style={{
                 position: 'absolute',
                 left: 10 * SCALE_RATIO_WIDTH_BASIS,
-                top: 35 * SCALE_RATIO_WIDTH_BASIS,
+                top: 35 * SCALE_RATIO_HEIGHT_BASIS,
                 width: 40 * SCALE_RATIO_WIDTH_BASIS,
                 height: 40 * SCALE_RATIO_WIDTH_BASIS,
                 // borderRadius: 40 * SCALE_RATIO_WIDTH_BASIS,
@@ -210,7 +210,7 @@ class SearchComponent extends MyComponent {
               paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
               flexDirection: 'row',
               alignItems: 'center',
-              marginTop: this.state.onFocus ? 150 * SCALE_RATIO_WIDTH_BASIS : 60 * SCALE_RATIO_HEIGHT_BASIS,
+              marginTop: this.state.onFocus ? 150 * SCALE_RATIO_HEIGHT_BASIS : 60 * SCALE_RATIO_HEIGHT_BASIS,
             }}
           >
             <Feather name='search' size={FS(32)} color='white' style={{ marginRight: 10 * SCALE_RATIO_WIDTH_BASIS }} />
@@ -246,7 +246,8 @@ class SearchComponent extends MyComponent {
           {!this.state.onFocus ? (
             <View
               style={{
-                marginTop: DEVICE_WIDTH * 1.5 - DEVICE_WIDTH - 80 * SCALE_RATIO_HEIGHT_BASIS,
+                marginTop:
+                  DEVICE_WIDTH * 1.5 - DEVICE_WIDTH - 80 * SCALE_RATIO_HEIGHT_BASIS - FS(32) + getStatusBarHeight(),
                 paddingHorizontal: 40 * SCALE_RATIO_WIDTH_BASIS,
               }}
             >

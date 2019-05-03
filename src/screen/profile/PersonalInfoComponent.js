@@ -349,6 +349,7 @@ class PersonalInfoComponent extends MyComponent {
                 style={{
                   flex: 1,
                   width: DEVICE_WIDTH - 60 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingBottom: 8,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                 }}

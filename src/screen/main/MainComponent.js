@@ -13,10 +13,12 @@ import SearchComponent from '../search/SearchComponent';
 import { loadUserData } from '../profile/PersonalInfoActions';
 import TicketComponent from '../ticket/TicketComponent';
 import FollowComponent from '../follow/FollowComponent';
+import { APP_COLOR, APP_COLOR_2 } from '../../constants/style';
 
 class MainComponent extends MyComponent {
   constructor(props) {
     super(props);
+
     this.state = { activeTab: 'home' };
   }
 
@@ -25,35 +27,35 @@ class MainComponent extends MyComponent {
       key: 'home',
       icon: 'home',
       // label: 'Games',
-      barColor: '#388E3C',
+      barColor: APP_COLOR,
       pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'search',
       icon: 'search',
       // label: 'Games',
-      barColor: '#462',
+      barColor: APP_COLOR_2,
       pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'heart',
       icon: 'heart',
       // label: 'Games',
-      barColor: 'blue',
+      barColor: APP_COLOR,
       pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'ticket',
       icon: 'credit-card',
       // label: 'Movies & TV',
-      barColor: '#B71C1C',
+      barColor: APP_COLOR_2,
       pressColor: 'rgba(255, 255, 255, 0.16)',
     },
     {
       key: 'more',
       icon: 'more-horizontal',
       // label: 'Music',
-      barColor: '#E64A19',
+      barColor: APP_COLOR,
       pressColor: 'rgba(255, 255, 255, 0.16)',
     },
   ];
@@ -102,7 +104,7 @@ class MainComponent extends MyComponent {
       >
         <MySpinner />
 
-        <StatusBar backgroundColor={'#ffffff60'} barStyle='dark-content' translucent />
+        <StatusBar backgroundColor='transparent' barStyle='dark-content' translucent />
         <View style={{ height: DEVICE_HEIGHT - 56 + getBottomSpace() }}>{this.renderBody()}</View>
         {/* <View style={{ position: 'absolute', top: 6, width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}> */}
         <BottomNavigation

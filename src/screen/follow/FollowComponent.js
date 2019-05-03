@@ -25,13 +25,17 @@ class FollowComponent extends MyComponent {
     };
   }
 
-  shouldComponentUpdate(nextProps, nextSate) {
-    if (this.props.listFollow !== nextProps.listFollow) {
-      return true;
-    }
-    return false;
-  }
-
+  // shouldComponentUpdate(nextProps, nextSate) {
+  //   if (this.props.listFollow !== nextProps.listFollow) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  // componentDidUpdate(nextProps) {
+  //   if (this.props.listFollow !== nextProps.listFollow) {
+  //     this.props.loadTicket();
+  //   }
+  // }
   renderItem = ({ item, index }) => {
     const res = { Qr_code: item.qr_code };
     return (
@@ -48,8 +52,6 @@ class FollowComponent extends MyComponent {
     );
   };
   render() {
-    console.log('dauphaiphat: Follow -> shouldComponentUpdate -> this.props.listTicket', this.props.listFollow);
-
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
         <View style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT, position: 'absolute' }}>
@@ -99,7 +101,7 @@ class FollowComponent extends MyComponent {
             paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
             flexDirection: 'row',
             alignItems: 'center',
-            marginTop: this.state.onFocus ? 150 * SCALE_RATIO_WIDTH_BASIS : 60 * SCALE_RATIO_HEIGHT_BASIS,
+            marginTop: 60 * SCALE_RATIO_HEIGHT_BASIS,
           }}
         >
           <FontAwesome
@@ -130,7 +132,7 @@ class FollowComponent extends MyComponent {
         <FlatList
           showsVerticalScrollIndicator={false}
           style={{
-            marginTop: DEVICE_WIDTH * 1.5 - DEVICE_WIDTH - 80 * SCALE_RATIO_HEIGHT_BASIS,
+            marginTop: DEVICE_WIDTH * 1.5 - DEVICE_WIDTH - 80 * SCALE_RATIO_HEIGHT_BASIS - FS(32),
             paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             marginBottom: 10 + 2 * getBottomSpace(),
           }}

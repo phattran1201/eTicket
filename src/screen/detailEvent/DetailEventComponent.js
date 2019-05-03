@@ -317,11 +317,11 @@ class DetailEventComponent extends MyComponent {
             </TouchableOpacity>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
               <FontAwesome name='map-o' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
-              <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Share Event</Text>
+              <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Directions</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
               <FontAwesome name='share-square-o' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
-              <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Directions</Text>
+              <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Share Event</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
               <FontAwesome name='ellipsis-h' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
@@ -427,7 +427,7 @@ class DetailEventComponent extends MyComponent {
           <View
             style={{ flex: 1, marginTop: 20 * SCALE_RATIO_WIDTH_BASIS, marginBottom: this.state.loadDone ? -30 : 0 }}
           >
-            <AutoHeightWebView
+            {/* <AutoHeightWebView
               customStyle={`
       * {
         box-shadow: none !important;
@@ -465,7 +465,7 @@ class DetailEventComponent extends MyComponent {
               customScript={jsCode}
               scalesPageToFit={!!IS_ANDROID}
               source={{ uri: url }}
-            />
+            /> */}
           </View>
           <View style={{}}>
             <View

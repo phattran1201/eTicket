@@ -1,7 +1,8 @@
-import { BASE_URL } from '../../constants/Constants';
+import { BASE_URL, ROUTE_KEY } from '../../constants/Constants';
 import strings from '../../constants/Strings';
 import { alert } from '../../utils/alert';
 import request from '../../utils/request';
+import MySpinner from '../../view/MySpinner';
 
 export const buyTicket = (token, event_id, type_id) =>
   new Promise((resolve, reject) => {
@@ -13,6 +14,9 @@ export const buyTicket = (token, event_id, type_id) =>
       .finish((err, res) => {
         if (err) {
           resolve(err);
+        }
+        if (!err && res.body && res.body.status_code === 401) {
+          resolve(res.body);
         }
         if (!err && res.body && res.body.status_code === 200) {
           resolve(res.body.data);

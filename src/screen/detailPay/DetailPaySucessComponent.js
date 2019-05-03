@@ -3,7 +3,14 @@ import { Image, ScrollView, Text, View, TouchableOpacity, Animated } from 'react
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { DEVICE_HEIGHT, FS, SCALE_RATIO_WIDTH_BASIS, DEVICE_WIDTH, ROUTE_KEY } from '../../constants/Constants';
+import {
+  DEVICE_HEIGHT,
+  FS,
+  SCALE_RATIO_WIDTH_BASIS,
+  DEVICE_WIDTH,
+  ROUTE_KEY,
+  SCALE_RATIO_HEIGHT_BASIS,
+} from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, {
   APP_COLOR,
@@ -32,7 +39,7 @@ class DetailPaySucessComponent extends MyComponent {
   }
 
   render() {
-    console.log('dauphaiphat: DetailPaySucessComponent -> render -> this.props.navigation', this.props.navigation);
+    // console.log('dauphaiphat: DetailPaySucessComponent -> render -> this.props.navigation', this.props.navigation);
 
     const { item, res } = this.props.navigation.state.params;
 
@@ -87,14 +94,11 @@ class DetailPaySucessComponent extends MyComponent {
           // source={require('../../assets/imgs/paydone.png')}
           resizeMode='contain'
         /> */}
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ height: DEVICE_HEIGHT / 2 }}>
+        {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ height: DEVICE_HEIGHT / 2 }}>
           <View
             style={{
-              height: DEVICE_HEIGHT / 2,
               flex: 1,
               paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
-              alignItems: 'center',
-              justifyContent: 'center',
             }}
           >
             <View
@@ -113,36 +117,8 @@ class DetailPaySucessComponent extends MyComponent {
 
               <Text style={[style.text, { fontSize: FS(20), color: '#fff' }]}>Order completed</Text>
             </View>
-            <Text
-              style={[
-                style.textCaption,
-                {
-                  marginTop: 15,
-                  fontSize: FS(24),
-                  color: '#fff',
-                  textAlign: 'center',
-                  lineHeight: 30,
-                },
-              ]}
-            >
-              {item.title}
-            </Text>
-            <Text
-              style={[
-                style.textCaption,
-                {
-                  marginTop: 15,
-                  fontSize: FS(16),
-                  color: '#fff',
-                  textAlign: 'center',
-                  lineHeight: 30,
-                },
-              ]}
-            >
-              by {item.contactPerson}
-            </Text>
           </View>
-        </ScrollView>
+        </ScrollView> */}
         <View
           style={{
             width: '90%',
@@ -158,6 +134,39 @@ class DetailPaySucessComponent extends MyComponent {
             marginBottom: 50,
           }}
         >
+          <Text
+            style={[
+              style.textCaption,
+              {
+                paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+
+                marginTop: 15,
+                fontSize: FS(20),
+                color: APP_COLOR_TEXT,
+                textAlign: 'center',
+                lineHeight: 30,
+              },
+            ]}
+          >
+            {item.title}
+          </Text>
+          <Text
+            style={[
+              style.textCaption,
+              {
+                paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+
+                marginTop: 15,
+                fontSize: FS(14),
+                color: APP_COLOR_TEXT,
+                textAlign: 'center',
+                lineHeight: 30,
+                marginBottom: 10 * SCALE_RATIO_HEIGHT_BASIS,
+              },
+            ]}
+          >
+            by {item.contactPerson}
+          </Text>
           <QRCode
             linearGradient={[APP_COLOR, APP_COLOR_2]}
             content={res.QR_code ? res.QR_code : item.qr_code}

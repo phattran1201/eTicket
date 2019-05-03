@@ -112,7 +112,8 @@ class BaseHeader extends MyComponent {
         ]}
       >
         <StatusBar
-          backgroundColor={translucent ? '#ffffff60' : '#fff'}
+          // backgroundColor={translucent ? '#ffffff60' : '#fff'}
+          backgroundColor='transparent'
           barStyle='dark-content'
           translucent={translucent}
         />

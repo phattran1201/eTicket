@@ -5,7 +5,7 @@ import { alert } from '../../utils/alert';
 import { setUserData } from '../../utils/asyncStorage';
 import MySpinner from '../../view/MySpinner';
 
-export function loadUserData(token) {
+export function loadUserData(token, onDoneFunc = () => {}) {
   return (dispatch, store) => {
     request
       .get(`${BASE_URL}get-profile`)
@@ -20,6 +20,7 @@ export function loadUserData(token) {
             payload: res.body.data,
           });
           setUserData({ userData: res.body.data });
+          onDoneFunc();
         }
       });
   };
@@ -34,7 +35,7 @@ export function updateUserData(
   onSuccessFunc = () => {},
   onFailFunc = () => {}
 ) {
-  console.log('dauphaiphat: updateUserData -> gender', gender);
+  // console.log('dauphaiphat: updateUserData -> gender', gender);
   return (dispatch, store) => {
     request
       .post(`${BASE_URL}post-profile`)
@@ -42,7 +43,7 @@ export function updateUserData(
       .set('Authorization', store().user.token)
       .send({ first_name, last_name, dob, phone_number, gender, address })
       .finish((err, res) => {
-        console.log('dauphaiphat: updateUserData -> res', res);
+        // console.log('dauphaiphat: updateUserData -> res', res);
         if (err) {
           onFailFunc();
         }

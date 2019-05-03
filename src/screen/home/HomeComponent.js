@@ -29,6 +29,7 @@ class HomeComponent extends MyComponent {
   }
 
   componentWillMount() {
+    this.props.getListFollowEvent();
     this.props.loadListPopularEvents();
     this.props.loadListInWeekEvents();
     this.props.loadListFreeEvents();
@@ -85,11 +86,14 @@ class HomeComponent extends MyComponent {
       }
     }
     let isFollow = false;
-    this.props.listFollow.forEach(e => {
-      if (e.id === item.id) {
-        isFollow = true;
-      }
-    });
+    if (this.props.listFollow && this.props.listFollow !== null) {
+      this.props.listFollow.forEach(e => {
+        if (e.id === item.id) {
+          isFollow = true;
+        }
+      });
+    }
+
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
         <TouchableOpacity
