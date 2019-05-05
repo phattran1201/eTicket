@@ -13,6 +13,8 @@ import { getUserToken } from '../../utils/asyncStorage';
 import SplashScreen from 'react-native-splash-screen';
 import { loadUserData } from '../profile/PersonalInfoActions';
 import { getListFollowEvent } from '../follow/FollowActions';
+import { loadTicketEnd, countTicketEnd } from '../ticketEnd/TicketEndActions';
+import { loadTicket } from '../ticket/TicketActions';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -31,9 +33,9 @@ class SplashComponent extends Component {
     persistStore(store, null, () => {
       console.log('userData', getUserToken(), this.props.userData);
       if (this.props.token !== '' && this.props.userData && this.props.isLoggedIn) {
-        this.props.loadUserData(this.props.token, () =>
-          this.props.getListFollowEvent(() => this.props.navigation.replace(ROUTE_KEY.MAIN))
-        );
+        this.props.loadUserData(this.props.token, () => {
+          this.props.getListFollowEvent(() => this.props.navigation.replace(ROUTE_KEY.MAIN));
+        });
       } else {
         this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN);
       }
@@ -225,7 +227,7 @@ class SplashComponent extends Component {
   }
 }
 
-const mapActionCreators = { loadListCategory, loadUserData, getListFollowEvent };
+const mapActionCreators = { loadListCategory, loadUserData, getListFollowEvent, loadTicketEnd, loadTicket };
 
 const mapStateToProps = state => ({
   userData: state.user.userData,

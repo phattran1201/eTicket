@@ -1,3 +1,4 @@
+/* eslint-disable import/imports-first */
 import React from 'react';
 import { FlatList, TextInput, View, ActivityIndicator } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
@@ -15,10 +16,11 @@ import {
 import style, { APP_COLOR, APP_COLOR_2 } from '../../constants/style';
 import ItemList from '../../view/ItemList';
 import MyComponent from '../../view/MyComponent';
-import { loadTicket, resetTicket } from './TicketActions';
+import { loadTicketEnd, resetTicketEnd } from './TicketEndActions';
 import LottieView from 'lottie-react-native';
+import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
 
-class TicketComponent extends MyComponent {
+class TicketEndComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,20 +34,20 @@ class TicketComponent extends MyComponent {
     this.handleLoadMore = this.handleLoadMore.bind(this);
   }
   componentDidMount() {
-    this.props.resetTicket(1, () => this.setState({ refreshing: false }));
+    this.props.resetTicketEnd(1, () => this.setState({ refreshing: false }));
   }
   onRefresh() {
     this.page = 1;
     this.outOfData = false;
     this.setState({ refreshing: true });
-    this.props.resetTicket(1, () => this.setState({ refreshing: false }));
+    this.props.resetTicketEnd(1, () => this.setState({ refreshing: false }));
   }
 
   handleLoadMore() {
     if (this.outOfData || this.state.isLoadMore) return;
     this.page++;
     this.setState({ isLoadMore: true });
-    this.props.loadTicket(
+    this.props.loadTicketEnd(
       this.page,
       () => this.setState({ isLoadMore: false }),
       () => {
@@ -61,7 +63,7 @@ class TicketComponent extends MyComponent {
         </View>
       );
     }
-    if (this.props.listTicket.length === 0) {
+    if (this.props.listTicketEnd.length === 0) {
       return (
         <LottieView
           source={require('../../assets/isempty.json')}
@@ -97,6 +99,12 @@ class TicketComponent extends MyComponent {
   render() {
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
+        <HeaderWithBackButtonComponent
+          noShadow
+          styleContent={{ position: 'absolute', zIndex: 999 }}
+          onPress={() => this.props.navigation.goBack()}
+          styleIcon={{}}
+        />
         <View style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT, position: 'absolute' }}>
           <LinearGradient
             style={{
@@ -144,18 +152,18 @@ class TicketComponent extends MyComponent {
             paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
             flexDirection: 'row',
             alignItems: 'center',
-            marginTop: this.state.onFocus ? 150 * SCALE_RATIO_WIDTH_BASIS : 60 * SCALE_RATIO_HEIGHT_BASIS,
+            marginTop: 80 * SCALE_RATIO_WIDTH_BASIS,
           }}
         >
           <FontAwesome
-            name='ticket'
+            name='history'
             color='white'
             size={FS(32)}
             style={{ marginRight: 10 * SCALE_RATIO_WIDTH_BASIS }}
           />
           <TextInput
             editable={false}
-            placeholder='My ticket'
+            placeholder='History'
             placeholderTextColor='white'
             underlineColorAndroid='transparent'
             autoCapitalize='none'
@@ -179,7 +187,7 @@ class TicketComponent extends MyComponent {
             paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             marginBottom: 10 + 2 * getBottomSpace(),
           }}
-          data={this.props.listTicket}
+          data={this.props.listTicketEnd}
           renderItem={this.renderItem}
           onRefresh={this.onRefresh}
           refreshing={this.state.refreshing}
@@ -191,13 +199,13 @@ class TicketComponent extends MyComponent {
     );
   }
 }
-const mapActionCreators = { loadTicket, resetTicket };
+const mapActionCreators = { loadTicketEnd, resetTicketEnd };
 
 const mapStateToProps = state => ({
-  listTicket: state.user.listTicket,
+  listTicketEnd: state.user.listTicketEnd,
 });
 
 export default connect(
   mapStateToProps,
   mapActionCreators
-)(TicketComponent);
+)(TicketEndComponent);

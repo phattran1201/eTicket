@@ -276,9 +276,7 @@ class HomeComponent extends MyComponent {
     );
   };
 
-  renderItem = ({ item, index }) => {
-    return <ItemList item={item} navigation={this.props.navigation} />;
-  };
+  renderItem = ({ item, index }) => <ItemList item={item} navigation={this.props.navigation} />;
 
   render() {
     return (
@@ -306,7 +304,7 @@ class HomeComponent extends MyComponent {
             rightIconStyle={{ color: 'white' }}
             rightIcon='bell'
             rightIconType='SimpleLineIcons'
-            onRightPress={() => this.props.logout(() => this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN))}
+            onRightPress={() => this.props.navigation.navigate(ROUTE_KEY.NOTIFICATION)}
           />
           <View style={{ paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS }}>
             <Text style={[style.text, { fontSize: FS(17), color: '#fff' }]}>Near by</Text>

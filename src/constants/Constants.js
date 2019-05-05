@@ -3,9 +3,10 @@ import strings from './Strings';
 
 export const IS_ANDROID = Platform.OS === 'android';
 export const IS_IOS = Platform.OS === 'ios';
-
 export const DEVICE_WIDTH = Dimensions.get('window').width;
 export const DEVICE_HEIGHT = Dimensions.get('window').height;
+
+export const SCALE_RATIO_MAGIC = Math.sqrt(Math.pow(DEVICE_WIDTH / 375, 2) + Math.pow(DEVICE_HEIGHT / 667, 2));
 export const IMAGE_RESIZE_QUALITY = 100;
 export const IMAGE_RESIZE_MAXWIDTH = 888;
 export const IMAGE_RESIZE_MAXHIEGHT = 500;
@@ -26,6 +27,8 @@ const scale = Math.min(scaleWidth, scaleHeight);
 export const FS = size => Math.ceil(size * scale);
 export const BASE_URL = 'https://eticket-vhu.herokuapp.com/api/v1/eticket/';
 export const ROUTE_KEY = {
+  NOTIFICATION: 'NOTIFICATION',
+  TICKET_END: 'TICKET_END',
   FOLLOW: 'FOLLOW',
   TICKET: 'TICKET',
   PERSONAL_INFO: 'PERSONAL_INFO',
@@ -105,6 +108,11 @@ export const ROUTE_KEY = {
 };
 
 export const CONSTANTS_KEY = {
+  RESET_LIST_NOTIFICATION: 'RESET_LIST_NOTIFICATION',
+  UPDATE_LIST_NOTIFICATION: 'UPDATE_LIST_NOTIFICATION',
+  UPDATE_LIST_TICKET_END: 'UPDATE_LIST_TICKET_END',
+  RESET_LIST_TICKET_END: 'RESET_LIST_TICKET_END',
+  RESET_LIST_TICKET: 'RESET_LIST_TICKET',
   UPDATE_LIST_FOLLOW: 'UPDATE_LIST_FOLLOW',
   UPDATE_LIST_TICKET: 'UPDATE_LIST_TICKET',
   UPDATE_LIST_IN_WEEK_EVENTS: 'UPDATE_LIST_IN_WEEK_EVENTS',

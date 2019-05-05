@@ -1,19 +1,15 @@
 {
     "extends": "rallycoding",
     "rules": {
+        "max-len": "off",
         "global-require": "off",
         "no-mixed-operators": 0,
-        "max-line-length": ["error", {
-            "skipComments": true,
-            "skipBlankLines": true,
-            "ignoreComments": true,
-            "ignoreTrailingComments": true,
-            "ignoreUrls": true,
-            "ignoreStrings": true,
-            "ignoreTemplateLiterals": true,
-            "ignoreRegExpLiterals": true,
-            "ignore": ["non-comments", "comments"],
-            "ignorePattern": "^\\s*var\\s.+=\\s*require\\s*\\(/(https?://([-\\w\\.]+)+(:\\d+)?(/([\\w/_\\.]*(\\?\\S+)?)?)?)/"
-        }]
+        "max-lines": [
+            "error",
+            {
+                "skipComments": true,
+                "skipBlankLines": true
+            }
+        ]
     }
 }

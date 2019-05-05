@@ -35,6 +35,7 @@ import MySpinner from '../../view/MySpinner';
 import background from '../../assets/background.png';
 import { logout } from '../login/LoginActions';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { countTicketEnd } from '../ticketEnd/TicketEndActions';
 
 class PersonalInfoComponent extends MyComponent {
   constructor(props) {
@@ -85,9 +86,21 @@ class PersonalInfoComponent extends MyComponent {
       post_code,
       status,
       updated_at,
+      countHistory: 0,
     };
 
     this.baseState = this.state;
+  }
+
+  componentDidMount() {
+    countTicketEnd(1, this.props.token)
+      .then(res => {
+        this.setState({ countHistory: res.total_count });
+        this.forceUpdate();
+      })
+      .catch(err => {
+        console.log('phat: PersonalInfoComponent -> componentWillMount -> err', err);
+      });
   }
 
   onPlaceSearch = (data, details) => {
@@ -162,17 +175,18 @@ class PersonalInfoComponent extends MyComponent {
       status,
       updated_at,
     } = this.state;
+
     return (
       <View style={{ flex: 1 }}>
         <KeyboardAwareScrollView style={{ backgroundColor: '#fff' }}>
           <BaseHeader
             noShadow
             translucent
-            children={
-              <Text style={[style.titleHeader, { alignSelf: 'center', textAlign: 'center' }]}>
-                PERSONAL INFORMATION
-              </Text>
-            }
+            // children={
+            //   <Text style={[style.titleHeader, { alignSelf: 'center', textAlign: 'center' }]}>
+            //     PERSONAL INFORMATION
+            //   </Text>
+            // }
             styleContent={{
               position: 'absolute',
               backgroundColor: 'transparent',
@@ -252,11 +266,36 @@ class PersonalInfoComponent extends MyComponent {
                 flexDirection: 'row',
                 marginTop: 10 * SCALE_RATIO_HEIGHT_BASIS,
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
               }}
             >
-              <MaterialIcons name='attach-money' size={FS(30)} color='#707070' style={{ alignSelf: 'center' }} />
-              <Text style={[style.titleHeader, { fontSize: FS(20) }]}>{cash}</Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <MaterialIcons name='attach-money' size={FS(30)} color='#707070' style={{ alignSelf: 'center' }} />
+                <Text style={[style.titleHeader, { fontSize: FS(20), marginLeft: 3 * SCALE_RATIO_WIDTH_BASIS }]}>
+                  {cash}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate(ROUTE_KEY.TICKET_END)}
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <MaterialIcons name='history' size={FS(30)} color='#707070' style={{ alignSelf: 'center' }} />
+                <Text style={[style.titleHeader, { fontSize: FS(20), marginLeft: 3 * SCALE_RATIO_WIDTH_BASIS }]}>
+                  {this.state.countHistory}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
           <Form
@@ -599,6 +638,7 @@ const mapActionCreators = { updateUserData, loadUserData, logout };
 const mapStateToProps = state => ({
   token: state.user.token,
   userData: state.user.userData,
+  listTicketEnd: state.user.listTicketEnd,
 });
 
 export default connect(

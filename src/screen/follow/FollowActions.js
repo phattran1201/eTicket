@@ -33,7 +33,7 @@ export const followEvent = (token, event_id) =>
       .finish((err, res) => {
         if (err) {
           console.log('dauphaiphat: err', err);
-          resolve(err);
+          reject(err);
         }
         if (!err && res.body && res.body.status_code === 200) {
           resolve(res.body.data);
@@ -50,7 +50,7 @@ export const unfollowEvent = (token, event_id) =>
       .finish((err, res) => {
         if (err) {
           console.log('dauphaiphat: err', err);
-          resolve(err);
+          reject(err);
         }
         if (!err && res.body && res.body.status_code === 200) {
           resolve(res.body.data);

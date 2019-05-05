@@ -11,6 +11,8 @@ const initialState = {
   currentSettings: null,
   isLoggedIn: false,
   listTicket: [],
+  listTicketEnd: [],
+  listNotification: [],
   listFollow: null,
 };
 
@@ -56,10 +58,40 @@ const UserReducer = (state = initialState, action) => {
     //       $set: action.payload,
     //     },
     //   });
-    case CONSTANTS_KEY.UPDATE_LIST_TICKET:
+    case CONSTANTS_KEY.RESET_LIST_NOTIFICATION:
+      return update(state, {
+        listNotification: {
+          $set: action.payload,
+        },
+      });
+    case CONSTANTS_KEY.UPDATE_LIST_NOTIFICATION:
+      return update(state, {
+        listNotification: {
+          $set: [...state.listNotification, ...action.payload],
+        },
+      });
+    case CONSTANTS_KEY.RESET_LIST_TICKET:
       return update(state, {
         listTicket: {
           $set: action.payload,
+        },
+      });
+    case CONSTANTS_KEY.UPDATE_LIST_TICKET:
+      return update(state, {
+        listTicket: {
+          $set: [...state.listTicket, ...action.payload],
+        },
+      });
+    case CONSTANTS_KEY.RESET_LIST_TICKET_END:
+      return update(state, {
+        listTicketEnd: {
+          $set: action.payload,
+        },
+      });
+    case CONSTANTS_KEY.UPDATE_LIST_TICKET_END:
+      return update(state, {
+        listTicketEnd: {
+          $set: [...state.listTicket, ...action.payload],
         },
       });
     case CONSTANTS_KEY.UPDATE_LIST_FOLLOW:
