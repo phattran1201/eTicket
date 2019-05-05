@@ -8,7 +8,7 @@ export function loadListCategory(onOutOfData = () => {}) {
         if (res.body.data.length === 0) onOutOfData();
         dispatch({
           type: CONSTANTS_KEY.UPDATE_LIST_CATEGORY,
-          payload: res.body.data
+          payload: res.body.data,
         });
       }
     });

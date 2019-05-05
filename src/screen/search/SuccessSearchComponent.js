@@ -1,34 +1,18 @@
-import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View, ActivityIndicator, FlatList } from 'react-native';
-import Modal from 'react-native-modal';
-import Feather from 'react-native-vector-icons/dist/Feather';
-import { connect } from 'react-redux';
-import {
-  FS,
-  SCALE_RATIO_WIDTH_BASIS,
-  ROUTE_KEY,
-  DEVICE_WIDTH,
-  SCALE_RATIO_HEIGHT_BASIS,
-} from '../../constants/Constants';
-import style, {
-  APP_COLOR,
-  APP_COLOR_BLUE_2,
-  APP_COLOR_TEXT,
-  APP_COLOR_2,
-  FONT,
-  APP_COLOR_TEXT_GRAY,
-} from '../../constants/style';
-import MyComponent from '../../view/MyComponent';
-import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/dist/Entypo';
-import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
-import { CheckBox } from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
-import { loadSearchByKeyword, loadSearchByOption } from './SearchActions';
-import MySpinner from '../../view/MySpinner';
 import LottieView from 'lottie-react-native';
+import React from 'react';
+import { ActivityIndicator, FlatList, ScrollView, Text, View } from 'react-native';
+import Entypo from 'react-native-vector-icons/dist/Entypo';
+import Feather from 'react-native-vector-icons/dist/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
+import { connect } from 'react-redux';
+import { FS, SCALE_RATIO_HEIGHT_BASIS, SCALE_RATIO_WIDTH_BASIS } from '../../constants/Constants';
+import style, { APP_COLOR_BORDER, APP_COLOR_TEXT, FONT } from '../../constants/style';
+import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
 import ItemList from '../../view/ItemList';
+import MyComponent from '../../view/MyComponent';
+import MySpinner from '../../view/MySpinner';
+import { loadSearchByKeyword, loadSearchByOption } from './SearchActions';
 
 class SuccessSearchComponent extends MyComponent {
   constructor(props) {
@@ -229,11 +213,19 @@ class SuccessSearchComponent extends MyComponent {
           onPress={() => this.props.navigation.goBack()}
         />
         {this.state.searchOpiton ? (
-          <View style={{ height: 30 * SCALE_RATIO_HEIGHT_BASIS, borderBottomWidth: 1, borderBottomColor: '#e1e1e1' }}>
+          <View
+            style={{
+              marginTop: -10 * SCALE_RATIO_HEIGHT_BASIS,
+              paddingBottom: 5 * SCALE_RATIO_HEIGHT_BASIS,
+              height: 30 * SCALE_RATIO_HEIGHT_BASIS,
+              borderBottomWidth: 1,
+              borderBottomColor: APP_COLOR_BORDER,
+            }}
+          >
             <ScrollView style={{ flexDirection: 'row' }} horizontal showsHorizontalScrollIndicator={false}>
               <View
                 style={{
-                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  height: 25 * SCALE_RATIO_HEIGHT_BASIS,
                   flex: 1,
                   alignSelf: 'flex-start',
                   marginLeft: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -243,7 +235,7 @@ class SuccessSearchComponent extends MyComponent {
                   borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
                   paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
                   padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-                  borderColor: '#e1e1e1',
+                  borderColor: APP_COLOR_BORDER,
                   borderWidth: 1,
                 }}
               >
@@ -271,7 +263,7 @@ class SuccessSearchComponent extends MyComponent {
 
               <View
                 style={{
-                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  height: 25 * SCALE_RATIO_HEIGHT_BASIS,
                   flex: 1,
                   alignSelf: 'flex-start',
                   marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
@@ -281,7 +273,7 @@ class SuccessSearchComponent extends MyComponent {
                   borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
                   paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
                   padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-                  borderColor: '#e1e1e1',
+                  borderColor: APP_COLOR_BORDER,
                   borderWidth: 1,
                 }}
               >
@@ -307,7 +299,7 @@ class SuccessSearchComponent extends MyComponent {
 
               <View
                 style={{
-                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  height: 25 * SCALE_RATIO_HEIGHT_BASIS,
                   flex: 1,
                   alignSelf: 'flex-start',
                   marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
@@ -317,7 +309,7 @@ class SuccessSearchComponent extends MyComponent {
                   borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
                   paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
                   padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-                  borderColor: '#e1e1e1',
+                  borderColor: APP_COLOR_BORDER,
                   borderWidth: 1,
                 }}
               >
@@ -345,7 +337,7 @@ class SuccessSearchComponent extends MyComponent {
 
               <View
                 style={{
-                  height: 20 * SCALE_RATIO_HEIGHT_BASIS,
+                  height: 25 * SCALE_RATIO_HEIGHT_BASIS,
                   flex: 1,
                   alignSelf: 'flex-start',
                   marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
@@ -355,7 +347,7 @@ class SuccessSearchComponent extends MyComponent {
                   borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
                   paddingHorizontal: 6 * SCALE_RATIO_WIDTH_BASIS,
                   padding: 3 * SCALE_RATIO_WIDTH_BASIS,
-                  borderColor: '#e1e1e1',
+                  borderColor: APP_COLOR_BORDER,
                   borderWidth: 1,
                 }}
               >

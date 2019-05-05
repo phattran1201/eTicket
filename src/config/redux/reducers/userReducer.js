@@ -61,13 +61,13 @@ const UserReducer = (state = initialState, action) => {
     case CONSTANTS_KEY.RESET_LIST_NOTIFICATION:
       return update(state, {
         listNotification: {
-          $set: action.payload,
+          $set: action.payload.sort((a, b) => b.id - a.id),
         },
       });
     case CONSTANTS_KEY.UPDATE_LIST_NOTIFICATION:
       return update(state, {
         listNotification: {
-          $set: [...state.listNotification, ...action.payload],
+          $set: [...state.listNotification, ...action.payload.sort((a, b) => b.id - a.id)],
         },
       });
     case CONSTANTS_KEY.RESET_LIST_TICKET:

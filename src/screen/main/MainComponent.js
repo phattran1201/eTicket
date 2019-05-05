@@ -4,16 +4,16 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 import BottomNavigation, { Badge, IconTab } from 'react-native-material-bottom-navigation';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import { connect } from 'react-redux';
-import { DEVICE_HEIGHT, DEVICE_WIDTH, SCALE_RATIO_HEIGHT_BASIS } from '../../constants/Constants';
+import { DEVICE_HEIGHT, DEVICE_WIDTH } from '../../constants/Constants';
+import { APP_COLOR, APP_COLOR_2 } from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
 import MySpinner from '../../view/MySpinner';
+import FollowComponent from '../follow/FollowComponent';
 import HomeComponent from '../home/HomeComponent';
+import { loadUserData } from '../profile/PersonalInfoActions';
 import PersonalInfoComponent from '../profile/PersonalInfoComponent';
 import SearchComponent from '../search/SearchComponent';
-import { loadUserData } from '../profile/PersonalInfoActions';
 import TicketComponent from '../ticket/TicketComponent';
-import FollowComponent from '../follow/FollowComponent';
-import { APP_COLOR, APP_COLOR_2 } from '../../constants/style';
 
 class MainComponent extends MyComponent {
   constructor(props) {
@@ -67,7 +67,7 @@ class MainComponent extends MyComponent {
     <IconTab
       isActive={isActive}
       showBadge={tab.key === 'home'}
-      renderBadge={() => <Badge>2</Badge>}
+      renderBadge={() => <Badge>{this.props.listNotification.filter(e => e.status === 0).length}</Badge>}
       key={tab.key}
       label={tab.label}
       renderIcon={this.renderIcon(tab.icon)}
@@ -127,7 +127,7 @@ class MainComponent extends MyComponent {
   }
 }
 
-const mapStateToProps = state => ({ token: state.user.token });
+const mapStateToProps = state => ({ token: state.user.token, listNotification: state.user.listNotification });
 
 const mapActionCreators = { loadUserData };
 

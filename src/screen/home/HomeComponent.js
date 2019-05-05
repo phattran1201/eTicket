@@ -1,24 +1,21 @@
+import moment from 'moment';
 import React from 'react';
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Carousel from 'react-native-snap-carousel';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { DEVICE_WIDTH, FS, IS_IOS, ROUTE_KEY, SCALE_RATIO_WIDTH_BASIS, SLICE_NUM } from '../../constants/Constants';
-import { DATA_TEST } from '../../constants/dataTest';
-import style, { APP_COLOR, APP_COLOR_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY, FONT } from '../../constants/style';
-import MyComponent from '../../view/MyComponent';
-import HeaderWithAvatar from '../../view/HeaderWithAvatar';
-import BaseHeader from '../../view/BaseHeader';
-import { loadListPopularEvents, loadListInWeekEvents, loadListFreeEvents } from './HomeActions';
-import MyImage from '../../view/MyImage';
-import moment from 'moment';
-import { logout } from '../login/LoginActions';
-import ItemList from '../../view/ItemList';
-import { QRCode } from 'react-native-custom-qr-codes';
-import { followEvent, unfollowEvent, getListFollowEvent } from '../follow/FollowActions';
-import { alert } from '../../utils/alert';
+import { DEVICE_WIDTH, FS, IS_IOS, ROUTE_KEY, SCALE_RATIO_WIDTH_BASIS } from '../../constants/Constants';
 import strings from '../../constants/Strings';
+import style, { APP_COLOR, APP_COLOR_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY, FONT } from '../../constants/style';
+import { alert } from '../../utils/alert';
+import BaseHeader from '../../view/BaseHeader';
+import ItemList from '../../view/ItemList';
+import MyComponent from '../../view/MyComponent';
+import MyImage from '../../view/MyImage';
+import { followEvent, getListFollowEvent, unfollowEvent } from '../follow/FollowActions';
+import { logout } from '../login/LoginActions';
+import { loadListFreeEvents, loadListInWeekEvents, loadListPopularEvents } from './HomeActions';
 
 class HomeComponent extends MyComponent {
   constructor(props) {
@@ -475,7 +472,14 @@ class HomeComponent extends MyComponent {
                     padding: 5 * SCALE_RATIO_WIDTH_BASIS,
                     alignItems: 'center',
                   }}
-                  onPress={() => {}}
+                  onPress={() =>
+                    this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
+                      searchOpiton: true,
+                      filterUpComming: 'thisWeek',
+                      filterEventCategory: '',
+                      filterPrice: '',
+                    })
+                  }
                 >
                   <Text
                     style={[
@@ -567,7 +571,14 @@ class HomeComponent extends MyComponent {
                     padding: 5 * SCALE_RATIO_WIDTH_BASIS,
                     alignItems: 'center',
                   }}
-                  onPress={() => {}}
+                  onPress={() =>
+                    this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
+                      searchOpiton: true,
+                      filterUpComming: '',
+                      filterEventCategory: '',
+                      filterPrice: 'free',
+                    })
+                  }
                 >
                   <Text
                     style={[

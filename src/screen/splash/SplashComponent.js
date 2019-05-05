@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { AppState, AsyncStorage, Image, Platform, StatusBar, StyleSheet, Vibration, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import firebase from 'react-native-firebase';
+import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import store from '../../config/redux/store';
 import { DEVICE_HEIGHT, DEVICE_WIDTH, ROUTE_KEY } from '../../constants/Constants';
 import { APP_COLOR } from '../../constants/style';
 import { alert } from '../../utils/alert';
-import { loadListCategory } from './SplashActions';
 import { getUserToken } from '../../utils/asyncStorage';
-import SplashScreen from 'react-native-splash-screen';
-import { loadUserData } from '../profile/PersonalInfoActions';
 import { getListFollowEvent } from '../follow/FollowActions';
-import { loadTicketEnd, countTicketEnd } from '../ticketEnd/TicketEndActions';
+import { loadUserData } from '../profile/PersonalInfoActions';
 import { loadTicket } from '../ticket/TicketActions';
+import { loadTicketEnd } from '../ticketEnd/TicketEndActions';
+import { loadListCategory } from './SplashActions';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -29,8 +29,8 @@ class SplashComponent extends Component {
 
     // this.UNSAFE_componentWillMount.handleAppStateChange = this.handleAppStateChange.bind(this);
   }
-  componentWillMount() {
-    persistStore(store, null, () => {
+  async componentWillMount() {
+    await persistStore(store, null, () => {
       console.log('userData', getUserToken(), this.props.userData);
       if (this.props.token !== '' && this.props.userData && this.props.isLoggedIn) {
         this.props.loadUserData(this.props.token, () => {
@@ -213,7 +213,7 @@ class SplashComponent extends Component {
   };
 
   render() {
-    console.log('dauphaiphat: PersonalInfoComponent -> updateUserData -> this.props.token', this.props.token);
+    console.log(this.props.token);
     return (
       <View style={styles.content}>
         <StatusBar backgroundColor='transparent' barStyle='dark-content' translucent />

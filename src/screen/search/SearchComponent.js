@@ -1,51 +1,22 @@
 import React from 'react';
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-  Animated,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import { connect } from 'react-redux';
-import {
-  DEVICE_WIDTH,
-  FS,
-  IS_IOS,
-  ROUTE_KEY,
-  SCALE_RATIO_WIDTH_BASIS,
-  SLICE_NUM,
-  SCALE_RATIO_HEIGHT_BASIS,
-  DEVICE_HEIGHT,
-} from '../../constants/Constants';
-import { DATA_TEST } from '../../constants/dataTest';
-import style, {
-  APP_COLOR,
-  APP_COLOR_2,
-  APP_COLOR_TEXT,
-  APP_COLOR_TEXT_GRAY,
-  FONT,
-  APP_COLOR_BLUE_2,
-} from '../../constants/style';
-import MyComponent from '../../view/MyComponent';
-import HeaderWithAvatar from '../../view/HeaderWithAvatar';
-import BaseHeader from '../../view/BaseHeader';
-import MyImage from '../../view/MyImage';
-import moment from 'moment';
-import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
-import Feather from 'react-native-vector-icons/dist/Feather';
-import MySpinner from '../../view/MySpinner';
-import global from '../../utils/globalUtils';
-import Modal from 'react-native-modal';
-import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
+import { Animated, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
+import LinearGradient from 'react-native-linear-gradient';
+import Modal from 'react-native-modal';
+import Feather from 'react-native-vector-icons/dist/Feather';
+import { connect } from 'react-redux';
+import {
+  DEVICE_HEIGHT,
+  DEVICE_WIDTH,
+  FS,
+  ROUTE_KEY,
+  SCALE_RATIO_HEIGHT_BASIS,
+  SCALE_RATIO_WIDTH_BASIS,
+} from '../../constants/Constants';
+import style, { APP_COLOR, APP_COLOR_2, APP_COLOR_BLUE_2, APP_COLOR_TEXT, FONT } from '../../constants/style';
+import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
+import MyComponent from '../../view/MyComponent';
 
 class SearchComponent extends MyComponent {
   constructor(props) {
@@ -53,7 +24,7 @@ class SearchComponent extends MyComponent {
     this.state = {
       onFocus: false,
       activeSlide: 0,
-      keySearch: 'Festival',
+      keySearch: '',
       isLoading: false,
       filterSearch: false,
       filter: '',

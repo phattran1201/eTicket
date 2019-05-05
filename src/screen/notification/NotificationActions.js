@@ -4,7 +4,7 @@ import request from '../../utils/request';
 export function resetNotification(page = 1, onDone = () => {}) {
   return (dispatch, store) => {
     request
-      .get(`${BASE_URL}get-notification-by-user-id?limit=10&page=${page}`)
+      .get(`${BASE_URL}get-notification-by-user-id?limit=200&page=${page}`)
       .set('Authorization', store().user.token)
       .finish((err, res) => {
         onDone();
@@ -23,7 +23,7 @@ export function resetNotification(page = 1, onDone = () => {}) {
 export function getNotification(page = 1, onDone = () => {}, onOutOfData = () => {}) {
   return (dispatch, store) => {
     request
-      .get(`${BASE_URL}get-notification-by-user-id?limit=10&page=${page}`)
+      .get(`${BASE_URL}get-notification-by-user-id?limit=200&page=${page}`)
       .set('Authorization', store().user.token)
       .finish((err, res) => {
         onDone();

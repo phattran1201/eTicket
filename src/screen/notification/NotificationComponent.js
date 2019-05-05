@@ -1,35 +1,30 @@
+import LottieView from 'lottie-react-native';
 import React from 'react';
-import { FlatList, TextInput, View, ActivityIndicator, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import LinearGradient from 'react-native-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
+import Modal from 'react-native-modal';
+import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
+import SimpleLineIcons from 'react-native-vector-icons/dist/SimpleLineIcons';
 import { connect } from 'react-redux';
 import {
   DEVICE_HEIGHT,
   DEVICE_WIDTH,
   FS,
-  ROUTE_KEY,
   SCALE_RATIO_HEIGHT_BASIS,
   SCALE_RATIO_WIDTH_BASIS,
-  SCALE_RATIO_MAGIC,
 } from '../../constants/Constants';
 import style, {
   APP_COLOR,
   APP_COLOR_2,
-  APP_COLOR_TEXT_GRAY,
-  APP_COLOR_TEXT_GRAY_2,
-  APP_COLOR_TEXT,
   APP_COLOR_BORDER,
+  APP_COLOR_TEXT,
+  APP_COLOR_TEXT_GRAY_2,
   FONT,
 } from '../../constants/style';
-import ItemList from '../../view/ItemList';
-import MyComponent from '../../view/MyComponent';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
-import LottieView from 'lottie-react-native';
-import { resetNotification, getNotification, readNotification } from './NotificationActions';
-import SimpleLineIcons from 'react-native-vector-icons/dist/SimpleLineIcons';
-import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
-import Modal from 'react-native-modal';
+import MyComponent from '../../view/MyComponent';
+import { getNotification, readNotification, resetNotification } from './NotificationActions';
 
 class NotificationComponent extends MyComponent {
   constructor(props) {
@@ -49,9 +44,13 @@ class NotificationComponent extends MyComponent {
     this.onReadNotification = this.onReadNotification.bind(this);
   }
 
-  async onReadNotification(notificationId) {
+  async onReadNotification(notificationId, status) {
     this.setState({ modalVisible: true });
-    await this.props.readNotification(this.props.token, notificationId);
+    if (status === 0) {
+      await readNotification(this.props.token, notificationId);
+      this.props.resetNotification(1, () => this.setState({ refreshing: false }));
+    }
+
     this.forceUpdate();
   }
   onRefresh() {
@@ -99,45 +98,41 @@ class NotificationComponent extends MyComponent {
     return null;
   };
 
-  renderItem = ({ item, index }) => {
-    const res = { Qr_code: item.qr_code };
-
-    return (
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            this.onReadNotification(item.id);
-            this.setState({ titleModal: item.title.trim(), descriptionModal: item.description.trim() });
-          }}
-          style={{
-            backgroundColor: 'white',
-            paddingVertical: 10 * SCALE_RATIO_HEIGHT_BASIS,
-            borderBottomColor: APP_COLOR_BORDER,
-            borderBottomWidth: 0.5,
-            flexDirection: 'row',
-          }}
-        >
-          <FontAwesome5
-            name='user-tie'
-            color={item.status === 0 ? APP_COLOR : `${APP_COLOR}30`}
-            size={FS(32)}
-            style={{ paddingLeft: 20 * SCALE_RATIO_WIDTH_BASIS }}
-          />
-          <View style={{ paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS }}>
-            <Text
-              style={[style.text, { color: item.status === 0 ? APP_COLOR_TEXT : APP_COLOR_TEXT_GRAY_2 }]}
-              numberOfLines={5}
-            >
-              {item.title.trim()}
-            </Text>
-            <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY_2 }]} numberOfLines={2}>
-              {item.description.trim()}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  renderItem = ({ item }) => (
+    <View>
+      <TouchableOpacity
+        onPress={() => {
+          this.onReadNotification(item.id, item.status);
+          this.setState({ titleModal: item.title.trim(), descriptionModal: item.description.trim() });
+        }}
+        style={{
+          backgroundColor: 'white',
+          paddingVertical: 10 * SCALE_RATIO_HEIGHT_BASIS,
+          borderBottomColor: APP_COLOR_BORDER,
+          borderBottomWidth: 0.5,
+          flexDirection: 'row',
+        }}
+      >
+        <FontAwesome5
+          name='user-tie'
+          color={item.status === 0 ? APP_COLOR : `${APP_COLOR}30`}
+          size={FS(32)}
+          style={{ paddingLeft: 20 * SCALE_RATIO_WIDTH_BASIS }}
+        />
+        <View style={{ paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS }}>
+          <Text
+            style={[style.text, { color: item.status === 0 ? APP_COLOR_TEXT : APP_COLOR_TEXT_GRAY_2 }]}
+            numberOfLines={5}
+          >
+            {item.id} {item.title.trim()}
+          </Text>
+          <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY_2 }]} numberOfLines={2}>
+            {item.description.trim()}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
   render() {
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
@@ -194,7 +189,7 @@ class NotificationComponent extends MyComponent {
             paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
             flexDirection: 'row',
             alignItems: 'center',
-            marginTop: 60 * SCALE_RATIO_HEIGHT_BASIS,
+            marginTop: 80 * SCALE_RATIO_HEIGHT_BASIS,
           }}
         >
           <SimpleLineIcons
@@ -228,7 +223,7 @@ class NotificationComponent extends MyComponent {
             marginTop: DEVICE_WIDTH * 1.5 - DEVICE_WIDTH - 80 * SCALE_RATIO_HEIGHT_BASIS - FS(32),
             marginBottom: 10 + 2 * getBottomSpace(),
           }}
-          data={this.props.listNotification}
+          data={this.props.listNotification.sort((a, b) => a.status - b.status).sort((a, b) => b.id - a.id)}
           renderItem={this.renderItem}
           onRefresh={this.onRefresh}
           refreshing={this.state.refreshing}
@@ -304,7 +299,7 @@ class NotificationComponent extends MyComponent {
     );
   }
 }
-const mapActionCreators = { resetNotification, getNotification, readNotification };
+const mapActionCreators = { resetNotification, getNotification };
 
 const mapStateToProps = state => ({
   token: state.user.token,
