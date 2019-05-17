@@ -49,9 +49,8 @@ class NotificationComponent extends MyComponent {
     if (status === 0) {
       await readNotification(this.props.token, notificationId);
       this.props.resetNotification(1, () => this.setState({ refreshing: false }));
+      this.forceUpdate();
     }
-
-    this.forceUpdate();
   }
   onRefresh() {
     this.page = 1;
@@ -80,19 +79,25 @@ class NotificationComponent extends MyComponent {
         </View>
       );
     }
-    if (this.props.listNotification.length === 0) {
+    if (this.props.listNotification && this.props.listNotification.length === 0) {
       return (
-        <LottieView
-          source={require('../../assets/isempty.json')}
-          autoPlay
-          loop
-          hardwareAccelerationAndroid
-          style={{
-            width: 240 * SCALE_RATIO_WIDTH_BASIS,
-            height: 300 * SCALE_RATIO_WIDTH_BASIS,
-            alignSelf: 'center',
-          }}
-        />
+        <View style={{ flex: 1 }}>
+          <Text style={[style.textHeader, { textAlign: 'center', color: APP_COLOR }]}>
+            Buy event tickets filled with joy{' '}
+          </Text>
+          <LottieView
+            source={require('../../assets/isempty.json')}
+            autoPlay
+            loop
+            hardwareAccelerationAndroid
+            resizeMode='contain'
+            style={{
+              width: 200 * SCALE_RATIO_WIDTH_BASIS,
+              height: 300 * SCALE_RATIO_WIDTH_BASIS,
+              alignSelf: 'center',
+            }}
+          />
+        </View>
       );
     }
     return null;
@@ -121,10 +126,16 @@ class NotificationComponent extends MyComponent {
         />
         <View style={{ paddingHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS }}>
           <Text
-            style={[style.text, { color: item.status === 0 ? APP_COLOR_TEXT : APP_COLOR_TEXT_GRAY_2 }]}
+            style={[
+              style.text,
+              {
+                fontFamily: item.status === 0 ? FONT.Medium : FONT.Regular,
+                color: item.status === 0 ? APP_COLOR_TEXT : APP_COLOR_TEXT_GRAY_2,
+              },
+            ]}
             numberOfLines={5}
           >
-            {item.id} {item.title.trim()}
+            {item.title.trim()}
           </Text>
           <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY_2 }]} numberOfLines={2}>
             {item.description.trim()}

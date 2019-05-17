@@ -11,7 +11,7 @@ export function loadTicketEnd(page = 1, onDone = () => {}, onOutOfData = () => {
       .finish((err, res) => {
         onDone();
         if (err) {
-          alert(strings.alert, err);
+          console.log('phat: loadTicketEnd -> err', err);
         }
         if (!err && res.body && res.body.data) {
           if (res.body.data.length === 0) onOutOfData();
@@ -31,7 +31,7 @@ export function resetTicketEnd(page = 1, onDone = () => {}) {
       .finish((err, res) => {
         onDone();
         if (err) {
-          alert(strings.alert, err);
+          console.log('phat: resetTicketEnd -> err', err);
         }
         if (!err && res.body && res.body.data) {
           dispatch({

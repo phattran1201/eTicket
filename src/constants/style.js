@@ -28,7 +28,7 @@ export const APP_COLOR_BORDER = '#e1e1e1';
 export const APP_COLOR_TEXT_BORDER = '#727272';
 
 export const FONT = {
-  HelveticaNeue: 'HelveticaNeue',
+  Regular: 'HelveticaNeue',
   Medium: 'HelveticaNeue-Medium',
   Bold: 'HelveticaNeue-Bold',
   BoldItalic: 'HelveticaNeue-BoldItalic',

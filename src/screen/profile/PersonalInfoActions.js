@@ -12,7 +12,7 @@ export function loadUserData(token, onDoneFunc = () => {}) {
       .set('Authorization', token)
       .finish((err, res) => {
         if (err) {
-          alert(strings.alert, res);
+          console.log('phat: loadUserData -> err', err);
         }
         if (!err && res.body && res.body.data) {
           dispatch({
@@ -45,6 +45,7 @@ export function updateUserData(
       .finish((err, res) => {
         // console.log('dauphaiphat: updateUserData -> res', res);
         if (err) {
+          console.log('phat: err', err);
           onFailFunc();
         }
         if (!err && res.body && res.body.status_code === 200) {

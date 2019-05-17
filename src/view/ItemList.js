@@ -13,7 +13,7 @@ import strings from '../constants/Strings';
 class ItemList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { follow: false };
   }
 
   shouldComponentUpdate(nextProps, nextSate) {
@@ -24,29 +24,41 @@ class ItemList extends Component {
   }
 
   onFollow(id) {
-    followEvent(this.props.token, id)
-      .then(res => {
-        this.props.getListFollowEvent();
-        this.forceUpdate();
-        alert(strings.alert, 'Follow success');
-      })
-      .catch(err => {
-        alert(strings.alert, 'Follow false');
-      });
+    this.setState({ follow: true });
+    this.forceUpdate();
+    clearTimeout(this.onFollowTimeOut);
+    clearTimeout(this.unFollowTimeOut);
+    this.onFollowTimeOut = setTimeout(() => {
+      followEvent(this.props.token, id)
+        .then(res => {
+          this.props.getListFollowEvent();
+          this.forceUpdate();
+          // alert(strings.alert, 'Follow success');
+        })
+        .catch(err => {
+          alert(strings.alert, 'Follow false');
+        });
+    }, 100);
   }
   unFollow(id) {
-    unfollowEvent(this.props.token, id)
-      .then(res => {
-        this.props.getListFollowEvent();
-        this.forceUpdate();
-        alert(strings.alert, 'Unfollow success');
-      })
-      .catch(err => {
-        alert(strings.alert, 'Unfollow false');
-      });
+    this.setState({ follow: false });
+    this.forceUpdate();
+    clearTimeout(this.unFollowTimeOut);
+    clearTimeout(this.onFollowTimeOut);
+    this.unFollowTimeOut = setTimeout(() => {
+      unfollowEvent(this.props.token, id)
+        .then(res => {
+          this.props.getListFollowEvent();
+          this.forceUpdate();
+          // alert(strings.alert, 'Unfollow success');
+        })
+        .catch(err => {
+          alert(strings.alert, 'Unfollow false');
+        });
+    }, 100);
   }
   render() {
-    const { item, onPress } = this.props;
+    const { item, onPress, id_event } = this.props;
     let minPrice =
       item.tickettype && item.tickettype.data && item.tickettype.data[0] && item.tickettype.data[0].price
         ? item.tickettype.data[0].price
@@ -55,28 +67,35 @@ class ItemList extends Component {
       item.tickettype && item.tickettype.data && item.tickettype.data[0] && item.tickettype.data[0].price
         ? item.tickettype.data[0].price
         : 0;
-    for (let i = 1; i < item.tickettype.data.length; i++) {
-      if (minPrice > item.tickettype.data[i].price) {
-        minPrice = item.tickettype.data[i].price;
+    if (item.tickettype && item.tickettype.data && item.tickettype.data[0] && item.tickettype.data[0].price) {
+      for (let i = 1; i < item.tickettype.data.length; i++) {
+        if (minPrice > item.tickettype.data[i].price) {
+          minPrice = item.tickettype.data[i].price;
+        }
+      }
+      for (let i = 1; i < item.tickettype.data.length; i++) {
+        if (maxPrice < item.tickettype.data[i].price) {
+          maxPrice = item.tickettype.data[i].price;
+        }
       }
     }
-    for (let i = 1; i < item.tickettype.data.length; i++) {
-      if (maxPrice < item.tickettype.data[i].price) {
-        maxPrice = item.tickettype.data[i].price;
-      }
-    }
+
     let isFollow = false;
     if (this.props.listFollow && this.props.listFollow !== null) {
       this.props.listFollow.forEach(e => {
-        if (e.id === item.id) {
+        if (e.id === item.id || e.id === id_event) {
           isFollow = true;
         }
       });
     }
+
     return (
       <TouchableOpacity onPress={onPress || (() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item }))}>
         <TouchableOpacity
-          onPress={() => (isFollow ? this.unFollow(item.id) : this.onFollow(item.id))}
+          activeOpacity={0.7}
+          onPress={() =>
+            isFollow || this.state.follow ? this.unFollow(id_event || item.id) : this.onFollow(id_event || item.id)
+          }
           style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -87,7 +106,7 @@ class ItemList extends Component {
           }}
         >
           <MaterialCommunityIcons
-            name={isFollow ? 'heart' : 'heart-outline'}
+            name={isFollow || this.state.follow ? 'heart' : 'heart-outline'}
             size={20 * SCALE_RATIO_WIDTH_BASIS}
             color={APP_COLOR}
             // style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
@@ -108,6 +127,7 @@ class ItemList extends Component {
         >
           <View style={{ flex: 3 }}>
             <MyImage
+              end_date={item.end_date}
               style={{
                 borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
                 width: '100%',
@@ -268,7 +288,7 @@ class ItemList extends Component {
                     ]}
                     numberOfLines={2}
                   >
-                    Free null
+                    {item.price_ticket_type < 1 ? 'Free' : item.price_ticket_type}
                   </Text>
                 </View>
               )}

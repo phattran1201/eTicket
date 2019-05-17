@@ -19,6 +19,7 @@ import MyComponent from '../../view/MyComponent';
 import { loadTicketEnd, resetTicketEnd } from './TicketEndActions';
 import LottieView from 'lottie-react-native';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
+import { Text } from 'react-native-elements';
 
 class TicketEndComponent extends MyComponent {
   constructor(props) {
@@ -34,7 +35,7 @@ class TicketEndComponent extends MyComponent {
     this.handleLoadMore = this.handleLoadMore.bind(this);
   }
   componentDidMount() {
-    this.props.resetTicketEnd(1, () => this.setState({ refreshing: false }));
+    this.props.resetTicketEnd(1);
   }
   onRefresh() {
     this.page = 1;
@@ -65,17 +66,23 @@ class TicketEndComponent extends MyComponent {
     }
     if (this.props.listTicketEnd.length === 0) {
       return (
-        <LottieView
-          source={require('../../assets/isempty.json')}
-          autoPlay
-          loop
-          hardwareAccelerationAndroid
-          style={{
-            width: 240 * SCALE_RATIO_WIDTH_BASIS,
-            height: 300 * SCALE_RATIO_WIDTH_BASIS,
-            alignSelf: 'center',
-          }}
-        />
+        <View style={{ flex: 1 }}>
+          <Text style={[style.textHeader, { textAlign: 'center', color: APP_COLOR }]}>
+            Buy event tickets filled with joy{' '}
+          </Text>
+          <LottieView
+            source={require('../../assets/isempty.json')}
+            autoPlay
+            loop
+            hardwareAccelerationAndroid
+            resizeMode='contain'
+            style={{
+              width: 200 * SCALE_RATIO_WIDTH_BASIS,
+              height: 300 * SCALE_RATIO_WIDTH_BASIS,
+              alignSelf: 'center',
+            }}
+          />
+        </View>
       );
     }
     return null;

@@ -14,6 +14,7 @@ import {
   ROUTE_KEY,
   SCALE_RATIO_HEIGHT_BASIS,
   IS_IOS,
+  DEVICE_HEIGHT,
 } from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, {
@@ -27,31 +28,83 @@ import MyComponent from '../../view/MyComponent';
 import HeaderWithBackButtonComponent from '../../view/HeaderWithBackButtonComponent';
 import MyImage from '../../view/MyImage';
 import moment from 'moment';
+import { WebView } from 'react-native-webview';
+import { followEvent, unfollowEvent, getListFollowEvent } from '../follow/FollowActions';
+import { alert } from '../../utils/alert';
+import strings from '../../constants/Strings';
 
 class DetailEventComponent extends MyComponent {
   constructor(props) {
     super(props);
-    this.state = { activeSlide: 0, loadDone: false };
+    this.state = { activeSlide: 0, loadDone: false, heightWebView: 0, follow: false };
     this.store = DATA_TEST;
     this.data = DATA_TEST;
     this.isFirstTimeLoadNews = true;
     this.isFirstTimeLoadPromotion = true;
   }
+  // onNavigationChange(event) {
+  //   console.log('phat: DetailEventComponent -> onNavigationChange -> event', event);
+  //   if (event.title) {
+  //     const htmlHeight = Number(event.target); //convert to number
+  //     this.setState({ heightWebView: htmlHeight });
+  //   }
+  // }
+  shouldComponentUpdate(nextProps, nextSate) {
+    if (this.props.listFollow !== nextProps.listFollow) {
+      return true;
+    }
+    return false;
+  }
 
+  onFollow(id) {
+    this.setState({ follow: true });
+    this.forceUpdate();
+    clearTimeout(this.onFollowTimeOut);
+    clearTimeout(this.unFollowTimeOut);
+    this.onFollowTimeOut = setTimeout(() => {
+      followEvent(this.props.token, id)
+        .then(res => {
+          this.props.getListFollowEvent();
+          // this.forceUpdate();
+          // alert(strings.alert, 'Follow success');
+        })
+        .catch(err => {
+          alert(strings.alert, 'Follow false');
+        });
+    }, 100);
+  }
+  unFollow(id) {
+    this.setState({ follow: false });
+    this.forceUpdate();
+    clearTimeout(this.unFollowTimeOut);
+    clearTimeout(this.onFollowTimeOut);
+    this.unFollowTimeOut = setTimeout(() => {
+      unfollowEvent(this.props.token, id)
+        .then(res => {
+          this.props.getListFollowEvent();
+          // this.forceUpdate();
+          // alert(strings.alert, 'Unfollow success');
+        })
+        .catch(err => {
+          alert(strings.alert, 'Unfollow false');
+        });
+    }, 100);
+  }
   renderSuggested = ({ item, index }) => {
     let minPrice = item.tickettype.data[0].price;
     let maxPrice = item.tickettype.data[0].price;
-    for (let i = 1; i < item.tickettype.data.length; i++) {
-      if (minPrice > item.tickettype.data[i].price) {
-        minPrice = item.tickettype.data[i].price;
+    if (item && item.tickettype && item.tickettype.data) {
+      for (let i = 1; i < item.tickettype.data.length; i++) {
+        if (minPrice > item.tickettype.data[i].price) {
+          minPrice = item.tickettype.data[i].price;
+        }
+      }
+      for (let i = 1; i < item.tickettype.data.length; i++) {
+        if (maxPrice < item.tickettype.data[i].price) {
+          maxPrice = item.tickettype.data[i].price;
+        }
       }
     }
-    for (let i = 1; i < item.tickettype.data.length; i++) {
-      if (maxPrice < item.tickettype.data[i].price) {
-        maxPrice = item.tickettype.data[i].price;
-      }
-    }
-
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
         <View
@@ -89,6 +142,7 @@ class DetailEventComponent extends MyComponent {
         >
           <View>
             <MyImage
+              end_date={item.end_date}
               style={{
                 width: '100%',
                 height: 150 * SCALE_RATIO_WIDTH_BASIS,
@@ -146,7 +200,7 @@ class DetailEventComponent extends MyComponent {
               </Text>
             </View>
             {/* {item.tickettype.data.map(e => ( */}
-            {item.tickettype.data.length === 1 ? (
+            {item.tickettype && item.tickettype.data && item.tickettype.data.length === 1 ? (
               <View
                 style={{
                   marginLeft: 5,
@@ -235,6 +289,10 @@ class DetailEventComponent extends MyComponent {
 
   render() {
     const jsCode = `
+    setTimeout(function() {
+      window.ReactNativeWebView.postMessage(document.documentElement.scrollHeight);
+    }, 500);
+    true;
             document.querySelector('#content').style.background = '#fff';
         document.querySelector('section.banner').style.display='none';
         document.querySelector('div.btn-contact-organizer').style.display='none';
@@ -243,11 +301,27 @@ class DetailEventComponent extends MyComponent {
         document.querySelector('footer.footer').style.display='none';
         document.querySelector('div.app-ads').style.display='none';
         document.querySelector('div.app-ads').style.position='unset';
+        document.querySelector('#snap-drawers').style.display='none !important';
     `;
     const url =
       'https://ticketbox.vn/event/sunspiration-city-festival-74929?utm_medium=TKB&utm_source=TKBHomePage&utm_campaign=homepage_hot_2';
 
     const { item } = this.props.navigation.state.params;
+    // console.log('phat: render -> item', item);
+    let expired = false;
+    if (moment().format('YYYY-MM-DD HH:mm:ss') > moment(item.end_date).format('YYYY-MM-DD HH:mm:ss')) {
+      expired = true;
+    }
+
+    let isFollow = false;
+    if (this.props.listFollow && this.props.listFollow !== null) {
+      this.props.listFollow.forEach(e => {
+        if (e.id === item.id) {
+          isFollow = true;
+        }
+      });
+    }
+
     return (
       <View style={{ backgroundColor: 'white', flex: 1, paddingBottom: 20 * SCALE_RATIO_HEIGHT_BASIS }}>
         {/* <LinearGradient
@@ -270,15 +344,15 @@ class DetailEventComponent extends MyComponent {
           styleIcon={{}}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Image
+          <MyImage
             style={{
               width: '100%',
-              height: 150 * SCALE_RATIO_WIDTH_BASIS,
+              height: 150 * SCALE_RATIO_HEIGHT_BASIS,
               marginBottom: 20,
             }}
-            source={{
-              uri: 'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/02/26/DFB19E.jpg',
-            }}
+            // source={{
+            //   uri: 'https://tkbvn-tokyo.s3.amazonaws.com/Upload/eventcover/2019/02/26/DFB19E.jpg',
+            // }}
           />
           <View style={{ paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS }}>
             <Text
@@ -311,8 +385,15 @@ class DetailEventComponent extends MyComponent {
               borderColor: APP_COLOR_TEXT_GRAY_2,
             }}
           >
-            <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FontAwesome name='heart-o' size={23 * SCALE_RATIO_WIDTH_BASIS} color={APP_COLOR_TEXT_GRAY_2} />
+            <TouchableOpacity
+              style={{ justifyContent: 'center', alignItems: 'center' }}
+              onPress={() => (isFollow || this.state.follow ? this.unFollow(item.id) : this.onFollow(item.id))}
+            >
+              <MaterialCommunityIcons
+                name={isFollow || this.state.follow ? 'heart' : 'heart-outline'}
+                size={23 * SCALE_RATIO_WIDTH_BASIS}
+                color={APP_COLOR}
+              />
               <Text style={[style.textCaption, { color: APP_COLOR_TEXT_GRAY }]}>Like Event</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -396,8 +477,9 @@ class DetailEventComponent extends MyComponent {
             </View>
           </View>
           <TouchableOpacity
+            disabled={expired}
             style={{
-              backgroundColor: APP_COLOR,
+              backgroundColor: expired ? APP_COLOR_TEXT_GRAY_2 : APP_COLOR,
               marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
               marginHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
               borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
@@ -414,11 +496,11 @@ class DetailEventComponent extends MyComponent {
                 {
                   fontFamily: FONT.Bold,
                   fontSize: FS(14),
-                  color: '#fff',
+                  color: expired ? APP_COLOR_TEXT_GRAY : '#fff',
                 },
               ]}
             >
-              Get Ticket Now
+              {expired ? 'Ticket Expiration' : 'Get Ticket Now'}
             </Text>
           </TouchableOpacity>
           <Text style={[style.text, { fontSize: FS(12), fontcolor: APP_COLOR_TEXT_GRAY, textAlign: 'center' }]}>
@@ -427,44 +509,25 @@ class DetailEventComponent extends MyComponent {
           <View
             style={{ flex: 1, marginTop: 20 * SCALE_RATIO_WIDTH_BASIS, marginBottom: this.state.loadDone ? -30 : 0 }}
           >
-            {/* <AutoHeightWebView
-              customStyle={`
-      * {
-        box-shadow: none !important;
-       font-family: 'Barlow', sans-serif;
-      }
-      h3 {
-        font-size: 1em !important;
-      }
-      body,a, button, h1, h2, h3, h4, h5, h6, li, option, p, span, td, th {
-        font-size: 0.9em !important;
-         box-shadow: none !important;
-      }
- .section {
-  box-shadow: none !important;
-}
-.relative {
-  margin-top: 0px !important;
-}
- .organizer,organizer {
-         -webkit-box-shadow: none !important;
-         -moz-box-shadow: none !important;
-         box-shadow: none !important;
-    }
-.mainContainer .title {
-    padding-bottom: 5px !important;
-    border-bottom:  none !important;
-}
-`}
+            {/* <WebView
               thirdPartyCookiesEnabled
               domStorageEnabled
               mixedContentMode='compatibility'
               onLoadEnd={() => this.setState({ loadDone: true })}
-              style={{ width: DEVICE_WIDTH }}
+              style={{ width: DEVICE_WIDTH, height: this.state.heightWebView }}
               javaScriptEnabled
-              customScript={jsCode}
+              cacheEnabled
+              onMessage={event => {
+                console.log('phat: render -> event', event.nativeEvent.data);
+                this.setState({ heightWebView: parseInt(event.nativeEvent.data) });
+              }}
+              automaticallyAdjustContentInsets={false}
+              overScrollMode='never'
+              // scrollEnabled={false}
+              injectedJavaScript={jsCode}
               scalesPageToFit={!!IS_ANDROID}
               source={{ uri: url }}
+              onNavigationStateChange={this.onNavigationChange.bind(this)}
             /> */}
           </View>
           <View style={{}}>
@@ -518,9 +581,14 @@ class DetailEventComponent extends MyComponent {
   }
 }
 
-const mapActionCreators = {};
+const mapActionCreators = { getListFollowEvent };
 
-const mapStateToProps = state => ({ listEventPopular: state.event.listEventPopular });
+const mapStateToProps = state => ({
+  token: state.user.token,
+
+  listEventPopular: state.event.listEventPopular,
+  listFollow: state.user.listFollow,
+});
 
 export default connect(
   mapStateToProps,

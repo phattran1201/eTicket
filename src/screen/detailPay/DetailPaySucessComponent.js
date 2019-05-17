@@ -27,6 +27,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
 import { QRCode } from 'react-native-custom-qr-codes';
 import moment from 'moment';
+import Modal from 'react-native-modal';
+import MySpinner from '../../view/MySpinner';
+import { destroyTicket } from './DetailPayAction';
+import { alert } from '../../utils/alert';
+import strings from '../../constants/Strings';
+import { loadUserData } from '../profile/PersonalInfoActions';
+import { resetTicket } from '../ticket/TicketActions';
+import { loadListCategory } from '../splash/SplashActions';
+import { loadListPopularEvents, loadListInWeekEvents, loadListFreeEvents } from '../home/HomeActions';
 
 class DetailPaySucessComponent extends MyComponent {
   constructor(props) {
@@ -37,12 +46,35 @@ class DetailPaySucessComponent extends MyComponent {
     this.isFirstTimeLoadNews = true;
     this.isFirstTimeLoadPromotion = true;
   }
-
+  destroyTicket(id) {
+    MySpinner.show();
+    destroyTicket(this.props.token, id)
+      .then(res => {
+        if (res.status === 'error') {
+          MySpinner.hide();
+          setTimeout(() => {
+            alert(strings.alert, res.message);
+          }, 100);
+        } else {
+          this.props.loadUserData(this.props.token);
+          this.props.resetTicket(1);
+          this.props.loadListCategory();
+          this.props.loadListPopularEvents();
+          this.props.loadListInWeekEvents();
+          this.props.loadListFreeEvents();
+          this.props.navigation.navigate(ROUTE_KEY.MAIN);
+          MySpinner.hide();
+        }
+      })
+      .catch(err => {
+        // console.log('phat: DetailPaySucessComponent -> destroyTicket -> err', err);
+        MySpinner.hide();
+        alert(strings.alert, 'Ticket Destroy failed');
+      });
+  }
   render() {
-    // console.log('dauphaiphat: DetailPaySucessComponent -> render -> this.props.navigation', this.props.navigation);
-
     const { item, res } = this.props.navigation.state.params;
-
+    // console.log('phat: DetailPaySucessComponent -> render -> item', item);
     return (
       <View
         style={{
@@ -55,6 +87,104 @@ class DetailPaySucessComponent extends MyComponent {
           justifyContent: 'center',
         }}
       >
+        <Modal
+          onBackdropPress={() => this.setState({ dialogVisible: false })}
+          onSwipe={() => this.setState({ dialogVisible: false })}
+          swipeDirection={'down'}
+          swipeThreshold={20}
+          visible={this.state.dialogVisible}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: APP_COLOR_TEXT_GRAY_2,
+              borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+              paddingHorizontal: 30 * SCALE_RATIO_WIDTH_BASIS,
+              paddingVertical: 10 * SCALE_RATIO_WIDTH_BASIS,
+              // width: DEVICE_WIDTH * 0.7,
+              // height: DEVICE_WIDTH * 0.7,
+              backgroundColor: 'white',
+            }}
+          >
+            <Text style={[style.textCaption, { fontSize: FS(24), textAlign: 'center' }]}>Opps! </Text>
+            <Text
+              style={[
+                style.text,
+                { fontSize: FS(12), textAlign: 'center', marginVertical: 15 * SCALE_RATIO_WIDTH_BASIS },
+              ]}
+            >
+              Do you really want to cancel the ticket
+            </Text>
+            <Text
+              style={[style.text, { fontSize: FS(8), textAlign: 'center', marginBottom: 15 * SCALE_RATIO_WIDTH_BASIS }]}
+            >
+              P/s: Before the 3 day event tickets may be cancelled
+            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  marginLeft: 20 * SCALE_RATIO_WIDTH_BASIS,
+                  marginRight: 10 * SCALE_RATIO_WIDTH_BASIS,
+
+                  backgroundColor: '#fff',
+                  borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
+                }}
+                onPress={() => {}}
+              >
+                <Text
+                  onPress={() => {
+                    this.setState({ dialogVisible: false });
+                  }}
+                  style={[
+                    style.text,
+                    {
+                      textAlign: 'center',
+                      fontSize: FS(14),
+                      color: APP_COLOR_TEXT,
+                    },
+                  ]}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  marginLeft: 10 * SCALE_RATIO_WIDTH_BASIS,
+
+                  backgroundColor: APP_COLOR,
+                  borderRadius: 3 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingHorizontal: 30 * SCALE_RATIO_WIDTH_BASIS,
+                  paddingVertical: 5 * SCALE_RATIO_WIDTH_BASIS,
+                }}
+                onPress={() => this.destroyTicket(item.id)}
+              >
+                <Text
+                  style={[
+                    style.textCaption,
+                    {
+                      textAlign: 'center',
+                      fontFamily: FONT.Bold,
+                      fontSize: FS(14),
+                      color: '#fff',
+                    },
+                  ]}
+                >
+                  Destroy
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
         <Animated.View
           style={{ backgroundColor: APP_COLOR, width: DEVICE_WIDTH, height: DEVICE_HEIGHT, position: 'absolute' }}
         >
@@ -85,40 +215,7 @@ class DetailPaySucessComponent extends MyComponent {
             colors={[`${APP_COLOR}90`, `${APP_COLOR_2}60`]}
           />
         </Animated.View>
-        {/* <Image
-          style={{
-            position: 'absolute',
-            top: -DEVICE_HEIGHT * 0.1,
-            width: '100%',
-          }}
-          // source={require('../../assets/imgs/paydone.png')}
-          resizeMode='contain'
-        /> */}
-        {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ height: DEVICE_HEIGHT / 2 }}>
-          <View
-            style={{
-              flex: 1,
-              paddingHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                margin: 15,
-                alignItems: 'center',
-              }}
-            >
-              <MaterialCommunityIcons
-                name='checkbox-marked-circle'
-                style={{ marginTop: 5, marginRight: 5 }}
-                size={20 * SCALE_RATIO_WIDTH_BASIS}
-                color='#fff'
-              />
 
-              <Text style={[style.text, { fontSize: FS(20), color: '#fff' }]}>Order completed</Text>
-            </View>
-          </View>
-        </ScrollView> */}
         <View
           style={{
             width: '90%',
@@ -172,6 +269,27 @@ class DetailPaySucessComponent extends MyComponent {
             content={res.QR_code ? res.QR_code : item.qr_code}
             size={150 * SCALE_RATIO_WIDTH_BASIS}
           />
+          {moment()
+            .add(3, 'days')
+            .format('YYYY-MM-DD HH:mm:ss') < moment(item.end_date).format('YYYY-MM-DD HH:mm:ss') && (
+            <Text
+              onPress={() => this.setState({ dialogVisible: true })}
+              style={[
+                style.textModal,
+                {
+                  marginTop: 10,
+                  marginBottom: -10,
+                  // color: 'white',
+                  // position: 'absolute',
+                  textAlign: 'center',
+                  // right: 20 * SCALE_RATIO_WIDTH_BASIS,
+                  // top: 20 * SCALE_RATIO_HEIGHT_BASIS + getStatusBarHeight(),
+                },
+              ]}
+            >
+              Cancellation of tickets
+            </Text>
+          )}
           <View
             style={{
               width: '90%',
@@ -268,9 +386,16 @@ class DetailPaySucessComponent extends MyComponent {
   }
 }
 
-const mapActionCreators = {};
+const mapActionCreators = {
+  loadUserData,
+  resetTicket,
+  loadListCategory,
+  loadListPopularEvents,
+  loadListInWeekEvents,
+  loadListFreeEvents,
+};
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ token: state.user.token, userData: state.user.userData });
 
 export default connect(
   mapStateToProps,

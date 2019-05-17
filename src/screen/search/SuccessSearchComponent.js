@@ -178,7 +178,7 @@ class SuccessSearchComponent extends MyComponent {
           loop
           hardwareAccelerationAndroid
           style={{
-            width: 240 * SCALE_RATIO_WIDTH_BASIS,
+            width: 200 * SCALE_RATIO_WIDTH_BASIS,
             height: 300 * SCALE_RATIO_WIDTH_BASIS,
             alignSelf: 'center',
           }}

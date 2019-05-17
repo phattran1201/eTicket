@@ -91,7 +91,7 @@ const UserReducer = (state = initialState, action) => {
     case CONSTANTS_KEY.UPDATE_LIST_TICKET_END:
       return update(state, {
         listTicketEnd: {
-          $set: [...state.listTicket, ...action.payload],
+          $set: [...state.listTicketEnd, ...action.payload],
         },
       });
     case CONSTANTS_KEY.UPDATE_LIST_FOLLOW:

@@ -17,6 +17,8 @@ import ItemList from '../../view/ItemList';
 import MyComponent from '../../view/MyComponent';
 import { loadTicket, resetTicket } from './TicketActions';
 import LottieView from 'lottie-react-native';
+import { Text } from 'native-base';
+import moment from 'moment';
 
 class TicketComponent extends MyComponent {
   constructor(props) {
@@ -32,7 +34,7 @@ class TicketComponent extends MyComponent {
     this.handleLoadMore = this.handleLoadMore.bind(this);
   }
   componentDidMount() {
-    this.props.resetTicket(1, () => this.setState({ refreshing: false }));
+    this.props.resetTicket(1);
   }
   onRefresh() {
     this.page = 1;
@@ -61,19 +63,25 @@ class TicketComponent extends MyComponent {
         </View>
       );
     }
-    if (this.props.listTicket.length === 0) {
+    if (this.props.listTicket && this.props.listTicket.length === 0) {
       return (
-        <LottieView
-          source={require('../../assets/isempty.json')}
-          autoPlay
-          loop
-          hardwareAccelerationAndroid
-          style={{
-            width: 240 * SCALE_RATIO_WIDTH_BASIS,
-            height: 300 * SCALE_RATIO_WIDTH_BASIS,
-            alignSelf: 'center',
-          }}
-        />
+        <View style={{ flex: 1 }}>
+          <Text style={[style.textHeader, { textAlign: 'center', color: APP_COLOR }]}>
+            There are currently no notifications{' '}
+          </Text>
+          <LottieView
+            source={require('../../assets/isempty.json')}
+            autoPlay
+            loop
+            hardwareAccelerationAndroid
+            resizeMode='contain'
+            style={{
+              width: 200 * SCALE_RATIO_WIDTH_BASIS,
+              height: 300 * SCALE_RATIO_WIDTH_BASIS,
+              alignSelf: 'center',
+            }}
+          />
+        </View>
       );
     }
     return null;
@@ -83,6 +91,7 @@ class TicketComponent extends MyComponent {
     const res = { Qr_code: item.qr_code };
     return (
       <ItemList
+        id_event={item.id_event}
         item={item}
         navigation={this.props.navigation}
         onPress={() =>
@@ -179,7 +188,10 @@ class TicketComponent extends MyComponent {
             paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             marginBottom: 10 + 2 * getBottomSpace(),
           }}
-          data={this.props.listTicket}
+          data={
+            this.props.listTicket &&
+            this.props.listTicket.sort((a, b) => moment(b.end_date).valueOf() - moment(a.end_date).valueOf())
+          }
           renderItem={this.renderItem}
           onRefresh={this.onRefresh}
           refreshing={this.state.refreshing}

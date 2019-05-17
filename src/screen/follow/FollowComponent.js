@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, TextInput, View } from 'react-native';
+import { FlatList, TextInput, View, ActivityIndicator, Text } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
@@ -16,41 +16,86 @@ import style, { APP_COLOR, APP_COLOR_2 } from '../../constants/style';
 import ItemList from '../../view/ItemList';
 import MyComponent from '../../view/MyComponent';
 import { getListFollowEvent } from './FollowActions';
+import LottieView from 'lottie-react-native';
+import moment from 'moment';
 
 class FollowComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
+      refreshing: false,
+      isLoadMore: false,
     };
+    this.page = 1;
+    this.outOfData = false;
+    this.onRefresh = this.onRefresh.bind(this);
   }
 
-  // shouldComponentUpdate(nextProps, nextSate) {
-  //   if (this.props.listFollow !== nextProps.listFollow) {
-  //     return true;
-  //   }
-  //   return false;
+  // componentDidMount() {
+  //   this.page = 1;
+  //   this.outOfData = false;
+  //   this.setState({ refreshing: true });
+  //   this.props.getListFollowEvent(() => this.setState({ refreshing: false }), 1);
   // }
-  // componentDidUpdate(nextProps) {
-  //   if (this.props.listFollow !== nextProps.listFollow) {
-  //     this.props.loadTicket();
-  //   }
+  onRefresh() {
+    this.page = 1;
+    this.outOfData = false;
+    this.setState({ refreshing: true });
+    this.props.getListFollowEvent(() => this.setState({ refreshing: false }), 1);
+  }
+
+  // handleLoadMore() {
+  //   if (this.outOfData || this.state.isLoadMore) return;
+  //   this.page++;
+  //   this.setState({ isLoadMore: true });
+  //   this.props.loadTicket(
+  //     this.page,
+  //     () => this.setState({ isLoadMore: false }),
+  //     () => {
+  //       this.outOfData = true;
+  //     }
+  //   );
   // }
-  renderItem = ({ item, index }) => {
-    const res = { Qr_code: item.qr_code };
-    return (
-      <ItemList
-        item={item}
-        navigation={this.props.navigation}
-        onPress={() =>
-          this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
-            item,
-            res,
-          })
-        }
-      />
-    );
+  renderFooter = () => {
+    if (!this.outOfData && this.state.isLoadMore) {
+      return (
+        <View style={{ paddingVertical: 20 }}>
+          <ActivityIndicator animating size='small' />
+        </View>
+      );
+    }
+    if (this.props.listFollow && this.props.listFollow.length === 0) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Text style={[style.textHeader, { textAlign: 'center', color: APP_COLOR }]}>
+            Stay tuned to the event you like
+          </Text>
+          <LottieView
+            source={require('../../assets/isempty.json')}
+            autoPlay
+            loop
+            hardwareAccelerationAndroid
+            resizeMode='contain'
+            style={{
+              width: 200 * SCALE_RATIO_WIDTH_BASIS,
+              height: 300 * SCALE_RATIO_WIDTH_BASIS,
+              alignSelf: 'center',
+            }}
+          />
+        </View>
+      );
+    }
+    return null;
   };
+
+  renderItem = ({ item, index }) => (
+    <ItemList
+      item={item}
+      navigation={this.props.navigation}
+      onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}
+    />
+  );
   render() {
     return (
       <View style={{ backgroundColor: '#fff', flex: 1 }}>
@@ -136,13 +181,16 @@ class FollowComponent extends MyComponent {
             paddingHorizontal: 10 * SCALE_RATIO_WIDTH_BASIS,
             marginBottom: 10 + 2 * getBottomSpace(),
           }}
-          data={this.props.listFollow}
+          data={
+            this.props.listFollow &&
+            this.props.listFollow.sort((a, b) => moment(b.end_date).valueOf() - moment(a.end_date).valueOf())
+          }
           renderItem={this.renderItem}
-          // onRefresh={this.onRefresh}
-          // refreshing={this.state.refreshing}
+          onRefresh={this.onRefresh}
+          refreshing={this.state.refreshing}
           // onEndReached={this.handleLoadMore}
           // onEndReachedThreshold={0.01}
-          // ListFooterComponent={this.renderFooter}
+          ListFooterComponent={this.renderFooter}
         />
       </View>
     );

@@ -12,9 +12,12 @@ import { alert } from '../../utils/alert';
 import { getUserToken } from '../../utils/asyncStorage';
 import { getListFollowEvent } from '../follow/FollowActions';
 import { loadUserData } from '../profile/PersonalInfoActions';
-import { loadTicket } from '../ticket/TicketActions';
-import { loadTicketEnd } from '../ticketEnd/TicketEndActions';
+import { loadTicket, resetTicket } from '../ticket/TicketActions';
+import { loadTicketEnd, resetTicketEnd, countTicketEnd } from '../ticketEnd/TicketEndActions';
 import { loadListCategory } from './SplashActions';
+import { resetNotification } from '../notification/NotificationActions';
+import { loadListPopularEvents, loadListInWeekEvents, loadListFreeEvents } from '../home/HomeActions';
+import global from '../../utils/globalUtils';
 
 class SplashComponent extends Component {
   constructor(props) {
@@ -32,9 +35,20 @@ class SplashComponent extends Component {
   async componentWillMount() {
     await persistStore(store, null, () => {
       console.log('userData', getUserToken(), this.props.userData);
+
       if (this.props.token !== '' && this.props.userData && this.props.isLoggedIn) {
         this.props.loadUserData(this.props.token, () => {
-          this.props.getListFollowEvent(() => this.props.navigation.replace(ROUTE_KEY.MAIN));
+          this.props.resetNotification(1);
+          countTicketEnd(1, this.props.token)
+            .then(res => {
+              global.countHistory = res.total_count;
+            })
+            .catch(err => {
+              console.log('phat: PersonalInfoComponent -> componentWillMount -> err', err);
+            });
+          this.props.resetTicket(1);
+          this.props.resetTicketEnd(1);
+          this.props.getListFollowEvent(() => this.props.navigation.replace(ROUTE_KEY.MAIN), 1);
         });
       } else {
         this.props.navigation.replace(ROUTE_KEY.PRE_LOGIN);
@@ -45,8 +59,11 @@ class SplashComponent extends Component {
     AppState.addEventListener('change', this.handleAppStateChange);
     this.checkPermission();
     this.createNotificationListeners();
-    this.props.loadListCategory();
     SplashScreen.hide();
+    this.props.loadListCategory();
+    this.props.loadListPopularEvents();
+    this.props.loadListInWeekEvents();
+    this.props.loadListFreeEvents();
   }
 
   componentWillUnmount() {
@@ -92,7 +109,7 @@ class SplashComponent extends Component {
         .setBody(notification.body)
         .setData(notification.data)
         .android.setChannelId('eTicket') // e.g. the id you chose above
-        // .android.setSmallIcon('@drawable/ic_launcher') // creat`e this icon in Android Studio
+        .android.setSmallIcon('@drawable/ic_launcher') // creat`e this icon in Android Studio
         .android.setColor(APP_COLOR); // you can set a color here
       // .android.setPriority(firebase.notifications.Android.Priority.High);
 
@@ -101,6 +118,7 @@ class SplashComponent extends Component {
         .displayNotification(localNotification)
         .catch(err => console.error(err));
       Vibration.vibrate(1000);
+      alert(notification.title, notification.body);
       console.log('dauphaiphat: Notification', notification);
     });
 
@@ -109,8 +127,8 @@ class SplashComponent extends Component {
      * */
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
       console.log('dauphaiphat: App background', notificationOpen);
-      const { title, body } = notificationOpen.notification;
-      alert(title, body);
+      const { data } = notificationOpen.notification;
+      alert(data.title, data.message);
     });
 
     /*
@@ -119,9 +137,8 @@ class SplashComponent extends Component {
     const notificationOpen = await firebase.notifications().getInitialNotification();
     if (notificationOpen) {
       console.log('dauphaiphat: App tat han', notificationOpen);
-      const { title, body } = notificationOpen.notification;
-      console.log('getInitialNotification:', title, body);
-      alert(title, body);
+      const { data } = notificationOpen.notification;
+      alert(data.title, data.message);
     }
     /*
      * Triggered for data only payload in foreground
@@ -147,7 +164,7 @@ class SplashComponent extends Component {
         .setBody(message.body)
         .setData(message.data)
         .android.setChannelId('eTicket') // e.g. the id you chose above
-        // .android.setSmallIcon('@drawable/ic_launcher') // creat`e this icon in Android Studio
+        .android.setSmallIcon('@drawable/ic_launcher') // creat`e this icon in Android Studio
         .android.setColor(APP_COLOR); // you can set a color here
       // .android.setPriority(firebase.notifications.Android.Priority.High);
       firebase
@@ -227,7 +244,19 @@ class SplashComponent extends Component {
   }
 }
 
-const mapActionCreators = { loadListCategory, loadUserData, getListFollowEvent, loadTicketEnd, loadTicket };
+const mapActionCreators = {
+  loadListCategory,
+  loadUserData,
+  getListFollowEvent,
+  loadListPopularEvents,
+  loadListInWeekEvents,
+  loadListFreeEvents,
+  loadTicketEnd,
+  loadTicket,
+  resetNotification,
+  resetTicket,
+  resetTicketEnd,
+};
 
 const mapStateToProps = state => ({
   userData: state.user.userData,

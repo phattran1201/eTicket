@@ -3,7 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import { connect } from 'react-redux';
-import { FS, SCALE_RATIO_WIDTH_BASIS, ROUTE_KEY } from '../../constants/Constants';
+import { FS, SCALE_RATIO_WIDTH_BASIS, ROUTE_KEY, SCALE_RATIO_HEIGHT_BASIS } from '../../constants/Constants';
 import { DATA_TEST } from '../../constants/dataTest';
 import style, { APP_COLOR, APP_COLOR_BLUE_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY_2, FONT } from '../../constants/style';
 import MyComponent from '../../view/MyComponent';
@@ -13,6 +13,11 @@ import MySpinner from '../../view/MySpinner';
 import { alert } from '../../utils/alert';
 import strings from '../../constants/Strings';
 import moment from 'moment';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { loadUserData } from '../profile/PersonalInfoActions';
+import { resetTicket } from '../ticket/TicketActions';
+import { loadListCategory } from '../splash/SplashActions';
+import { loadListPopularEvents, loadListInWeekEvents, loadListFreeEvents } from '../home/HomeActions';
 
 class DetailEventPayComponent extends MyComponent {
   constructor(props) {
@@ -30,6 +35,12 @@ class DetailEventPayComponent extends MyComponent {
             alert(strings.alert, res.message);
           }, 100);
         } else {
+          this.props.loadUserData(this.props.token);
+          this.props.resetTicket(1);
+          this.props.loadListCategory();
+          this.props.loadListPopularEvents();
+          this.props.loadListInWeekEvents();
+          this.props.loadListFreeEvents();
           this.props.navigation.navigate(ROUTE_KEY.DETAIL_PAY_SUCESS, {
             item,
             res,
@@ -168,6 +179,7 @@ class DetailEventPayComponent extends MyComponent {
           </View>
           <View
             style={{
+              flexWrap: 'wrap',
               flexDirection: 'row',
               marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
             }}
@@ -178,12 +190,16 @@ class DetailEventPayComponent extends MyComponent {
               item.tickettype.data
                 .sort((a, b) => a.price - b.price)
                 .map((item2, index) => {
+                  if (item2.total === 0) {
+                    return false;
+                  }
                   return (
                     <TouchableOpacity
                       onPress={() => this.setState({ type_id: item2.id })}
                       style={{
                         // width: 100 * SCALE_RATIO_WIDTH_BASIS,
-                        marginLeft: 25,
+                        marginTop: index > 2 ? 15 * SCALE_RATIO_HEIGHT_BASIS : 0,
+                        marginLeft: 20 * SCALE_RATIO_WIDTH_BASIS,
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderWidth: 1,
@@ -220,7 +236,7 @@ class DetailEventPayComponent extends MyComponent {
                           { fontSize: FS(10), color: item2.id === this.state.type_id ? '#fff' : APP_COLOR_BLUE_2 },
                         ]}
                       >
-                        QTY: {item2.total - item2.ticket_bought}
+                        QTY: {item2.total}
                       </Text>
                     </TouchableOpacity>
                   );
@@ -230,6 +246,7 @@ class DetailEventPayComponent extends MyComponent {
             style={{
               marginTop: 10 * SCALE_RATIO_WIDTH_BASIS,
               marginHorizontal: 15 * SCALE_RATIO_WIDTH_BASIS,
+              marginBottom: getBottomSpace() + 90 * SCALE_RATIO_WIDTH_BASIS,
             }}
           >
             <View
@@ -255,7 +272,7 @@ class DetailEventPayComponent extends MyComponent {
           style={{
             width: '90%',
             position: 'absolute',
-            bottom: 15 * SCALE_RATIO_WIDTH_BASIS,
+            bottom: 5 * SCALE_RATIO_HEIGHT_BASIS + getBottomSpace(),
             alignSelf: 'center',
             borderWidth: 1,
             borderColor: this.state.type_id === null ? APP_COLOR_BLUE_2 : APP_COLOR,
@@ -379,7 +396,15 @@ class DetailEventPayComponent extends MyComponent {
   }
 }
 
-const mapActionCreators = { buyTicket };
+const mapActionCreators = {
+  buyTicket,
+  loadUserData,
+  resetTicket,
+  loadListCategory,
+  loadListPopularEvents,
+  loadListInWeekEvents,
+  loadListFreeEvents,
+};
 
 const mapStateToProps = state => ({ token: state.user.token, userData: state.user.userData });
 

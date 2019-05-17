@@ -67,7 +67,14 @@ class MainComponent extends MyComponent {
     <IconTab
       isActive={isActive}
       showBadge={tab.key === 'home'}
-      renderBadge={() => <Badge>{this.props.listNotification.filter(e => e.status === 0).length}</Badge>}
+      renderBadge={() => {
+        if (this.props.listNotification && this.props.listNotification.filter(e => e.status === 0).length === 0) {
+          return false;
+        }
+        return (
+          <Badge>{this.props.listNotification && this.props.listNotification.filter(e => e.status === 0).length}</Badge>
+        );
+      }}
       key={tab.key}
       label={tab.label}
       renderIcon={this.renderIcon(tab.icon)}

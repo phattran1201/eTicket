@@ -28,8 +28,8 @@ class LoginComponent extends MyComponent {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'phattran1201@gmail.com',
-      password: '123456',
+      email: '',
+      password: '',
       isLoading: false,
       checkemail: true,
       checkpassword: true,

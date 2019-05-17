@@ -5,7 +5,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import Carousel from 'react-native-snap-carousel';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { DEVICE_WIDTH, FS, IS_IOS, ROUTE_KEY, SCALE_RATIO_WIDTH_BASIS } from '../../constants/Constants';
+import {
+  DEVICE_WIDTH,
+  FS,
+  IS_IOS,
+  ROUTE_KEY,
+  SCALE_RATIO_WIDTH_BASIS,
+  SCALE_RATIO_MAGIC,
+  SCALE_RATIO_HEIGHT_BASIS,
+} from '../../constants/Constants';
 import strings from '../../constants/Strings';
 import style, { APP_COLOR, APP_COLOR_2, APP_COLOR_TEXT, APP_COLOR_TEXT_GRAY, FONT } from '../../constants/style';
 import { alert } from '../../utils/alert';
@@ -20,13 +28,12 @@ import { loadListFreeEvents, loadListInWeekEvents, loadListPopularEvents } from 
 class HomeComponent extends MyComponent {
   constructor(props) {
     super(props);
-    this.state = { activeSlide: 0 };
+    this.state = { activeSlide: 0, follow: false };
     this.isFirstTimeLoadNews = true;
     this.isFirstTimeLoadPromotion = true;
   }
 
   componentWillMount() {
-    this.props.getListFollowEvent();
     this.props.loadListPopularEvents();
     this.props.loadListInWeekEvents();
     this.props.loadListFreeEvents();
@@ -48,40 +55,55 @@ class HomeComponent extends MyComponent {
   }
 
   onFollow(id) {
-    followEvent(this.props.token, id)
-      .then(res => {
-        this.props.getListFollowEvent();
-        this.forceUpdate();
-        // alert(strings.alert, 'Follow success');
-      })
-      .catch(err => {
-        alert(strings.alert, 'Follow false');
-      });
+    this.setState({ follow: true });
+    this.forceUpdate();
+    clearTimeout(this.onFollowTimeOut);
+    clearTimeout(this.unFollowTimeOut);
+    this.onFollowTimeOut = setTimeout(() => {
+      followEvent(this.props.token, id)
+        .then(res => {
+          this.props.getListFollowEvent();
+          // this.forceUpdate();
+          // alert(strings.alert, 'Follow success');
+        })
+        .catch(err => {
+          alert(strings.alert, 'Follow false');
+        });
+    }, 100);
   }
   unFollow(id) {
-    unfollowEvent(this.props.token, id)
-      .then(res => {
-        this.props.getListFollowEvent();
-        this.forceUpdate();
-        // alert(strings.alert, 'Unfollow success');
-      })
-      .catch(err => {
-        alert(strings.alert, 'Unfollow false');
-      });
+    this.setState({ follow: false });
+    this.forceUpdate();
+    clearTimeout(this.unFollowTimeOut);
+    clearTimeout(this.onFollowTimeOut);
+    this.unFollowTimeOut = setTimeout(() => {
+      unfollowEvent(this.props.token, id)
+        .then(res => {
+          this.props.getListFollowEvent();
+          // this.forceUpdate();
+          // alert(strings.alert, 'Unfollow success');
+        })
+        .catch(err => {
+          alert(strings.alert, 'Unfollow false');
+        });
+    }, 100);
   }
   renderPopular = ({ item, index }) => {
     let minPrice = item.tickettype.data[0].price;
     let maxPrice = item.tickettype.data[0].price;
-    for (let i = 1; i < item.tickettype.data.length; i++) {
-      if (minPrice > item.tickettype.data[i].price) {
-        minPrice = item.tickettype.data[i].price;
+    if (item && item.tickettype && item.tickettype.data) {
+      for (let i = 1; i < item.tickettype.data.length; i++) {
+        if (minPrice > item.tickettype.data[i].price) {
+          minPrice = item.tickettype.data[i].price;
+        }
+      }
+      for (let i = 1; i < item.tickettype.data.length; i++) {
+        if (maxPrice < item.tickettype.data[i].price) {
+          maxPrice = item.tickettype.data[i].price;
+        }
       }
     }
-    for (let i = 1; i < item.tickettype.data.length; i++) {
-      if (maxPrice < item.tickettype.data[i].price) {
-        maxPrice = item.tickettype.data[i].price;
-      }
-    }
+
     let isFollow = false;
     if (this.props.listFollow && this.props.listFollow !== null) {
       this.props.listFollow.forEach(e => {
@@ -94,7 +116,8 @@ class HomeComponent extends MyComponent {
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate(ROUTE_KEY.DETAIL_EVENT, { item })}>
         <TouchableOpacity
-          onPress={() => (isFollow ? this.unFollow(item.id) : this.onFollow(item.id))}
+          activeOpacity={0.9}
+          onPress={() => (isFollow || this.state.follow ? this.unFollow(item.id) : this.onFollow(item.id))}
           style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -109,7 +132,7 @@ class HomeComponent extends MyComponent {
           }}
         >
           <MaterialCommunityIcons
-            name={isFollow ? 'heart' : 'heart-outline'}
+            name={isFollow || this.state.follow ? 'heart' : 'heart-outline'}
             size={25 * SCALE_RATIO_WIDTH_BASIS}
             color={APP_COLOR}
             style={{ marginBottom: -5 * SCALE_RATIO_WIDTH_BASIS }}
@@ -127,17 +150,19 @@ class HomeComponent extends MyComponent {
             },
           ]}
         >
-          <View>
-            <MyImage
-              style={{
-                width: '100%',
-                height: 150 * SCALE_RATIO_WIDTH_BASIS,
-              }}
-              source={{
-                uri: item.image,
-              }}
-            />
-          </View>
+          <MyImage
+            end_date={item.end_date}
+            style={{
+              overflow: 'hidden',
+              borderTopLeftRadius: 5 * SCALE_RATIO_MAGIC,
+              borderTopRightRadius: 5 * SCALE_RATIO_MAGIC,
+              width: '100%',
+              height: 150 * SCALE_RATIO_WIDTH_BASIS,
+            }}
+            source={{
+              uri: item.image,
+            }}
+          />
 
           <Text
             style={[
@@ -186,7 +211,7 @@ class HomeComponent extends MyComponent {
               </Text>
             </View>
             {/* {item.tickettype.data.map(e => ( */}
-            {item.tickettype.data.length === 1 ? (
+            {item.tickettype && item.tickettype.data && item.tickettype.data.length === 1 ? (
               <View
                 style={{
                   marginLeft: 5,
@@ -399,7 +424,7 @@ class HomeComponent extends MyComponent {
           </View>
           <View
             style={{
-              marginTop: 30 * SCALE_RATIO_WIDTH_BASIS,
+              marginTop: 25 * SCALE_RATIO_HEIGHT_BASIS,
             }}
           >
             <View
@@ -425,7 +450,7 @@ class HomeComponent extends MyComponent {
                 Upcoming in week
               </Text>
             </View>
-            {this.props.listEventInWeek.length === 0 ? (
+            {this.props.listEventInWeek && this.props.listEventInWeek.length === 0 ? (
               <View
                 style={{
                   // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -462,43 +487,46 @@ class HomeComponent extends MyComponent {
                   // onEndReachedThreshold={0.01}
                   // ListFooterComponent={this.renderFooter}
                 />
-                <TouchableOpacity
-                  style={{
-                    marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
-                    marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
-                    borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-                    borderWidth: 1,
-                    borderColor: APP_COLOR_TEXT_GRAY,
-                    padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-                    alignItems: 'center',
-                  }}
-                  onPress={() =>
-                    this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
-                      searchOpiton: true,
-                      filterUpComming: 'thisWeek',
-                      filterEventCategory: '',
-                      filterPrice: '',
-                    })
-                  }
-                >
-                  <Text
-                    style={[
-                      style.textCaption,
-                      {
-                        fontSize: FS(14),
-                        color: '#000',
-                      },
-                    ]}
+                {this.props.listEventInWeek && this.props.listEventInWeek.length > 5 && (
+                  <TouchableOpacity
+                    style={{
+                      marginVertical: 15 * SCALE_RATIO_HEIGHT_BASIS,
+                      marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+                      borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      borderWidth: 1,
+                      borderColor: APP_COLOR_TEXT_GRAY,
+                      padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      alignItems: 'center',
+                    }}
+                    onPress={() =>
+                      this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
+                        searchOpiton: true,
+                        filterUpComming: 'thisWeek',
+                        filterEventCategory: '',
+                        filterPrice: '',
+                      })
+                    }
                   >
-                    See more event (2000+)
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={[
+                        style.textCaption,
+                        {
+                          fontSize: FS(14),
+                          color: '#000',
+                        },
+                      ]}
+                    >
+                      See more event (1000+)
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
             )}
           </View>
           <View
             style={{
-              marginBottom: 30 * SCALE_RATIO_WIDTH_BASIS,
+              marginTop: 25 * SCALE_RATIO_HEIGHT_BASIS,
+              marginBottom: 30 * SCALE_RATIO_HEIGHT_BASIS,
             }}
           >
             <View
@@ -524,7 +552,7 @@ class HomeComponent extends MyComponent {
                 Event Free
               </Text>
             </View>
-            {this.props.listEventFree.length === 0 ? (
+            {this.props.listEventFree && this.props.listEventFree.length === 0 ? (
               <View
                 style={{
                   // marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
@@ -561,37 +589,39 @@ class HomeComponent extends MyComponent {
                   // onEndReachedThreshold={0.01}
                   // ListFooterComponent={this.renderFooter}
                 />
-                <TouchableOpacity
-                  style={{
-                    marginVertical: 20 * SCALE_RATIO_WIDTH_BASIS,
-                    marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
-                    borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
-                    borderWidth: 1,
-                    borderColor: APP_COLOR_TEXT_GRAY,
-                    padding: 5 * SCALE_RATIO_WIDTH_BASIS,
-                    alignItems: 'center',
-                  }}
-                  onPress={() =>
-                    this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
-                      searchOpiton: true,
-                      filterUpComming: '',
-                      filterEventCategory: '',
-                      filterPrice: 'free',
-                    })
-                  }
-                >
-                  <Text
-                    style={[
-                      style.textCaption,
-                      {
-                        fontSize: FS(14),
-                        color: '#000',
-                      },
-                    ]}
+                {this.props.listEventInWeek && this.props.listEventInWeek.length > 5 && (
+                  <TouchableOpacity
+                    style={{
+                      marginVertical: 15 * SCALE_RATIO_HEIGHT_BASIS,
+                      marginHorizontal: 20 * SCALE_RATIO_WIDTH_BASIS,
+                      borderRadius: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      borderWidth: 1,
+                      borderColor: APP_COLOR_TEXT_GRAY,
+                      padding: 5 * SCALE_RATIO_WIDTH_BASIS,
+                      alignItems: 'center',
+                    }}
+                    onPress={() =>
+                      this.props.navigation.navigate(ROUTE_KEY.SEARCH_SUCCESS, {
+                        searchOpiton: true,
+                        filterUpComming: '',
+                        filterEventCategory: '',
+                        filterPrice: 'free',
+                      })
+                    }
                   >
-                    See more event (2000+)
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={[
+                        style.textCaption,
+                        {
+                          fontSize: FS(14),
+                          color: '#000',
+                        },
+                      ]}
+                    >
+                      See more event (1000+)
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
             )}
           </View>

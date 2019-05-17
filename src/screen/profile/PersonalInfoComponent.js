@@ -36,6 +36,8 @@ import background from '../../assets/background.png';
 import { logout } from '../login/LoginActions';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { countTicketEnd } from '../ticketEnd/TicketEndActions';
+import global from '../../utils/globalUtils';
+import MyImage from '../../view/MyImage';
 
 class PersonalInfoComponent extends MyComponent {
   constructor(props) {
@@ -86,12 +88,11 @@ class PersonalInfoComponent extends MyComponent {
       post_code,
       status,
       updated_at,
-      countHistory: 0,
+      countHistory: global.countHistory,
     };
 
     this.baseState = this.state;
   }
-
   componentDidMount() {
     countTicketEnd(1, this.props.token)
       .then(res => {
@@ -101,6 +102,18 @@ class PersonalInfoComponent extends MyComponent {
       .catch(err => {
         console.log('phat: PersonalInfoComponent -> componentWillMount -> err', err);
       });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.countHistory !== prevState.countHistory) {
+      countTicketEnd(1, this.props.token)
+        .then(res => {
+          this.setState({ countHistory: res.total_count });
+          this.forceUpdate();
+        })
+        .catch(err => {
+          console.log('phat: PersonalInfoComponent -> componentWillMount -> err', err);
+        });
+    }
   }
 
   onPlaceSearch = (data, details) => {
@@ -153,7 +166,6 @@ class PersonalInfoComponent extends MyComponent {
     );
   }
   render() {
-    console.log('dauphaiphat: PersonalInfoComponent -> render -> userData', this.props.userData);
     const {
       address,
       bio,
@@ -194,11 +206,11 @@ class PersonalInfoComponent extends MyComponent {
             }}
             rightIcon={this.state.showUpdate ? 'content-save' : 'account-edit'}
             rightIconType='MaterialCommunityIcons'
-            rightIconStyle={{ color: APP_COLOR_TEXT }}
+            rightIconStyle={{ color: APP_COLOR }}
             btnRightStyle={{ backgroundColor: 'white', padding: 5 }}
             onRightPress={() => this.setState({ showUpdate: true })}
           />
-          <FastImage
+          <MyImage
             style={{
               zIndex: -1,
               width: DEVICE_WIDTH,
@@ -206,9 +218,9 @@ class PersonalInfoComponent extends MyComponent {
               position: 'absolute',
             }}
             removeClippedSubviews
-            source={{
-              uri: 'https://i.pinimg.com/originals/81/f1/8d/81f18dbd8bef71772d6db3b379101310.jpg',
-            }}
+            // source={{
+            //   uri: 'https://i.pinimg.com/originals/81/f1/8d/81f18dbd8bef71772d6db3b379101310.jpg',
+            // }}
             defaultSource={null}
           />
 
@@ -240,7 +252,8 @@ class PersonalInfoComponent extends MyComponent {
                 <Avatar
                   // imageProps={{ resizeMode: 'contain' }}
                   source={{
-                    uri: 'https://kenh14cdn.com/2017/1-1506422137960.jpg',
+                    uri:
+                      'https://scontent.fsgn5-7.fna.fbcdn.net/v/t31.0-8/15776814_646495102208328_2688214270975918147_o.jpg?_nc_cat=103&_nc_oc=AQmd33m5fTCXZ21FohuvFXetaGuKFoIDBujo3pAdfzyTNVsvo4YdrfjhVbTHTbBCBOk4H1uRRXR8MHbdGYRhMPr6&_nc_ht=scontent.fsgn5-7.fna&oh=fc94e9d8a9dd57737901babc1ca0f81b&oe=5D5CC033',
                   }}
                   rounded
                   showEditButton
